@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 class Solution
@@ -13,7 +14,41 @@ class Solution
 
     private Node GetPath(Node initialNode, int row, int column, Node[][] matrix)
     {
-        return initialNode;
+        if (initialNode == null)
+        {
+            return null;
+        }
+
+        var pathes = new List<Node>();
+        if (row + 1 < matrix.Length)
+        {
+            Node lowerInitialNode = Sum(initialNode, GetPath(matrix[row + 1][column], row + 1, column, matrix));
+            if (lowerInitialNode == null)
+            {
+                return null;
+            }
+            pathes.Add(lowerInitialNode);
+        }
+        if (column + 1 < matrix.Length)
+        {
+            Node rightInitialNode = Sum(initialNode, GetPath(matrix[row][column + 1], row, column + 1, matrix));
+            if (rightInitialNode == null)
+            {
+                return null;
+            }
+            pathes.Add(rightInitialNode);
+        }
+        switch (pathes.Count)
+        {
+                case 0:
+                    return initialNode;
+                case 1:
+                    return pathes.Single();
+                default:
+                    var trailingZeroCount0 = GetTrailingZeroCount(pathes[0]);
+                    var trailingZeroCount1 = GetTrailingZeroCount(pathes[1]);
+                    return trailingZeroCount0 < trailingZeroCount1 ? pathes[0] : pathes[1];
+        }
     }
 
     private Node[][] GetMatrix(int[][] initialMatrix)
@@ -45,12 +80,21 @@ class Solution
         return result;
     }
 
-    public static int GetTrailingZeroCount(Node node)
+    private static int GetTrailingZeroCount(Node node)
     {
         return node == null ? 1 : Math.Min(node.Pow2, node.Pow5);
     }
 
-    public class Node
+    private static Node Sum(Node node1, Node node2)
+    {
+        if (node1 == null || node2 == null)
+        {
+            return null;
+        }
+        return new Node(node1.Pow2 + node2.Pow2, node1.Pow5 + node2.Pow5);
+    }
+
+    private class Node
     {
         public Node(int pow2, int pow5)
         {

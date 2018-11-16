@@ -29,6 +29,14 @@ public class SolutionTests
             1);
     }
 
+    [TestMethod]
+    public void Test4()
+    {
+        Test(
+            "[[2, 2], [5, 5]]",
+            1);
+    }
+
     private void Test(string matrix, int expectedResult)
     {
         Test(Convert(matrix), expectedResult);
