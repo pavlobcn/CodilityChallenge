@@ -7,47 +7,37 @@ class Solution
     public int solution(int[][] A)
     {
         Node[][] matrix = GetMatrix(A);
-        Node initialNode = matrix[0][0];
-        Node pathNode = GetPath(initialNode, 0, 0, matrix);
-        return GetTrailingZeroCount(pathNode);
+        Node[] initialNodes = { matrix[0][0]};
+        Node[] pathNodes = GetPath(initialNodes, 0, 0, matrix);
+        return GetTrailingZeroCount(pathNodes);
     }
 
-    private Node GetPath(Node initialNode, int row, int column, Node[][] matrix)
+    private Node[] GetPath(Node[] initialNodes, int row, int column, Node[][] matrix)
     {
-        if (initialNode == null)
+        if (initialNodes.All(x => x == null))
         {
-            return null;
+            return new Node[]{null};
         }
 
-        var pathes = new List<Node>();
+        var pathes = new List<Node[]>();
         if (row + 1 < matrix.Length)
         {
-            Node lowerInitialNode = Sum(initialNode, GetPath(matrix[row + 1][column], row + 1, column, matrix));
-            if (lowerInitialNode == null)
-            {
-                return null;
-            }
-            pathes.Add(lowerInitialNode);
+            Node[] lowerInitialNodes = Sum(initialNodes, GetPath(new[] { matrix[row + 1][column]}, row + 1, column, matrix));
+            pathes.Add(lowerInitialNodes);
         }
         if (column + 1 < matrix.Length)
         {
-            Node rightInitialNode = Sum(initialNode, GetPath(matrix[row][column + 1], row, column + 1, matrix));
-            if (rightInitialNode == null)
-            {
-                return null;
-            }
-            pathes.Add(rightInitialNode);
+            Node[] rightInitialNodes = Sum(initialNodes, GetPath(new []{matrix[row][column + 1]}, row, column + 1, matrix));
+            pathes.Add(rightInitialNodes);
         }
         switch (pathes.Count)
         {
                 case 0:
-                    return initialNode;
+                    return initialNodes;
                 case 1:
                     return pathes.Single();
                 default:
-                    var trailingZeroCount0 = GetTrailingZeroCount(pathes[0]);
-                    var trailingZeroCount1 = GetTrailingZeroCount(pathes[1]);
-                    return trailingZeroCount0 < trailingZeroCount1 ? pathes[0] : pathes[1];
+                    return Min(pathes.SelectMany(p => p).ToArray());
         }
     }
 
@@ -80,9 +70,25 @@ class Solution
         return result;
     }
 
+    private static int GetTrailingZeroCount(Node[] nodes)
+    {
+        return nodes.Min(GetTrailingZeroCount);
+    }
+
     private static int GetTrailingZeroCount(Node node)
     {
         return node == null ? 1 : Math.Min(node.Pow2, node.Pow5);
+    }
+
+    private static Node[] Sum(Node[] nodes1, Node[] nodes2)
+    {
+        Node[] candidates = nodes1.SelectMany(n1 => nodes2.Select(n2 => Sum(n1, n2))).ToArray();
+        return Min(candidates);
+    }
+
+    private static Node[] Min(Node[] candidates)
+    {
+        throw new NotImplementedException();
     }
 
     private static Node Sum(Node node1, Node node2)
@@ -102,8 +108,8 @@ class Solution
             Pow5 = pow5;
         }
 
-        public int Pow2 { get; private set; }
-        public int Pow5 { get; private set; }
+        public int Pow2 { get; }
+        public int Pow5 { get; }
 
         public override string ToString()
         {
