@@ -11,42 +11,62 @@ class Solution
     {
         matrix = GetMatrix(A);
         //pathesMatrix = matrix.Select(row => row.Select(c => (Node[]) null).ToArray()).ToArray();
-        if (IsFastResult())
+        if (IsFastResultForOneTrailingZero())
         {
             return 1;
         }
 
-        Node[] initialNodes = { matrix[0][0]};
-        Node[] pathNodes = GetPath(initialNodes, 0, 0);
+        if (IsFastResultForEqualElements())
+        {
+            return Math.Min(matrix[0][0].Pow2 , matrix[0][0].Pow2) * (2 * matrix.Length - 1);
+        }
+
+        Node[] pathNodes = GetPath(0, 0);
         return GetTrailingZeroCount(pathNodes);
     }
 
-    private bool IsFastResult()
+    private bool IsFastResultForEqualElements()
     {
-        return matrix[0][0] == null || matrix.Last().Last() == null;
+        var startValue = matrix[0][0];
+        return matrix.SelectMany(x => x).All(x => x != null && x.Pow2 == startValue.Pow2 && x.Pow5 == startValue.Pow5);
     }
 
-    private Node[] GetPath(Node[] initialNodes, int row, int column)
+    private bool IsFastResultForOneTrailingZero()
     {
-        var pathes = new List<Node[]>();
-        if (row + 1 < matrix.Length)
+        // Check reverse diagonals
+        bool zeroRevevrseDiagonalExists =
+            Enumerable.Range(0, matrix.Length * 2 - 1).Reverse()
+                .Any(i => i < matrix.Length
+                    ? Enumerable.Range(0, i + 1).All(row => matrix[row][i - row] == null)
+                    : Enumerable.Range(i - matrix.Length, matrix.Length * 2 - i - 1).All(row => matrix[row + 1][i - row - 1] == null));
+        if (zeroRevevrseDiagonalExists)
         {
-            Node[] lowerInitialNodes = Sum(initialNodes, GetPath(new[] { matrix[row + 1][column]}, row + 1, column));
-            pathes.Add(lowerInitialNodes);
+            return true;
         }
-        if (column + 1 < matrix.Length)
+
+        return false;
+    }
+
+    private Node[] GetPath(int startingRow, int startingColumn)
+    {
+        Node startNode = matrix[startingRow][startingColumn];
+        var pathes = new List<Node>();
+        if (startingRow + 1 < matrix.Length)
         {
-            Node[] rightInitialNodes = Sum(initialNodes, GetPath(new []{matrix[row][column + 1]}, row, column + 1));
-            pathes.Add(rightInitialNodes);
+            Node[] nextRowPathes = GetPath(startingRow + 1, startingColumn);
+            pathes.AddRange(nextRowPathes);
+        }
+        if (startingColumn + 1 < matrix.Length)
+        {
+            Node[] nextColumnsPathes = GetPath(startingRow, startingColumn + 1);
+            pathes.AddRange(nextColumnsPathes);
         }
         switch (pathes.Count)
         {
                 case 0:
-                    return initialNodes;
-                case 1:
-                    return pathes.Single();
+                    return new []{ startNode };
                 default:
-                    return Min(pathes.SelectMany(p => p).ToArray());
+                    return Min(pathes.Select(x => Sum(startNode, x)).ToArray());
         }
     }
 
@@ -89,27 +109,20 @@ class Solution
         return node == null ? 1 : Math.Min(node.Pow2, node.Pow5);
     }
 
-    private static Node[] Sum(Node[] nodes1, Node[] nodes2)
-    {
-        Node[] candidates = nodes1.SelectMany(n1 => nodes2.Select(n2 => Sum(n1, n2))).ToArray();
-        return Min(candidates);
-    }
-
     private static Node[] Min(Node[] candidates)
     {
         bool existsNull = candidates.Any(x => x == null);
         candidates = candidates.Where(x => x != null).ToArray();
-        if (existsNull)
+        if (!candidates.Any())
         {
-            candidates = candidates.Where(x => x.Pow2 < 1 || x.Pow5 < 1).ToArray();
-            return MinOfNotNulls(candidates).Union(new Node[] {null}).ToArray();
+            return new Node[] {null};
         }
-        return MinOfNotNulls(candidates);
-    }
-
-    private static Node[] MinOfNotNulls(Node[] candidates)
-    {
-        return candidates.Where(x => !candidates.Any(y => x.Pow2 > y.Pow2 && x.Pow5 > y.Pow5)).Distinct(NodeEqualityComparer.Instance).ToArray();
+        int minPow2 = candidates.Min(x => x.Pow2);
+        int minPow5 = candidates.Min(x => x.Pow5);
+        int minPow2AndPow2 = candidates.Min(x => Math.Min(x.Pow2, x.Pow5));
+        candidates = candidates
+            .Where(x => x.Pow2 == minPow2 || x.Pow5 == minPow5 || Math.Min(x.Pow2, x.Pow5) == minPow2AndPow2).ToArray();
+        return existsNull ? candidates.Union(new Node[] {null}).ToArray() : candidates;
     }
 
     private static Node Sum(Node node1, Node node2)
@@ -119,25 +132,6 @@ class Solution
             return null;
         }
         return new Node(node1.Pow2 + node2.Pow2, node1.Pow5 + node2.Pow5);
-    }
-
-    private class NodeEqualityComparer : IEqualityComparer<Node>
-    {
-        public static readonly NodeEqualityComparer Instance = new NodeEqualityComparer();
-
-        public bool Equals(Node x, Node y)
-        {
-            if (x == null && y == null)
-            {
-                return true;
-            }
-            return x != null && y != null && x.Pow2 == y.Pow2 && x.Pow5 == y.Pow5;
-        }
-
-        public int GetHashCode(Node obj)
-        {
-            return obj.Pow2.GetHashCode() + obj.Pow5.GetHashCode();
-        }
     }
 
     private class Node

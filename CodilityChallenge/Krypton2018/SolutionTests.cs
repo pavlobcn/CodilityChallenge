@@ -38,21 +38,17 @@ public class SolutionTests
     }
 
     [TestMethod]
-    public void TestMaximumMatrixFastCalculation1()
+    public void TestMaximumMatrixFastCalculationWhenFirstElementIsZero()
     {
-        var matrix = Enumerable.Range(0, 500)
-            .Select(row => Enumerable.Range(0, 500).Select(c => 1).ToArray())
-            .ToArray();
+        var matrix = GetMatrix(500, 1);
         matrix[0][0] = 0;
         Test(matrix, 1);
     }
 
     [TestMethod]
-    public void TestMaximumMatrixFastCalculation2()
+    public void TestMaximumMatrixFastCalculationWhenLastElementIsZero()
     {
-        var matrix = Enumerable.Range(0, 500)
-            .Select(row => Enumerable.Range(0, 500).Select(c => 1000000000).ToArray())
-            .ToArray();
+        var matrix = GetMatrix(500, 1);
         matrix[matrix.Length - 1][matrix.Length - 1] = 0;
         Test(matrix, 1);
     }
@@ -60,10 +56,8 @@ public class SolutionTests
     [TestMethod]
     public void TestMaximumMatrixMaximumValues()
     {
-        var matrix = Enumerable.Range(0, 10)
-            .Select(row => Enumerable.Range(0, 10).Select(c => 1000000000).ToArray())
-            .ToArray();
-        Test(matrix, 171);
+        var matrix = GetMatrix(500, 1000000000);
+        Test(matrix, 9 * (2 * 500 - 1));
     }
 
     private void Test(string matrix, int expectedResult)
@@ -83,6 +77,13 @@ public class SolutionTests
         return matrix.Substring(1, matrix.Length - 2).Replace(" ", string.Empty)
             .Split(new[] {"]"}, StringSplitOptions.RemoveEmptyEntries)
             .Select(row => row.Trim(',', '[', ']').Split(',').Select(int.Parse).ToArray())
+            .ToArray();
+    }
+
+    private int[][] GetMatrix(int size, int defaultValue)
+    {
+        return Enumerable.Range(0, size)
+            .Select(row => Enumerable.Range(0, size).Select(c => defaultValue).ToArray())
             .ToArray();
     }
 }
