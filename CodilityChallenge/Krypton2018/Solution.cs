@@ -88,7 +88,19 @@ class Solution
 
     private static Node[] Min(Node[] candidates)
     {
-        throw new NotImplementedException();
+        bool existsNull = candidates.Any(x => x == null);
+        candidates = candidates.Where(x => x != null).ToArray();
+        if (existsNull)
+        {
+            candidates = candidates.Where(x => x.Pow2 < 1 || x.Pow5 < 1).ToArray();
+            return MinOfNotNulls(candidates).Union(new Node[] {null}).ToArray();
+        }
+        return MinOfNotNulls(candidates);
+    }
+
+    private static Node[] MinOfNotNulls(Node[] candidates)
+    {
+        return candidates.Where(x => !candidates.Any(y => x.Pow2 > y.Pow2 && x.Pow5 > y.Pow5)).Distinct(NodeEqualityComparer.Instance).ToArray();
     }
 
     private static Node Sum(Node node1, Node node2)
@@ -98,6 +110,25 @@ class Solution
             return null;
         }
         return new Node(node1.Pow2 + node2.Pow2, node1.Pow5 + node2.Pow5);
+    }
+
+    private class NodeEqualityComparer : IEqualityComparer<Node>
+    {
+        public static readonly NodeEqualityComparer Instance = new NodeEqualityComparer();
+
+        public bool Equals(Node x, Node y)
+        {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+            return x != null && y != null && x.Pow2 == y.Pow2 && x.Pow5 == y.Pow5;
+        }
+
+        public int GetHashCode(Node obj)
+        {
+            return obj.Pow2.GetHashCode() + obj.Pow5.GetHashCode();
+        }
     }
 
     private class Node
