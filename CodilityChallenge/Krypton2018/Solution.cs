@@ -5,12 +5,13 @@ using System.Linq;
 class Solution
 {
     private Node[][] matrix;
-    //private Node[][][] pathesMatrix;
+    private Node[][][] pathesMatrix;
 
     public int solution(int[][] A)
     {
         matrix = GetMatrix(A);
-        //pathesMatrix = matrix.Select(row => row.Select(c => (Node[]) null).ToArray()).ToArray();
+        pathesMatrix = matrix.Select(row => row.Select(c => (Node[]) null).ToArray()).ToArray();
+
         if (IsFastResultForOneTrailingZero())
         {
             return 1;
@@ -49,6 +50,11 @@ class Solution
 
     private Node[] GetPath(int startingRow, int startingColumn)
     {
+        if (pathesMatrix[startingRow][startingColumn] != null)
+        {
+            return pathesMatrix[startingRow][startingColumn];
+        }
+
         Node startNode = matrix[startingRow][startingColumn];
         var pathes = new List<Node>();
         if (startingRow + 1 < matrix.Length)
@@ -61,13 +67,20 @@ class Solution
             Node[] nextColumnsPathes = GetPath(startingRow, startingColumn + 1);
             pathes.AddRange(nextColumnsPathes);
         }
+
+        Node[] result;
         switch (pathes.Count)
         {
                 case 0:
-                    return new []{ startNode };
+                    result = new []{ startNode };
+                    break;
                 default:
-                    return Min(pathes.Select(x => Sum(startNode, x)).ToArray());
+                    result = Min(pathes.Select(x => Sum(startNode, x)).ToArray());
+                    break;
         }
+
+        pathesMatrix[startingRow][startingColumn] = result;
+        return result;
     }
 
     private Node[][] GetMatrix(int[][] initialMatrix)

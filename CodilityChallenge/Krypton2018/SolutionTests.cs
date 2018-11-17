@@ -60,6 +60,14 @@ public class SolutionTests
         Test(matrix, 9 * (2 * 500 - 1));
     }
 
+    [TestMethod]
+    public void TestMaximumMatrixMaximumValues2()
+    {
+        var matrix = GetMatrix(20, 1000000000);
+        matrix[matrix.Length - 1][matrix.Length - 1] = 1000000000 / 2;
+        Test(matrix, 9 * (2 * 500 - 1));
+    }
+
     private void Test(string matrix, int expectedResult)
     {
         Test(Convert(matrix), expectedResult);
