@@ -4,30 +4,39 @@ using System.Linq;
 
 class Solution
 {
+    private Node[][] matrix;
+    //private Node[][][] pathesMatrix;
+
     public int solution(int[][] A)
     {
-        Node[][] matrix = GetMatrix(A);
+        matrix = GetMatrix(A);
+        //pathesMatrix = matrix.Select(row => row.Select(c => (Node[]) null).ToArray()).ToArray();
+        if (IsFastResult())
+        {
+            return 1;
+        }
+
         Node[] initialNodes = { matrix[0][0]};
-        Node[] pathNodes = GetPath(initialNodes, 0, 0, matrix);
+        Node[] pathNodes = GetPath(initialNodes, 0, 0);
         return GetTrailingZeroCount(pathNodes);
     }
 
-    private Node[] GetPath(Node[] initialNodes, int row, int column, Node[][] matrix)
+    private bool IsFastResult()
     {
-        if (initialNodes.All(x => x == null))
-        {
-            return new Node[]{null};
-        }
+        return matrix[0][0] == null || matrix.Last().Last() == null;
+    }
 
+    private Node[] GetPath(Node[] initialNodes, int row, int column)
+    {
         var pathes = new List<Node[]>();
         if (row + 1 < matrix.Length)
         {
-            Node[] lowerInitialNodes = Sum(initialNodes, GetPath(new[] { matrix[row + 1][column]}, row + 1, column, matrix));
+            Node[] lowerInitialNodes = Sum(initialNodes, GetPath(new[] { matrix[row + 1][column]}, row + 1, column));
             pathes.Add(lowerInitialNodes);
         }
         if (column + 1 < matrix.Length)
         {
-            Node[] rightInitialNodes = Sum(initialNodes, GetPath(new []{matrix[row][column + 1]}, row, column + 1, matrix));
+            Node[] rightInitialNodes = Sum(initialNodes, GetPath(new []{matrix[row][column + 1]}, row, column + 1));
             pathes.Add(rightInitialNodes);
         }
         switch (pathes.Count)
