@@ -75,7 +75,7 @@ class Solution
                     result = new []{ startNode };
                     break;
                 default:
-                    result = Min(pathes.Select(x => Sum(startNode, x)).ToArray());
+                    result = Min(pathes.Select(x => Sum(startNode, x)));
                     break;
         }
 
@@ -122,42 +122,50 @@ class Solution
         return node == null ? 1 : Math.Min(node.Pow2, node.Pow5);
     }
 
-    private Node[] Min(Node[] candidates)
+    private Node[] Min(IEnumerable<Node> candidates)
     {
-        Node minPow2 = candidates.First();
-        Node minPow5 = candidates.First();
-        Node minPow2AndPow5 = candidates.First();
-        for (int i = 1; i < candidates.Length; i++)
+        Node minPow2 = null;
+        Node minPow5 = null;
+        Node minPow2AndPow5 = null;
+        bool initialIteration = true;
+        foreach (Node candidate in candidates)
         {
-            var node = candidates[i];
-            switch (ComparePow2(node, minPow2))
+            if (initialIteration)
+            {
+                minPow2 = candidate;
+                minPow5 = candidate;
+                minPow2AndPow5 = candidate;
+                initialIteration = false;
+                continue;
+            }
+            switch (ComparePow2(candidate, minPow2))
             {
                 case -1:
-                    minPow2 = node;
+                    minPow2 = candidate;
                     break;
                 case 0:
-                    if (ComparePow5(node, minPow2) < 0)
+                    if (ComparePow5(candidate, minPow2) < 0)
                     {
-                        minPow2 = node;
+                        minPow2 = candidate;
                     }
                     break;
             }
-            switch (ComparePow5(node, minPow5))
+            switch (ComparePow5(candidate, minPow5))
             {
                 case -1:
-                    minPow5 = node;
+                    minPow5 = candidate;
                     break;
                 case 0:
-                    if (ComparePow2(node, minPow5) < 0)
+                    if (ComparePow2(candidate, minPow5) < 0)
                     {
-                        minPow5 = node;
+                        minPow5 = candidate;
                     }
                     break;
             }
-            switch (ComparePow2AndPow5(node, minPow2AndPow5))
+            switch (ComparePow2AndPow5(candidate, minPow2AndPow5))
             {
                 case -1:
-                    minPow2AndPow5 = node;
+                    minPow2AndPow5 = candidate;
                     break;
             }
 
@@ -167,17 +175,23 @@ class Solution
 
     private int ComparePow2(Node node1, Node node2)
     {
-        return Compare(node1, node2, node => node.Pow2);
+        int val1 = node1?.Pow2 ?? 1;
+        int val2 = node2?.Pow2 ?? 1;
+        return Math.Sign(val1.CompareTo(val2));
     }
 
     private int ComparePow5(Node node1, Node node2)
     {
-        return Compare(node1, node2, node => node.Pow5);
+        int val1 = node1?.Pow5 ?? 1;
+        int val2 = node2?.Pow5 ?? 1;
+        return Math.Sign(val1.CompareTo(val2));
     }
 
     private int ComparePow2AndPow5(Node node1, Node node2)
     {
-        return Compare(node1, node2, node => Math.Min(node.Pow2, node.Pow5));
+        int val1 = node1 == null ? 1 : Math.Min(node1.Pow2, node1.Pow5);
+        int val2 = node2 == null ? 1 : Math.Min(node2.Pow2, node2.Pow5);
+        return Math.Sign(val1.CompareTo(val2));
     }
 
     private int Compare(Node node1, Node node2, Func<Node, int> valFunc)
