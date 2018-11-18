@@ -5,6 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 [TestClass]
 public class SolutionTests
 {
+    private const int MaxMatrixSize = 500;
+    private const int MaxCellValue = 1000000000;
+    private static readonly int MaxCellValueTrailingZero = (int) Math.Log10(MaxCellValue);
+
     [TestMethod]
     public void Test1()
     {
@@ -38,34 +42,50 @@ public class SolutionTests
     }
 
     [TestMethod]
-    public void TestMaximumMatrixFastCalculationWhenFirstElementIsZero()
+    public void MaximumMatrixFastCalculationWhenFirstElementIsZeroTest()
     {
-        var matrix = GetMatrix(500, 1);
+        var matrix = GetMatrix(MaxMatrixSize, 1);
         matrix[0][0] = 0;
         Test(matrix, 1);
     }
 
     [TestMethod]
-    public void TestMaximumMatrixFastCalculationWhenLastElementIsZero()
+    public void MaximumMatrixFastCalculationWhenLastElementIsZeroTest()
     {
-        var matrix = GetMatrix(500, 1);
+        var matrix = GetMatrix(MaxMatrixSize, 1);
         matrix[matrix.Length - 1][matrix.Length - 1] = 0;
         Test(matrix, 1);
     }
 
     [TestMethod]
-    public void TestMaximumMatrixMaximumValues()
+    public void MaximumMatrixMaximumValuesTest()
     {
-        var matrix = GetMatrix(500, 1000000000);
-        Test(matrix, 9 * (2 * 500 - 1));
+        var matrix = GetMatrix(MaxMatrixSize, MaxCellValue);
+        Test(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1));
     }
 
     [TestMethod]
-    public void TestMaximumMatrixMaximumValues2()
+    public void MaximumMatrixMaximumValuesExceptLastValueTest()
     {
-        var matrix = GetMatrix(20, 1000000000);
-        matrix[matrix.Length - 1][matrix.Length - 1] = 1000000000 / 2;
-        Test(matrix, 9 * (2 * 500 - 1));
+        var matrix = GetMatrix(MaxMatrixSize, MaxCellValue);
+        matrix[matrix.Length - 1][matrix.Length - 1] = MaxCellValue / 2;
+        Test(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1) - 1);
+    }
+
+    [TestMethod]
+    [Timeout(5000)]
+    public void MaximumMatrixRandomValuesPerfomanceTest()
+    {
+        var random = new Random(5);
+        var matrix = Enumerable.Range(0, MaxMatrixSize)
+            .Select(row => Enumerable.Range(0, MaxMatrixSize).Select(c =>
+                (int) Math.Pow(2, random.Next(MaxCellValueTrailingZero + 1)) *
+                (int) Math.Pow(5, random.Next(MaxCellValueTrailingZero + 1))).ToArray())
+            .ToArray();
+
+        var solution = new Solution();
+        solution.solution(matrix);
+        // Do not assert expected and actual value because actual value can vary randomly
     }
 
     private void Test(string matrix, int expectedResult)
