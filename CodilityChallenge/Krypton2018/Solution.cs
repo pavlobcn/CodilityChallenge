@@ -85,7 +85,17 @@ class Solution
 
     private Node[][] GetMatrix(int[][] initialMatrix)
     {
-        return initialMatrix.Select(row => row.Select(GetNode).ToArray()).ToArray();
+        var newMatrix = new Node[initialMatrix.Length][];
+        for (int i = 0; i < initialMatrix.Length; i++)
+        {
+            Node[] line = new Node[initialMatrix.Length];
+            newMatrix[i] = line;
+            for (int j = 0; j < initialMatrix.Length; j++)
+            {
+                line[j] = GetNode(initialMatrix[i][j]);
+            }
+        }
+        return newMatrix;
     }
 
     private Node GetNode(int initialValue)
