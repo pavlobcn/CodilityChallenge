@@ -1,5 +1,4 @@
-﻿// Please, exclude result of this challenge because I used more then 2 hours to write it.
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +19,7 @@ class Solution
 
         if (IsFastResultForEqualElements())
         {
-            return Math.Min(matrix[0][0].Pow2 , matrix[0][0].Pow2) * (2 * matrix.Length - 1);
+            return Math.Min(matrix[0][0].Pow2 , matrix[0][0].Pow5) * (2 * matrix.Length - 1);
         }
 
         Node[] pathNodes = GetPath(0, 0);

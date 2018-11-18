@@ -73,7 +73,21 @@ public class SolutionTests
     }
 
     [TestMethod]
-    [Timeout(5000)]
+    public void MaximumMatrixEqualValuesTest1()
+    {
+        var matrix = GetMatrix(MaxMatrixSize, 20);
+        Test(matrix, 2 * MaxMatrixSize - 1);
+    }
+
+    [TestMethod]
+    public void MaximumMatrixEqualValuesTest2()
+    {
+        var matrix = GetMatrix(MaxMatrixSize, 50);
+        Test(matrix, 2 * MaxMatrixSize - 1);
+    }
+
+    [TestMethod]
+    [Timeout(1000)]
     public void MaximumMatrixRandomValuesPerfomanceTest()
     {
         var random = new Random(5);
