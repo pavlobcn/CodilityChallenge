@@ -5,10 +5,9 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krypton2018", "Krypton2018\Krypton2018.csproj", "{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bromum2018", "Bromum2018\Bromum2018.csproj", "{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -18,11 +17,18 @@ Global
 		{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B32634-61C8-4231-8BD0-58277FC094BD}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
