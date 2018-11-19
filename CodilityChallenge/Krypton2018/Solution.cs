@@ -75,7 +75,7 @@ class Solution
                     result = new List<Node> { startNode };
                     break;
                 default:
-                    result = Min(paths.Select(x => Sum(startNode, x)));
+                    result = Min(startNode, paths);
                     break;
         }
 
@@ -105,14 +105,14 @@ class Solution
             return Node.Zero;
         }
 
-        int pow2 = GetPow(2, initialValue);
-        int pow5 = GetPow(5, initialValue);
+        short pow2 = GetPow(2, initialValue);
+        short pow5 = GetPow(5, initialValue);
         return new Node(pow2, pow5);
     }
 
-    private int GetPow(int baseValue, int initialValue)
+    private short GetPow(short baseValue, int initialValue)
     {
-        int result = 0;
+        short result = 0;
         while (initialValue % baseValue == 0)
         {
             result++;
@@ -131,13 +131,14 @@ class Solution
         return Math.Min(node.Pow2, node.Pow5);
     }
 
-    private List<Node> Min(IEnumerable<Node> candidates)
+    private List<Node> Min(Node startNode, IEnumerable<Node> candidates)
     {
         Node minPow2 = null;
         Node minPow5 = null;
         bool initialIteration = true;
-        foreach (Node candidate in candidates)
+        foreach (Node item in candidates)
         {
+            Node candidate = Sum(startNode, item);
             if (initialIteration)
             {
                 minPow2 = candidate;
@@ -191,21 +192,21 @@ class Solution
         {
             return Node.Zero;
         }
-        return new Node(node1.Pow2 + node2.Pow2, node1.Pow5 + node2.Pow5);
+        return new Node((short)(node1.Pow2 + node2.Pow2), (short)(node1.Pow5 + node2.Pow5));
     }
 
     private class Node
     {
         public static readonly Node Zero = new Node(1, 1);
 
-        public Node(int pow2, int pow5)
+        public Node(short pow2, short pow5)
         {
             Pow2 = pow2;
             Pow5 = pow5;
         }
 
-        public int Pow2 { get; }
-        public int Pow5 { get; }
+        public short Pow2;
+        public short Pow5;
 
         public override string ToString()
         {
