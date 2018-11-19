@@ -5,12 +5,12 @@ using System.Linq;
 class Solution
 {
     private Node[][] matrix;
-    private Node[][][] pathesMatrix;
+    private List<Node>[][] pathsMatrix;
 
     public int solution(int[][] A)
     {
         matrix = GetMatrix(A);
-        pathesMatrix = matrix.Select(row => row.Select(c => (Node[]) null).ToArray()).ToArray();
+        pathsMatrix = matrix.Select(row => row.Select(c => (List<Node>) null).ToArray()).ToArray();
 
         if (IsFastResultForOneTrailingZero())
         {
@@ -22,25 +22,25 @@ class Solution
             return Math.Min(matrix[0][0].Pow2 , matrix[0][0].Pow5) * (2 * matrix.Length - 1);
         }
 
-        Node[] pathNodes = GetPath(0, 0);
+        List<Node> pathNodes = GetPath(0, 0);
         return GetTrailingZeroCount(pathNodes);
     }
 
     private bool IsFastResultForEqualElements()
     {
         var startValue = matrix[0][0];
-        return matrix.SelectMany(x => x).All(x => x != null && x.Pow2 == startValue.Pow2 && x.Pow5 == startValue.Pow5);
+        return matrix.SelectMany(x => x).All(x => x != Node.Zero && x.Pow2 == startValue.Pow2 && x.Pow5 == startValue.Pow5);
     }
 
     private bool IsFastResultForOneTrailingZero()
     {
         // Check reverse diagonals
-        bool zeroRevevrseDiagonalExists =
+        bool zeroReverseDiagonalExists =
             Enumerable.Range(0, matrix.Length * 2 - 1).Reverse()
                 .Any(i => i < matrix.Length
-                    ? Enumerable.Range(0, i + 1).All(row => matrix[row][i - row] == null)
-                    : Enumerable.Range(i - matrix.Length, matrix.Length * 2 - i - 1).All(row => matrix[row + 1][i - row - 1] == null));
-        if (zeroRevevrseDiagonalExists)
+                    ? Enumerable.Range(0, i + 1).All(row => matrix[row][i - row] == Node.Zero)
+                    : Enumerable.Range(i - matrix.Length, matrix.Length * 2 - i - 1).All(row => matrix[row + 1][i - row - 1] == Node.Zero));
+        if (zeroReverseDiagonalExists)
         {
             return true;
         }
@@ -48,38 +48,38 @@ class Solution
         return false;
     }
 
-    private Node[] GetPath(int startingRow, int startingColumn)
+    private List<Node> GetPath(int startingRow, int startingColumn)
     {
-        if (pathesMatrix[startingRow][startingColumn] != null)
+        if (pathsMatrix[startingRow][startingColumn] != null)
         {
-            return pathesMatrix[startingRow][startingColumn];
+            return pathsMatrix[startingRow][startingColumn];
         }
 
         Node startNode = matrix[startingRow][startingColumn];
-        var pathes = new List<Node>();
+        var paths = new List<Node>();
         if (startingRow + 1 < matrix.Length)
         {
-            Node[] nextRowPathes = GetPath(startingRow + 1, startingColumn);
-            pathes.AddRange(nextRowPathes);
+            List<Node> nextRowPaths = GetPath(startingRow + 1, startingColumn);
+            paths = nextRowPaths;
         }
         if (startingColumn + 1 < matrix.Length)
         {
-            Node[] nextColumnsPathes = GetPath(startingRow, startingColumn + 1);
-            pathes.AddRange(nextColumnsPathes);
+            List<Node> nextColumnsPaths = GetPath(startingRow, startingColumn + 1);
+            paths.AddRange(nextColumnsPaths);
         }
 
-        Node[] result;
-        switch (pathes.Count)
+        List<Node> result;
+        switch (paths.Count)
         {
                 case 0:
-                    result = new []{ startNode };
+                    result = new List<Node> { startNode };
                     break;
                 default:
-                    result = Min(pathes.Select(x => Sum(startNode, x)));
+                    result = Min(startNode, paths);
                     break;
         }
 
-        pathesMatrix[startingRow][startingColumn] = result;
+        pathsMatrix[startingRow][startingColumn] = result;
         return result;
     }
 
@@ -102,18 +102,17 @@ class Solution
     {
         if (initialValue == 0)
         {
-            // special value
-            return null;
+            return Node.Zero;
         }
 
-        int pow2 = GetPow(2, initialValue);
-        int pow5 = GetPow(5, initialValue);
+        short pow2 = GetPow(2, initialValue);
+        short pow5 = GetPow(5, initialValue);
         return new Node(pow2, pow5);
     }
 
-    private int GetPow(int baseValue, int initialValue)
+    private short GetPow(short baseValue, int initialValue)
     {
-        int result = 0;
+        short result = 0;
         while (initialValue % baseValue == 0)
         {
             result++;
@@ -122,114 +121,92 @@ class Solution
         return result;
     }
 
-    private static int GetTrailingZeroCount(Node[] nodes)
+    private static int GetTrailingZeroCount(IEnumerable<Node> nodes)
     {
         return nodes.Min(GetTrailingZeroCount);
     }
 
     private static int GetTrailingZeroCount(Node node)
     {
-        return node == null ? 1 : Math.Min(node.Pow2, node.Pow5);
+        return Math.Min(node.Pow2, node.Pow5);
     }
 
-    private Node[] Min(IEnumerable<Node> candidates)
+    private List<Node> Min(Node startNode, IEnumerable<Node> candidates)
     {
         Node minPow2 = null;
         Node minPow5 = null;
-        Node minPow2AndPow5 = null;
         bool initialIteration = true;
-        foreach (Node candidate in candidates)
+        foreach (Node item in candidates)
         {
+            Node candidate = Sum(startNode, item);
             if (initialIteration)
             {
                 minPow2 = candidate;
                 minPow5 = candidate;
-                minPow2AndPow5 = candidate;
                 initialIteration = false;
                 continue;
             }
-            switch (ComparePow2(candidate, minPow2))
+
+            int comparePow2Result = ComparePow2(candidate, minPow2);
+            if (comparePow2Result < 0)
             {
-                case -1:
+                minPow2 = candidate;
+            }
+            else if (comparePow2Result == 0)
+            {
+                if (ComparePow5(candidate, minPow2) < 0)
+                {
                     minPow2 = candidate;
-                    break;
-                case 0:
-                    if (ComparePow5(candidate, minPow2) < 0)
-                    {
-                        minPow2 = candidate;
-                    }
-                    break;
-            }
-            switch (ComparePow5(candidate, minPow5))
-            {
-                case -1:
-                    minPow5 = candidate;
-                    break;
-                case 0:
-                    if (ComparePow2(candidate, minPow5) < 0)
-                    {
-                        minPow5 = candidate;
-                    }
-                    break;
-            }
-            switch (ComparePow2AndPow5(candidate, minPow2AndPow5))
-            {
-                case -1:
-                    minPow2AndPow5 = candidate;
-                    break;
+                }
             }
 
+            int comparePow5Result = ComparePow5(candidate, minPow5);
+            if (comparePow5Result < 0)
+            {
+                minPow5 = candidate;
+            }
+            else if (comparePow5Result == 0)
+            {
+                if (ComparePow2(candidate, minPow5) < 0)
+                {
+                    minPow5 = candidate;
+                }
+            }
         }
-        return new[] {minPow2, minPow5, minPow2AndPow5}.Distinct().ToArray();
+        return minPow2 == minPow5 ? new List<Node>{minPow2} : new List<Node> { minPow2, minPow5 };
     }
 
     private int ComparePow2(Node node1, Node node2)
     {
-        int val1 = node1?.Pow2 ?? 1;
-        int val2 = node2?.Pow2 ?? 1;
-        return Math.Sign(val1.CompareTo(val2));
+        return node1.Pow2.CompareTo(node2.Pow2);
     }
 
     private int ComparePow5(Node node1, Node node2)
     {
-        int val1 = node1?.Pow5 ?? 1;
-        int val2 = node2?.Pow5 ?? 1;
-        return Math.Sign(val1.CompareTo(val2));
-    }
-
-    private int ComparePow2AndPow5(Node node1, Node node2)
-    {
-        int val1 = node1 == null ? 1 : Math.Min(node1.Pow2, node1.Pow5);
-        int val2 = node2 == null ? 1 : Math.Min(node2.Pow2, node2.Pow5);
-        return Math.Sign(val1.CompareTo(val2));
-    }
-
-    private int Compare(Node node1, Node node2, Func<Node, int> valFunc)
-    {
-        int val1 = node1 == null ? 1 : valFunc(node1);
-        int val2 = node2 == null ? 1 : valFunc(node2);
-        return Math.Sign(val1.CompareTo(val2));
+        return node1.Pow5.CompareTo(node2.Pow5);
     }
 
     private static Node Sum(Node node1, Node node2)
     {
-        if (node1 == null || node2 == null)
+        if (node1 == Node.Zero || node2 == Node.Zero)
         {
-            return null;
+            return Node.Zero;
         }
-        return new Node(node1.Pow2 + node2.Pow2, node1.Pow5 + node2.Pow5);
+        return new Node((short)(node1.Pow2 + node2.Pow2), (short)(node1.Pow5 + node2.Pow5));
     }
 
     private class Node
     {
-        public Node(int pow2, int pow5)
+        public static readonly Node Zero = new Node(1, 1);
+
+        public Node(short pow2, short pow5)
         {
             Pow2 = pow2;
             Pow5 = pow5;
         }
 
-        public int Pow2 { get; }
-        public int Pow5 { get; }
+        public short Pow2;
+        public short Pow5;
 
         public override string ToString()
         {
