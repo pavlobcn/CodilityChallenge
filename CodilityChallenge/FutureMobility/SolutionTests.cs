@@ -45,6 +45,15 @@ public class SolutionTests
             -1);
     }
 
+    [TestMethod]
+    public void TestSimple1()
+    {
+        Test(
+            "[5, 0]",
+            "[0, 5]",
+            5);
+    }
+
     private void Test(string A, string B, int expectedResult)
     {
         Test(Convert(A), Convert(B), expectedResult);

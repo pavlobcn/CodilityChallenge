@@ -3,7 +3,7 @@ using System.Linq;
 
 class Solution
 {
-    private const int BaseMod = 1000000007;
+    private const long BaseMod = 1000000007;
 
     public int solution(int[] A, int[] B)
     {
@@ -24,27 +24,55 @@ class Solution
 
         while (i < A.Length)
         {
+            result += Math.Abs(a);
             long c = A[i] - B[i];
 
-            if (a * b < 0)
+            if (a > 0)
             {
-                long resultAdd = Math.Min(Math.Abs(a), Math.Abs(b));
-                result += resultAdd;
-                if (Math.Abs(a) > Math.Abs(b))
+                if (b >= 0)
                 {
-                    a += b;
-                    b = 0;
+                    c += a;
+
+                    a = b;
+                    b = c;
                 }
                 else
                 {
-                    b += a;
-                    a = 0;
+                    if (a + b > 0)
+                    {
+                        b += a + c;
+                        a = 0;
+                    }
+                    else
+                    {
+                        a += b;
+                        b = c;
+                    }
                 }
             }
-            result += Math.Abs(a);
-            c += a;
-            a = b;
-            b = c;
+            else
+            {
+                if (b <= 0)
+                {
+                    c += a;
+
+                    a = b;
+                    b = c;
+                }
+                else
+                {
+                    if (a + b < 0)
+                    {
+                        b += a + c;
+                        a = 0;
+                    }
+                    else
+                    {
+                        a += b;
+                        b = c;
+                    }
+                }
+            }
 
             i++;
         }
