@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krypton2018", "Krypton2018\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bromum2018", "Bromum2018\Bromum2018.csproj", "{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutureMobility", "FutureMobility\FutureMobility.csproj", "{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
