@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
 public class SolutionTests
 {
-    private const int MaxN = 100000;
-    private const int MaxValue = 1000000000;
-    private const int BaseMod = 1000000007;
-
     [TestMethod]
     public void Test1()
     {
