@@ -1,5 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project>
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
 </Project>
