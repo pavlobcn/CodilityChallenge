@@ -53,10 +53,10 @@ namespace FutureMobility
 
         private void Test(string a, string b, int expectedResult)
         {
-            Test(ConvertArray(a), ConvertArray(b), expectedResult);
+            TestInternal(ConvertArray(a), ConvertArray(b), expectedResult);
         }
 
-        private void Test(int[] a, int[] b, int expectedResult)
+        private void TestInternal(int[] a, int[] b, int expectedResult)
         {
             var solution = new Solution();
             int actualResult = solution.solution(a, b);
