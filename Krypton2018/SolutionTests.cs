@@ -49,7 +49,7 @@ namespace Krypton2018
         {
             var matrix = GetMatrix(MaxMatrixSize, 1);
             matrix[0][0] = 0;
-            Test(matrix, 1);
+            TestInternal(matrix, 1);
         }
 
         [TestMethod]
@@ -57,14 +57,14 @@ namespace Krypton2018
         {
             var matrix = GetMatrix(MaxMatrixSize, 1);
             matrix[matrix.Length - 1][matrix.Length - 1] = 0;
-            Test(matrix, 1);
+            TestInternal(matrix, 1);
         }
 
         [TestMethod]
         public void MaximumMatrixMaximumValuesTest()
         {
             var matrix = GetMatrix(MaxMatrixSize, MaxCellValue);
-            Test(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1));
+            TestInternal(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1));
         }
 
         [TestMethod]
@@ -72,21 +72,21 @@ namespace Krypton2018
         {
             var matrix = GetMatrix(MaxMatrixSize, MaxCellValue);
             matrix[matrix.Length - 1][matrix.Length - 1] = MaxCellValue / 2;
-            Test(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1) - 1);
+            TestInternal(matrix, MaxCellValueTrailingZero * (2 * MaxMatrixSize - 1) - 1);
         }
 
         [TestMethod]
         public void MaximumMatrixEqualValuesTest1()
         {
             var matrix = GetMatrix(MaxMatrixSize, 20);
-            Test(matrix, 2 * MaxMatrixSize - 1);
+            TestInternal(matrix, 2 * MaxMatrixSize - 1);
         }
 
         [TestMethod]
         public void MaximumMatrixEqualValuesTest2()
         {
             var matrix = GetMatrix(MaxMatrixSize, 50);
-            Test(matrix, 2 * MaxMatrixSize - 1);
+            TestInternal(matrix, 2 * MaxMatrixSize - 1);
         }
 
         [TestMethod]
@@ -107,10 +107,10 @@ namespace Krypton2018
 
         private void Test(string matrix, int expectedResult)
         {
-            Test(ConvertMatrix(matrix), expectedResult);
+            TestInternal(ConvertMatrix(matrix), expectedResult);
         }
 
-        private void Test(int[][] matrix, int expectedResult)
+        private void TestInternal(int[][] matrix, int expectedResult)
         {
             var solution = new Solution();
             int actualResult = solution.solution(matrix);
