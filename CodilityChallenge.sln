@@ -3,18 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krypton2018", "Krypton2018\Krypton2018.csproj", "{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krypton2018", "Krypton2018\Krypton2018.csproj", "{3AD6DCEC-20C6-420F-AB7F-9D600BFE8DD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bromum2018", "Bromum2018\Bromum2018.csproj", "{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bromum2018", "Bromum2018\Bromum2018.csproj", "{92A44CC2-0AFE-46D7-902E-32ACAFF07F55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutureMobility", "FutureMobility\FutureMobility.csproj", "{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FutureMobility", "FutureMobility\FutureMobility.csproj", "{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80B52AC8-8B94-468D-940B-1BE73076884C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		CodilityChallenge.DotSettings = CodilityChallenge.DotSettings
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +37,10 @@ Global
 		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C7DD72-1A33-49A9-84C4-9F97FAF999A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

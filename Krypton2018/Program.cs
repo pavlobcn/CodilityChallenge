@@ -1,7 +1,10 @@
-﻿class Program
+﻿namespace Krypton2018
 {
-    static void Main()
+    class Program
     {
-        new SolutionTests().MaximumMatrixRandomValuesPerfomanceTest();
+        private static void Main()
+        {
+            new SolutionTests().MaximumMatrixRandomValuesPerformanceTest();
+        }
     }
 }
