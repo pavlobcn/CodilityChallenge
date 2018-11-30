@@ -30,6 +30,21 @@ namespace Arsenicum2018
                 false);
         }
 
+        [TestMethod]
+        public void TestOneLetterWord()
+        {
+            Test(
+                "a ab ba aa bb",
+                "a");
+        }
+
+        private void Test(string s, string expectedResult)
+        {
+            var solution = new Solution();
+            string stringResult = solution.solution(s);
+            Assert.AreEqual(expectedResult, stringResult);
+        }
+
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private void Test(string s, bool isPalindromExpected)
         {
