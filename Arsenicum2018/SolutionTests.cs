@@ -38,6 +38,14 @@ namespace Arsenicum2018
                 "a");
         }
 
+        [TestMethod]
+        public void TestWords()
+        {
+            Test(
+                "abbacc aaa",
+                "aaa");
+        }
+
         private void Test(string s, string expectedResult)
         {
             var solution = new Solution();
