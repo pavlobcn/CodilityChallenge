@@ -27,20 +27,18 @@ class Solution
 
         string result = "NO";
 
-        /*
-        var currentSentences = root.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, null)).ToList();
+        var currentSentences = root1.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, null)).ToList();
         int iteration = 0;
         while (iteration < MaxLength && (result = GetPalindrom(currentSentences)) == NoAnswer)
         {
             currentSentences = currentSentences.SelectMany(x =>
             {
-                x.ProcessNode(root);
+                x.ProcessNode(root1);
                 return x.Children;
             }).ToList();
 
             iteration++;
         }
-        */
 
         return result;
     }
@@ -115,51 +113,57 @@ class Solution
         child.AddMarkers(firstCharacter.Markers);
         ProcessWord(child, word.SubWord());
     }
+}
 
-    private class SentenceTreeNode
+public class SentenceTreeNode
+{
+    private readonly char _char;
+    private readonly Node _node;
+    private readonly SentenceTreeNode _parent;
+    private readonly List<SentenceTreeNode> _children = new List<SentenceTreeNode>();
+
+    public SentenceTreeNode(char c, Node node, SentenceTreeNode parent, bool startNewWord = false)
     {
-        private readonly char _char;
-        private readonly Node _node;
-        private readonly SentenceTreeNode _parent;
-        private readonly List<SentenceTreeNode> _children = new List<SentenceTreeNode>();
+        _char = c;
+        _node = node;
+        _parent = parent != null && parent.C == Solution.Space ? parent.Parent : parent;
+        StartNewWord = startNewWord;
+    }
 
-        public SentenceTreeNode(char c, Node node, SentenceTreeNode parent)
+    public char C => _char;
+
+    public Node Node => _node;
+
+    public List<SentenceTreeNode> Children => _children;
+
+    public SentenceTreeNode Parent => _parent;
+
+    public string Sentence
+    {
+        get
         {
-            _char = c;
-            _node = node;
-            _parent = parent != null && parent.C == Space ? parent.Parent : parent;
+            return string.Concat(
+                Parent == null ? String.Empty : Parent.Sentence,
+                StartNewWord ? Solution.Space.ToString() : string.Empty,
+                C);
+        }
+    }
+
+    public bool StartNewWord { get; private set; }
+
+    public override string ToString()
+    {
+        return Sentence;
+    }
+
+    public void ProcessNode(Node root)
+    {
+        if (_node.CanStartNewWord)
+        {
+            _children.AddRange(root.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, this, true)));
         }
 
-        public char C => _char;
-
-        public Node Node => _node;
-
-        public List<SentenceTreeNode> Children => _children;
-
-        public SentenceTreeNode Parent => _parent;
-
-        public string Sentence
-        {
-            get
-            {
-                return (Parent == null ? String.Empty : Parent.Sentence) + C;
-            }
-        }
-
-        public override string ToString()
-        {
-            return Sentence;
-        }
-
-        public void ProcessNode(Node root)
-        {
-            //if (_node.IsEndOfWord)
-            {
-                _children.Add(new SentenceTreeNode(Space, root, this));
-            }
-
-            _children.AddRange(_node.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, this)));
-        }
+        _children.AddRange(_node.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, this)));
     }
 }
 
@@ -269,13 +273,6 @@ public class Character
         string markersString = string.Join(",", Markers);
         return $"{C}.{markersString}";
     }
-}
-
-public enum CharacterType
-{
-    Normal,
-    MidOfPalindrom,
-    EndOfHalfPalindrom
 }
 
 public class Node
