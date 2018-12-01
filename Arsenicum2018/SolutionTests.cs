@@ -39,12 +39,22 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
-        public void TestWords()
+        public void TestSymmetricWords()
         {
             Test(
                 "abbacc aaa",
                 "aaa");
         }
+
+        /*
+        [TestMethod]
+        public void TestPerformance()
+        {
+            Test(
+                "ab cd cba",
+                false);
+        }
+        */
 
         private void Test(string s, string expectedResult)
         {
@@ -64,7 +74,8 @@ namespace Arsenicum2018
                 return;
             }
 
-            bool actualResultIsPalindrom = new string(stringResult.Reverse().ToArray()).Replace(Solution.Space.ToString(), string.Empty) == s.Replace(Solution.Space.ToString(), string.Empty);
+            stringResult = stringResult.Replace(Solution.Space.ToString(), string.Empty);
+            bool actualResultIsPalindrom = stringResult.ReverseString() == stringResult;
             if (!actualResultIsPalindrom)
             {
                 Assert.Fail("Returned value is not a palindrom.");

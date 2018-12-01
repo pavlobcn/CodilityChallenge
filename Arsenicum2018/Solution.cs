@@ -92,27 +92,36 @@ class Solution
         var sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(x => x.Node.CanStartNewWord);
         if (sentence1 != null && sentence2 != null)
         {
-            return sentence1.Sentence + " " + sentence2.Sentence;
+            return sentence1.Sentence + " " + sentence2.Sentence.ReverseString();
         }
 
         List<string> markers1 = symmetricGroup.Sentences.SelectMany(x => x.Node.Markers).ToList();
         List<string> markers2 = symmetricGroup.ReverseSentences.SelectMany(x => x.Node.Markers).ToList();
-        string firstMarkersIntersection = markers1.Intersect(markers2).FirstOrDefault();
-        if (!string.IsNullOrEmpty(firstMarkersIntersection))
+        IEnumerable<string> intersection =
+            markers1.Select(x => x.Trim('L', 'R')).Intersect(markers2).Select(x => x.Trim('L', 'R'));
+        foreach (string intersectionMarker in intersection)
         {
-            sentence1 = symmetricGroup.Sentences.First(x => x.Node.Markers.Contains(firstMarkersIntersection));
-            sentence2 = symmetricGroup.ReverseSentences.First(x => x.Node.Markers.Contains(firstMarkersIntersection));
-
-            if (firstMarkersIntersection.Contains('-'))
+            if (intersectionMarker.Contains('-'))
             {
-                // Mid of palindrom
-                return sentence1.Sentence + new string(sentence2.Sentence.Reverse().ToArray()).Substring(1);
+                sentence1 = symmetricGroup.Sentences.First(x => x.Node.Markers.Contains(intersectionMarker));
+                sentence2 = symmetricGroup.ReverseSentences.First(
+                    x => x.Node.Markers.Contains(intersectionMarker));
+
+                return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
             }
             else
             {
-                // Half palindrom
-                return sentence1.Sentence + sentence2.Sentence;
+                sentence1 = symmetricGroup.Sentences.FirstOrDefault(x =>
+                    x.Node.Markers.Contains(intersectionMarker + "L"));
+                sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(
+                    x => x.Node.Markers.Contains(intersectionMarker + "R"));
+
+                if (sentence1 != null && sentence2 != null)
+                {
+                    return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
+                }
             }
+
         }
 
         return NoAnswer;
@@ -255,13 +264,13 @@ public class Word
     {
         // End of half palindrom indexes;
         int halfIndexCode = 1;
-        var halfIndexes = Enumerable.Range(0, word.Length).Select(x => new List<int>()).ToArray();
+        var halfIndexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
         // Mid of palindrom indexes;
         int midIndexCode = -3;
-        var midIndexes = Enumerable.Range(0, word.Length).Select(x => new List<int>()).ToArray();
+        var midIndexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
 
-        midIndexes[0].Add(-1);
-        midIndexes[word.Length - 1].Add(-2);
+        midIndexes[0].Add("-1");
+        midIndexes[word.Length - 1].Add("-2");
 
         if (word.Length > 1)
         {
@@ -269,11 +278,11 @@ public class Word
             {
                 // Check for EndOfHalfPalindrom
                 string leftWord = word.Substring(0, i + 1);
-                string rightWord = Reverse(word.Substring(i + 1, word.Length - i - 1));
+                string rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
                 if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
                 {
-                    halfIndexes[i].Add(halfIndexCode);
-                    halfIndexes[i + 1].Add(halfIndexCode);
+                    halfIndexes[i].Add(halfIndexCode + "L");
+                    halfIndexes[i + 1].Add(halfIndexCode + "R");
                     halfIndexCode++;
                 }
 
@@ -284,10 +293,10 @@ public class Word
                     continue;
                 }
                 leftWord = word.Substring(0, i);
-                rightWord = Reverse(word.Substring(i + 1, word.Length - i - 1));
+                rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
                 if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
                 {
-                    midIndexes[i].Add(midIndexCode);
+                    midIndexes[i].Add(midIndexCode.ToString());
                     midIndexCode--;
                 }
             }
@@ -310,12 +319,6 @@ public class Word
         string word = new string(Characters.Select(c => c.C).ToArray());
         return $"{word}";
     }
-
-    private static string Reverse(string word)
-    {
-        return new string(word.Reverse().ToArray());
-    }
-
 }
 
 public class Character
@@ -363,5 +366,13 @@ public class Node
                 Markers.Add(markerToAdd);
             }
         }
+    }
+}
+
+public static class Extensions
+{
+    public static string ReverseString(this string s)
+    {
+        return new string(s.Reverse().ToArray());
     }
 }
