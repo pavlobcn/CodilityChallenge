@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -46,15 +47,24 @@ namespace Arsenicum2018
                 "aaa");
         }
 
-        /*
         [TestMethod]
         public void TestPerformance()
         {
+            const int wordLength = 6;
+            const int wordCount = 10;
+            var r = new Random(5);
+            var s = new string(Enumerable.Range(0, wordCount * wordLength).Select(i => (char)('a' + r.Next(26))).ToArray());
+            var words = Enumerable.Range(0, wordCount).Select(i => s.Substring(i * wordLength, wordLength)).ToList();
+            var reversed = s.ReverseString();
+            words.Add(reversed.Substring(0, wordLength / 2));
+            words.Add(reversed.Substring(wordLength / 2, wordCount * (wordLength - 1)));
+            words.Add(reversed.Substring(wordCount * (wordLength - 1)));
+
+
             Test(
-                "ab cd cba",
-                false);
+                string.Join(" ", words),
+                true);
         }
-        */
 
         private void Test(string s, string expectedResult)
         {

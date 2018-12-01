@@ -11,18 +11,15 @@ class Solution
 
     public string solution(string S)
     {
+        string oneLetterWord = S.Split(' ').FirstOrDefault(x => x.Length == 1);
+        if (!string.IsNullOrEmpty(oneLetterWord))
+        {
+            return oneLetterWord;
+        }
+
         Node root1;
         Node root2;
         GetTree(S, out root1, out root2);
-
-        foreach (KeyValuePair<char, Node> child in root1.Children)
-        {
-            if (child.Value.CanStartNewWord)
-            {
-                // Found word with 1 letter and this word is the result
-                return child.Key.ToString();
-            }
-        }
 
         string result = NoAnswer;
 
