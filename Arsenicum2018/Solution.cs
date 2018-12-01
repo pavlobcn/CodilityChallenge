@@ -4,7 +4,7 @@ using System.Linq;
 
 class Solution
 {
-    private const int MaxLength = 50;
+    private const int MaxLength = 600000;
     private const string NoAnswer = "NO";
     public const char Space = ' ';
     public const char StartOfSentence = '$';
