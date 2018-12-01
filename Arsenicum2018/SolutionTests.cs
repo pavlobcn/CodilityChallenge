@@ -64,7 +64,7 @@ namespace Arsenicum2018
                 return;
             }
 
-            bool actualResultIsPalindrom = new string(stringResult.Reverse().ToArray()) == s;
+            bool actualResultIsPalindrom = new string(stringResult.Reverse().ToArray()).Replace(Solution.Space.ToString(), string.Empty) == s.Replace(Solution.Space.ToString(), string.Empty);
             if (!actualResultIsPalindrom)
             {
                 Assert.Fail("Returned value is not a palindrom.");

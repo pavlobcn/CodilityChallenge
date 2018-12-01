@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,16 +24,34 @@ class Solution
             }
         }
 
-        string result = "NO";
+        string result = NoAnswer;
 
-        var currentSentences = root1.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, null)).ToList();
+        var symmetricGroup = new SymmetricGroup(
+            root1.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, null)).ToList(),
+            root2.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, null)).ToList());
+        List<SymmetricGroup> symmetricGroups = symmetricGroup.Join();
         int iteration = 0;
-        while (iteration < MaxLength && (result = GetPalindrom(currentSentences)) == NoAnswer)
+        while (iteration < MaxLength)
         {
-            currentSentences = currentSentences.SelectMany(x =>
+            symmetricGroups = symmetricGroups.Where(x => x.Sentences.Any()).ToList();
+            if (!symmetricGroups.Any())
             {
-                x.ProcessNode(root1);
-                return x.Children;
+                return NoAnswer;
+            }
+
+            result = GetPalindrom(symmetricGroups);
+            if (result != NoAnswer)
+            {
+                return result;
+            }
+
+            symmetricGroups = symmetricGroups.SelectMany(x =>
+            {
+                List<SentenceTreeNode> newSentences = SentenceTreeNode.GetNewSentence(x.Sentences, root1);
+                List<SentenceTreeNode> newReversedSentences = SentenceTreeNode.GetNewSentence(x.ReverseSentences, root2);
+
+                var newSymmetricGroup = new SymmetricGroup(newSentences, newReversedSentences);
+                return newSymmetricGroup.Join();
             }).ToList();
 
             iteration++;
@@ -57,9 +74,9 @@ class Solution
         }
     }
 
-    private string GetPalindrom(List<SentenceTreeNode> sentences)
+    private string GetPalindrom(List<SymmetricGroup> symmetricGroups)
     {
-        string palindrom = sentences.Select(GetPalindrom).FirstOrDefault(x => x != NoAnswer);
+        string palindrom = symmetricGroups.Select(GetPalindrom).FirstOrDefault(x => x != NoAnswer);
         if (string.IsNullOrEmpty(palindrom))
         {
             return NoAnswer;
@@ -68,28 +85,34 @@ class Solution
         return palindrom;
     }
 
-    private string GetPalindrom(SentenceTreeNode sentence)
+    private string GetPalindrom(SymmetricGroup symmetricGroup)
     {
-        if (sentence.C != Space)
+        // Check end of word
+        var sentence1 = symmetricGroup.Sentences.FirstOrDefault(x => x.Node.CanStartNewWord);
+        var sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(x => x.Node.CanStartNewWord);
+        if (sentence1 != null && sentence2 != null)
         {
-            return NoAnswer;
+            return sentence1.Sentence + " " + sentence2.Sentence;
         }
 
-        string s = string.Empty;
-        string stringWithoutSpaces = string.Empty;
-        while (sentence != null)
+        List<string> markers1 = symmetricGroup.Sentences.SelectMany(x => x.Node.Markers).ToList();
+        List<string> markers2 = symmetricGroup.ReverseSentences.SelectMany(x => x.Node.Markers).ToList();
+        string firstMarkersIntersection = markers1.Intersect(markers2).FirstOrDefault();
+        if (!string.IsNullOrEmpty(firstMarkersIntersection))
         {
-            if (sentence.C != Space)
+            sentence1 = symmetricGroup.Sentences.First(x => x.Node.Markers.Contains(firstMarkersIntersection));
+            sentence2 = symmetricGroup.ReverseSentences.First(x => x.Node.Markers.Contains(firstMarkersIntersection));
+
+            if (firstMarkersIntersection.Contains('-'))
             {
-                stringWithoutSpaces = sentence.C + stringWithoutSpaces;
+                // Mid of palindrom
+                return sentence1.Sentence + new string(sentence2.Sentence.Reverse().ToArray()).Substring(1);
             }
-            s = sentence.C + s;
-            sentence = sentence.Parent;
-        }
-
-        if (stringWithoutSpaces == new string(stringWithoutSpaces.Reverse().ToArray()))
-        {
-            return s.Trim();
+            else
+            {
+                // Half palindrom
+                return sentence1.Sentence + sentence2.Sentence;
+            }
         }
 
         return NoAnswer;
@@ -112,6 +135,35 @@ class Solution
         }
         child.AddMarkers(firstCharacter.Markers);
         ProcessWord(child, word.SubWord());
+    }
+}
+
+public class SymmetricGroup
+{
+    public SymmetricGroup(List<SentenceTreeNode> sentences, List<SentenceTreeNode> reverseSentences)
+    {
+        Sentences = sentences;
+        ReverseSentences = reverseSentences;
+    }
+
+    public List<SentenceTreeNode> Sentences { get; }
+    public List<SentenceTreeNode> ReverseSentences { get; }
+
+    public List<SymmetricGroup> Join()
+    {
+        var join = Sentences
+            .Join(ReverseSentences, x => x.C, y => y.C, (x, y) => new Tuple<SentenceTreeNode, SentenceTreeNode>(x, y))
+            .ToList();
+        var newSentences = join.Select(x => x.Item1).Distinct().ToList();
+        var newReverseSentences = join.Select(y => y.Item2).Distinct().ToList();
+        return newSentences.Join(newReverseSentences, x => x.C, y => y.C,
+                (x, y) => new SymmetricGroup(new List<SentenceTreeNode> {x}, new List<SentenceTreeNode> {y}))
+            .ToList();
+    }
+
+    public override string ToString()
+    {
+        return Sentences.Select(x => x.ToString()).FirstOrDefault();
     }
 }
 
@@ -156,14 +208,20 @@ public class SentenceTreeNode
         return Sentence;
     }
 
-    public void ProcessNode(Node root)
+    public static List<SentenceTreeNode> GetNewSentence(List<SentenceTreeNode> sentences, Node root)
     {
-        if (_node.CanStartNewWord)
+        var newSentences = new List<SentenceTreeNode>();
+        foreach (SentenceTreeNode sentenceTreeNode in sentences)
         {
-            _children.AddRange(root.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, this, true)));
+            if (sentenceTreeNode.Node.CanStartNewWord)
+            {
+                newSentences.AddRange(root.Children.Select(child => new SentenceTreeNode(child.Key, child.Value, sentenceTreeNode, true)));
+            }
+
+            newSentences.AddRange(sentenceTreeNode.Node.Children.Select(child => new SentenceTreeNode(child.Key, child.Value, sentenceTreeNode)));
         }
 
-        _children.AddRange(_node.Children.Select(x => new SentenceTreeNode(x.Key, x.Value, this)));
+        return newSentences;
     }
 }
 
@@ -199,8 +257,12 @@ public class Word
         int halfIndexCode = 1;
         var halfIndexes = Enumerable.Range(0, word.Length).Select(x => new List<int>()).ToArray();
         // Mid of palindrom indexes;
-        int midIndexCode = -1;
+        int midIndexCode = -3;
         var midIndexes = Enumerable.Range(0, word.Length).Select(x => new List<int>()).ToArray();
+
+        midIndexes[0].Add(-1);
+        midIndexes[word.Length - 1].Add(-2);
+
         if (word.Length > 1)
         {
             for (int i = 0; i < word.Length - 1; i++)
