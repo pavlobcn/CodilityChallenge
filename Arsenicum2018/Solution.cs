@@ -52,7 +52,8 @@ class Solution
 
     private static string GetOneLetterPalindrom(string s)
     {
-        if (s.Length == 1)
+        var len = s.Length;
+        if (len == 1)
         {
             return s;
         }
@@ -62,20 +63,23 @@ class Solution
             return s[0].ToString();
         }
 
-        if (s[s.Length - 2] == Space)
+        if (s[len - 2] == Space)
         {
-            return s[s.Length - 1].ToString();
+            return s[len - 1].ToString();
         }
 
-        if (s.Length > 2)
+        if (len > 2)
         {
-            for (int i = 2; i < s.Length - 2; i++)
+            for (int i = 2; i < len - 2; i++)
             {
-                char previousChar = s[i - 1];
-                char nextChar = s[i + 1];
-                if (previousChar == Space && nextChar == Space)
+                if (s[i - 1] == Space)
                 {
-                    return s[i].ToString();
+                    if (s[i + 1] == Space)
+                    {
+                        return s[i].ToString();
+                    }
+
+                    i += 2;
                 }
             }
         }
