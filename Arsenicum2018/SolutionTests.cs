@@ -51,19 +51,36 @@ namespace Arsenicum2018
         public void TestPerformance()
         {
             const int wordLength = 6;
-            const int wordCount = 10;
+            const int wordCount = 10000;
             var r = new Random(5);
             var s = new string(Enumerable.Range(0, wordCount * wordLength).Select(i => (char)('a' + r.Next(26))).ToArray());
             var words = Enumerable.Range(0, wordCount).Select(i => s.Substring(i * wordLength, wordLength)).ToList();
-            var reversed = s.ReverseString();
-            words.Add(reversed.Substring(0, wordLength / 2));
-            words.Add(reversed.Substring(wordLength / 2, wordCount * (wordLength - 1)));
-            words.Add(reversed.Substring(wordCount * (wordLength - 1)));
+            //const int wordLength = 6;
+            //const int wordCount = 10;
+            //var r = new Random(5);
+            //var s = new string(Enumerable.Range(0, wordCount * wordLength).Select(i => (char)('a' + r.Next(26))).ToArray());
+            //var words = Enumerable.Range(0, wordCount).Select(i => s.Substring(i * wordLength, wordLength)).ToList();
+            //var reversed = s.ReverseString();
+            //words.Add(reversed.Substring(0, wordLength / 2));
+            //words.Add(reversed.Substring(wordLength / 2, wordCount * (wordLength - 1)));
+            //words.Add(reversed.Substring(wordCount * (wordLength - 1)));
 
 
             Test(
                 string.Join(" ", words),
-                true);
+                false);
+        }
+
+        [TestMethod]
+        public void TestOneLetterPerformance()
+        {
+            const int iterationCount = 1000000;
+            for (int i = 0; i < iterationCount; i++)
+            {
+                Test(
+                    new string('a', 495) + Solution.Space + "a" + Solution.Space + "aa",
+                    true);
+            }
         }
 
         private void Test(string s, string expectedResult)

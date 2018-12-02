@@ -11,10 +11,10 @@ class Solution
 
     public string solution(string S)
     {
-        string oneLetterWord = S.Split(' ').FirstOrDefault(x => x.Length == 1);
-        if (!string.IsNullOrEmpty(oneLetterWord))
+        string oneLetterPalindrom = GetOneLetterPalindrom(S);
+        if (oneLetterPalindrom != NoAnswer)
         {
-            return oneLetterWord;
+            return oneLetterPalindrom;
         }
 
         Node root1;
@@ -42,19 +42,57 @@ class Solution
                 return result;
             }
 
-            symmetricGroups = symmetricGroups.SelectMany(x =>
-            {
-                List<SentenceTreeNode> newSentences = SentenceTreeNode.GetNewSentence(x.Sentences, root1);
-                List<SentenceTreeNode> newReversedSentences = SentenceTreeNode.GetNewSentence(x.ReverseSentences, root2);
-
-                var newSymmetricGroup = new SymmetricGroup(newSentences, newReversedSentences);
-                return newSymmetricGroup.Join();
-            }).ToList();
+            symmetricGroups = GetNextSymmetricGroups(symmetricGroups, root1, root2);
 
             iteration++;
         }
 
         return result;
+    }
+
+    private static string GetOneLetterPalindrom(string s)
+    {
+        if (s.Length == 1)
+        {
+            return s;
+        }
+
+        if (s[1] == Space)
+        {
+            return s[0].ToString();
+        }
+
+        if (s[s.Length - 2] == Space)
+        {
+            return s[s.Length - 1].ToString();
+        }
+
+        if (s.Length > 2)
+        {
+            for (int i = 2; i < s.Length - 2; i++)
+            {
+                char previousChar = s[i - 1];
+                char nextChar = s[i + 1];
+                if (previousChar == Space && nextChar == Space)
+                {
+                    return s[i].ToString();
+                }
+            }
+        }
+
+        return NoAnswer;
+    }
+
+    private static List<SymmetricGroup> GetNextSymmetricGroups(List<SymmetricGroup> symmetricGroups, Node root1, Node root2)
+    {
+        return symmetricGroups.SelectMany(x =>
+        {
+            List<SentenceTreeNode> newSentences = SentenceTreeNode.GetNewSentence(x.Sentences, root1);
+            List<SentenceTreeNode> newReversedSentences = SentenceTreeNode.GetNewSentence(x.ReverseSentences, root2);
+
+            var newSymmetricGroup = new SymmetricGroup(newSentences, newReversedSentences);
+            return newSymmetricGroup.Join();
+        }).ToList();
     }
 
     private static void GetTree(string sentence, out Node root1, out Node root2)
@@ -65,9 +103,9 @@ class Solution
         foreach (Word word in words)
         {
             // Get tree for origin words
-            ProcessWord(root1, word);
+            ProcessWord(root1, word, 0);
             // Get tree for reversed words
-            ProcessWord(root2, word.Reverse());
+            ProcessWord(root2, word.Reverse(), 0);
         }
     }
 
@@ -84,63 +122,70 @@ class Solution
 
     private string GetPalindrom(SymmetricGroup symmetricGroup)
     {
+        SentenceTreeNode sentence1;
+        SentenceTreeNode sentence2;
         // Check end of word
-        var sentence1 = symmetricGroup.Sentences.FirstOrDefault(x => x.Node.CanStartNewWord);
-        var sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(x => x.Node.CanStartNewWord);
-        if (sentence1 != null && sentence2 != null)
+        sentence1 = symmetricGroup.Sentences.FirstOrDefault(x => x.Node.CanStartNewWord);
+        if (sentence1 != null)
         {
-            return sentence1.Sentence + " " + sentence2.Sentence.ReverseString();
+            sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(x => x.Node.CanStartNewWord);
+            if (sentence2 != null)
+            {
+                return sentence1.Sentence + " " + sentence2.Sentence.ReverseString();
+            }
         }
 
         List<string> markers1 = symmetricGroup.Sentences.SelectMany(x => x.Node.Markers).ToList();
-        List<string> markers2 = symmetricGroup.ReverseSentences.SelectMany(x => x.Node.Markers).ToList();
-        IEnumerable<string> intersection =
-            markers1.Select(x => x.Trim('L', 'R')).Intersect(markers2).Select(x => x.Trim('L', 'R'));
-        foreach (string intersectionMarker in intersection)
+        if (markers1.Any())
         {
-            if (intersectionMarker.Contains('-'))
+            List<string> markers2 = symmetricGroup.ReverseSentences.SelectMany(x => x.Node.Markers).ToList();
+            IEnumerable<string> intersection =
+                markers1.Select(x => x.Trim('L', 'R')).Intersect(markers2).Select(x => x.Trim('L', 'R'));
+            foreach (string intersectionMarker in intersection)
             {
-                sentence1 = symmetricGroup.Sentences.First(x => x.Node.Markers.Contains(intersectionMarker));
-                sentence2 = symmetricGroup.ReverseSentences.First(
-                    x => x.Node.Markers.Contains(intersectionMarker));
-
-                return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
-            }
-            else
-            {
-                sentence1 = symmetricGroup.Sentences.FirstOrDefault(x =>
-                    x.Node.Markers.Contains(intersectionMarker + "L"));
-                sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(
-                    x => x.Node.Markers.Contains(intersectionMarker + "R"));
-
-                if (sentence1 != null && sentence2 != null)
+                if (intersectionMarker.Contains('-'))
                 {
+                    sentence1 = symmetricGroup.Sentences.First(x => x.Node.Markers.Contains(intersectionMarker));
+                    sentence2 = symmetricGroup.ReverseSentences.First(x => x.Node.Markers.Contains(intersectionMarker));
+
                     return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
                 }
-            }
 
+                sentence1 = symmetricGroup.Sentences.FirstOrDefault(x =>
+                    x.Node.Markers.Contains(intersectionMarker + "L"));
+                if (sentence1 != null)
+                {
+                    sentence2 = symmetricGroup.ReverseSentences.FirstOrDefault(
+                        x => x.Node.Markers.Contains(intersectionMarker + "R"));
+
+                    if (sentence2 != null)
+                    {
+                        return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
+                    }
+                }
+            }
         }
 
         return NoAnswer;
     }
 
-    private static void ProcessWord(Node node, Word word)
+    private static void ProcessWord(Node node, Word word, int charIndex)
     {
-        if (word.Characters.Count == 0)
+        if (charIndex == word.Characters.Count)
         {
             node.StartNewWord();
             return;
         }
 
         Node child;
-        Character firstCharacter = word.Characters[0];
+        Character firstCharacter = word.Characters[charIndex];
         if (!node.Children.TryGetValue(firstCharacter.C, out child))
         {
             child = new Node(firstCharacter.C);
             node.Children[firstCharacter.C] = child;
         }
         child.AddMarkers(firstCharacter.Markers);
-        ProcessWord(child, word.SubWord());
+        ProcessWord(child, word, charIndex + 1);
     }
 }
 
@@ -163,7 +208,7 @@ public class SymmetricGroup
         var newSentences = join.Select(x => x.Item1).Distinct().ToList();
         var newReverseSentences = join.Select(y => y.Item2).Distinct().ToList();
         return newSentences.Join(newReverseSentences, x => x.C, y => y.C,
-                (x, y) => new SymmetricGroup(new List<SentenceTreeNode> {x}, new List<SentenceTreeNode> {y}))
+                (x, y) => new SymmetricGroup(new List<SentenceTreeNode> { x }, new List<SentenceTreeNode> { y }))
             .ToList();
     }
 
@@ -241,13 +286,6 @@ public class Word
     public Word(string word)
     {
         Characters = Parse(word);
-    }
-
-    public Word SubWord()
-    {
-        var word = new Word();
-        word.Characters.AddRange(Characters.Skip(1));
-        return word;
     }
 
     public Word Reverse()
