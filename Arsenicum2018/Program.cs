@@ -4,7 +4,7 @@
     {
         private static void Main()
         {
-            new SolutionTests().TestPerformance();
+            new SolutionTests().LongStringPalindromPerformanceTest();
         }
     }
 }
