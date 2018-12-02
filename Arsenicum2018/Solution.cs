@@ -7,7 +7,6 @@ class Solution
     private const int MaxLength = 600000;
     private const string NoAnswer = "NO";
     public const char Space = ' ';
-    public const char StartOfSentence = '$';
 
     public string solution(string S)
     {
@@ -102,8 +101,8 @@ class Solution
     private static void GetTree(string sentence, out Node root1, out Node root2)
     {
         var words = sentence.Split(Space).Select(w => new Word(w)).ToArray();
-        root1 = new Node(StartOfSentence);
-        root2 = new Node(StartOfSentence);
+        root1 = new Node();
+        root2 = new Node();
         foreach (Word word in words)
         {
             // Get tree for origin words
@@ -144,7 +143,7 @@ class Solution
         {
             List<string> markers2 = symmetricGroup.ReverseSentences.SelectMany(x => x.Node.Markers).ToList();
             IEnumerable<string> intersection =
-                markers1.Select(x => x.Trim('L', 'R')).Intersect(markers2).Select(x => x.Trim('L', 'R'));
+                markers1.Select(x => x.Trim('L', 'R')).Intersect(markers2.Select(x => x.Trim('L', 'R')));
             foreach (string intersectionMarker in intersection)
             {
                 if (intersectionMarker.Contains('-'))
@@ -164,7 +163,7 @@ class Solution
 
                     if (sentence2 != null)
                     {
-                        return sentence1.Sentence + sentence2.Sentence.ReverseString().Substring(1);
+                        return sentence1.Sentence + sentence2.Sentence.ReverseString();
                     }
                 }
             }
@@ -185,7 +184,7 @@ class Solution
         Character firstCharacter = word.Characters[charIndex];
         if (!node.Children.TryGetValue(firstCharacter.C, out child))
         {
-            child = new Node(firstCharacter.C);
+            child = new Node();
             node.Children[firstCharacter.C] = child;
         }
         child.AddMarkers(firstCharacter.Markers);
@@ -227,7 +226,6 @@ public class SentenceTreeNode
     private readonly char _char;
     private readonly Node _node;
     private readonly SentenceTreeNode _parent;
-    private readonly List<SentenceTreeNode> _children = new List<SentenceTreeNode>();
 
     public SentenceTreeNode(char c, Node node, SentenceTreeNode parent, bool startNewWord = false)
     {
@@ -240,8 +238,6 @@ public class SentenceTreeNode
     public char C => _char;
 
     public Node Node => _node;
-
-    public List<SentenceTreeNode> Children => _children;
 
     public SentenceTreeNode Parent => _parent;
 
@@ -303,13 +299,12 @@ public class Word
     {
         // End of half palindrom indexes;
         int halfIndexCode = 1;
-        var halfIndexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
+        var indexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
         // Mid of palindrom indexes;
         int midIndexCode = -3;
-        var midIndexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
 
-        midIndexes[0].Add("-1");
-        midIndexes[word.Length - 1].Add("-2");
+        indexes[0].Add("-1");
+        indexes[word.Length - 1].Add("-2");
 
         if (word.Length > 1)
         {
@@ -320,8 +315,8 @@ public class Word
                 string rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
                 if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
                 {
-                    halfIndexes[i].Add(halfIndexCode + "L");
-                    halfIndexes[i + 1].Add(halfIndexCode + "R");
+                    indexes[i].Add(halfIndexCode + "L");
+                    indexes[i + 1].Add(halfIndexCode + "R");
                     halfIndexCode++;
                 }
 
@@ -335,7 +330,7 @@ public class Word
                 rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
                 if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
                 {
-                    midIndexes[i].Add(midIndexCode.ToString());
+                    indexes[i].Add(midIndexCode.ToString());
                     midIndexCode--;
                 }
             }
@@ -344,7 +339,7 @@ public class Word
         var result = new List<Character>();
         for (int i = 0; i < word.Length; i++)
         {
-            var markers = halfIndexes[i].Union(midIndexes[i]).Select(x => $"{word}:{x}").ToList();
+            var markers = indexes[i].Select(x => $"{word}:{x}").ToList();
             result.Add(new Character(word[i], markers));
         }
 
@@ -382,14 +377,8 @@ public class Character
 public class Node
 {
     public bool CanStartNewWord { get; private set; }
-    public char C { get; private set; }
     public HashSet<string> Markers { get; private set; } = new HashSet<string>();
     public IDictionary<char, Node> Children { get; private set; } = new Dictionary<char, Node>();
-
-    public Node(char c)
-    {
-        C = c;
-    }
 
     public void StartNewWord()
     {

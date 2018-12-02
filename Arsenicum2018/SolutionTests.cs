@@ -52,11 +52,43 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
-        public void TestOneLetterWord()
+        public void SentenceWithOneLetterTest()
         {
             Test(
-                "a ab ba aa bb",
+                "a",
                 "a");
+        }
+
+        [TestMethod]
+        public void SentenceWithOneLetterWordInTheBeginning()
+        {
+            Test(
+                "a ab",
+                "a");
+        }
+
+        [TestMethod]
+        public void SentenceWithOneLetterWordInTheEnd()
+        {
+            Test(
+                "ab a",
+                "a");
+        }
+
+        [TestMethod]
+        public void SentenceWithOneLetterWordInTheMiddle()
+        {
+            Test(
+                "ab a bc",
+                "a");
+        }
+
+        [TestMethod]
+        public void SentenceWithSemiPalindromicWordInTheMiddle()
+        {
+            Test(
+                "ab ccba",
+                "ab ccba");
         }
 
         [TestMethod]
