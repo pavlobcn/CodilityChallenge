@@ -67,19 +67,20 @@ class Solution
             return s[len - 1].ToString();
         }
 
-        if (len > 2)
+        for (int i = 3; i < len - 3; i++)
         {
-            for (int i = 2; i < len - 2; i++)
+            if (s[i - 1] == Space)
             {
-                if (s[i - 1] == Space)
+                if (s[i + 1] == Space)
                 {
-                    if (s[i + 1] == Space)
-                    {
-                        return s[i].ToString();
-                    }
-
-                    i += 2;
+                    return s[i].ToString();
                 }
+
+                i += 2;
+            }
+            else
+            {
+                i++;
             }
         }
 
@@ -311,9 +312,15 @@ public class Word
             for (int i = 0; i < word.Length - 1; i++)
             {
                 // Check for EndOfHalfPalindrom
-                string leftWord = word.Substring(0, i + 1);
-                string rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
-                if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
+                bool endOfHalfPalindrom = true;
+                for (int l = i, r = i + 1; l >= 0 && r < word.Length; l--, r++)
+                {
+                    if (word[l] != word[r])
+                    {
+                        endOfHalfPalindrom = false;
+                    }
+                }
+                if (endOfHalfPalindrom)
                 {
                     indexes[i].Add(halfIndexCode + "L");
                     indexes[i + 1].Add(halfIndexCode + "R");
@@ -326,9 +333,15 @@ public class Word
                     // Word is to short or start index is to small
                     continue;
                 }
-                leftWord = word.Substring(0, i);
-                rightWord = word.Substring(i + 1, word.Length - i - 1).ReverseString();
-                if (leftWord.EndsWith(rightWord) || rightWord.EndsWith(leftWord))
+                bool midOfPalindrom = true;
+                for (int l = i - 1, r = i + 1; l >= 0 && r < word.Length; l--, r++)
+                {
+                    if (word[l] != word[r])
+                    {
+                        midOfPalindrom = false;
+                    }
+                }
+                if (midOfPalindrom)
                 {
                     indexes[i].Add(midIndexCode.ToString());
                     midIndexCode--;
