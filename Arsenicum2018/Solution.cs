@@ -76,12 +76,9 @@ class Solution
                     return s[i].ToString();
                 }
 
-                i += 2;
-            }
-            else
-            {
                 i++;
             }
+
         }
 
         return NoAnswer;

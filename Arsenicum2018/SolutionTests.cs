@@ -28,31 +28,6 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
-        public void FindBugTest()
-        {
-            var randomWord = new RandomWord(5);
-            var r = new Random(10);
-            for (int i = 0; i < 1000; i++)
-            {
-                var s = randomWord.Next(100);
-                s = s + s.ReverseString();
-                for (int j = 0; j < 10; j++)
-                {
-                    s = s.Insert(r.Next(s.Length), Solution.Space.ToString());
-                }
-
-                s = s.Trim(Solution.Space);
-                while (s.Contains(Solution.Space.ToString() + Solution.Space))
-                {
-                    s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
-                }
-                Test(
-                    s,
-                    true);
-            }
-        }
-
-        [TestMethod]
         public void Test1()
         {
             Test(
@@ -189,6 +164,14 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
+        public void OneLetterInTheMiddleTest()
+        {
+            Test(
+                "fbdfhhgcfebbg hedbfafcaccffcdhcfd h fh gddefdd ahfba afedchcaehb hcfdddg gbbagaf bdbhhcf decfcgddfechcecahheb hhbehhacechcefddgcfce dfchhbdbfagabbggdddfch bheachcde faabfhaddfeddghfhd fchdcffccacfafbdeh gbbefcghhfdbf",
+                "h");
+        }
+
+        [TestMethod]
         public void OneLetterPerformanceTest1()
         {
             TestOneLetterPerformance(OneLetterString1);
@@ -234,7 +217,7 @@ namespace Arsenicum2018
 
         private void TestOneLetterPerformance(string s)
         {
-            const int iterationCount = 1000000;
+            const int iterationCount = 100000;
             for (int i = 0; i < iterationCount; i++)
             {
                 Test(s, true);
@@ -252,7 +235,8 @@ namespace Arsenicum2018
         private void Test(string s, bool isPalindromExpected)
         {
             var solution = new Solution();
-            string stringResult = solution.solution(s);
+            string originalResult = solution.solution(s);
+            string stringResult = originalResult;
             Console.WriteLine(stringResult.Length);
             if (stringResult == "NO")
             {
@@ -268,6 +252,10 @@ namespace Arsenicum2018
             }
 
             Assert.IsTrue(isPalindromExpected);
+
+            string[] initialWords = s.Split(Solution.Space);
+            string[] resultWords = originalResult.Split(Solution.Space);
+            CollectionAssert.IsSubsetOf(resultWords, initialWords);
         }
 
         private static string GetLongStringNoPalindromPerformance()
