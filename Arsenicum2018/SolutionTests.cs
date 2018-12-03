@@ -28,6 +28,31 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
+        public void FindBugTest()
+        {
+            var randomWord = new RandomWord(5);
+            var r = new Random(10);
+            for (int i = 0; i < 1000; i++)
+            {
+                var s = randomWord.Next(100);
+                s = s + s.ReverseString();
+                for (int j = 0; j < 10; j++)
+                {
+                    s = s.Insert(r.Next(s.Length), Solution.Space.ToString());
+                }
+
+                s = s.Trim(Solution.Space);
+                while (s.Contains(Solution.Space.ToString() + Solution.Space))
+                {
+                    s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
+                }
+                Test(
+                    s,
+                    true);
+            }
+        }
+
+        [TestMethod]
         public void Test1()
         {
             Test(
@@ -100,6 +125,70 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
+        public void MidPalindrom1Test()
+        {
+            Test(
+                "abcdc ba",
+                "abcdc ba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom2Test()
+        {
+            Test(
+                "ab cdcba",
+                "ab cdcba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom3Test()
+        {
+            Test(
+                "ab cba",
+                "ab cba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom4Test()
+        {
+            Test(
+                "abc ba",
+                "abc ba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom5Test()
+        {
+            Test(
+                "abcddc ba",
+                "abcddc ba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom6Test()
+        {
+            Test(
+                "ab cddcba",
+                "ab cddcba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom7Test()
+        {
+            Test(
+                "abcd dc ba",
+                "abcd dc ba");
+        }
+
+        [TestMethod]
+        public void MidPalindrom8Test()
+        {
+            Test(
+                "ab cd dcba",
+                "ab cd dcba");
+        }
+
+        [TestMethod]
         public void OneLetterPerformanceTest1()
         {
             TestOneLetterPerformance(OneLetterString1);
@@ -164,6 +253,7 @@ namespace Arsenicum2018
         {
             var solution = new Solution();
             string stringResult = solution.solution(s);
+            Console.WriteLine(stringResult.Length);
             if (stringResult == "NO")
             {
                 Assert.IsFalse(isPalindromExpected);

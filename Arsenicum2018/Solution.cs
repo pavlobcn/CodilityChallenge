@@ -197,7 +197,7 @@ class Solution
     }
 }
 
-public class SymmetricGroup
+public partial class SymmetricGroup
 {
     public SymmetricGroup(List<SentenceTreeNode> sentences, List<SentenceTreeNode> reverseSentences)
     {
@@ -214,14 +214,9 @@ public class SymmetricGroup
             .Join(ReverseSentences, x => x.C, y => y.C, (x, y) => new SymmetricGroup(new List<SentenceTreeNode>{x}, new List<SentenceTreeNode>{y}))
             .ToList();
     }
-
-    public override string ToString()
-    {
-        return Sentences.Select(x => x.ToString()).FirstOrDefault();
-    }
 }
 
-public class SentenceTreeNode
+public partial class SentenceTreeNode
 {
     private readonly char _char;
     private readonly Node _node;
@@ -254,11 +249,6 @@ public class SentenceTreeNode
 
     public bool StartNewWord { get; private set; }
 
-    public override string ToString()
-    {
-        return Sentence;
-    }
-
     public static List<SentenceTreeNode> GetNewSentence(List<SentenceTreeNode> sentences, Node root)
     {
         var newSentences = new List<SentenceTreeNode>();
@@ -276,7 +266,7 @@ public class SentenceTreeNode
     }
 }
 
-public class Word
+public partial class Word
 {
     private Word()
     {
@@ -358,15 +348,9 @@ public class Word
     }
 
     public List<Character> Characters { get; }
-
-    public override string ToString()
-    {
-        string word = new string(Characters.Select(c => c.C).ToArray());
-        return $"{word}";
-    }
 }
 
-public class Character
+public partial class Character
 {
     public char C { get; }
 
@@ -376,12 +360,6 @@ public class Character
     {
         C = c;
         Markers = markers;
-    }
-
-    public override string ToString()
-    {
-        string markersString = string.Join(",", Markers);
-        return $"{C}.{markersString}";
     }
 }
 
