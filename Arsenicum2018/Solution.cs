@@ -187,8 +187,12 @@ class Solution
         {
             child = new Node();
             node.Children[firstCharacter.C] = child;
+            child.Markers = firstCharacter.Markers;
         }
-        child.AddMarkers(firstCharacter.Markers);
+        else
+        {
+            child.Markers.AddRange(firstCharacter.Markers);
+        }
         ProcessWord(child, word, charIndex + 1);
     }
 }
@@ -299,8 +303,8 @@ public class Word
         // Mid of palindrom indexes;
         int midIndexCode = -3;
 
-        indexes[0].Add("-1");
-        indexes[word.Length - 1].Add("-2");
+        indexes[0].Add(word + "-1");
+        indexes[word.Length - 1].Add(word + "-2");
 
         if (word.Length > 1)
         {
@@ -317,8 +321,8 @@ public class Word
                 }
                 if (endOfHalfPalindrom)
                 {
-                    indexes[i].Add(halfIndexCode + "L");
-                    indexes[i + 1].Add(halfIndexCode + "R");
+                    indexes[i].Add(word + halfIndexCode + "L");
+                    indexes[i + 1].Add(word + halfIndexCode + "R");
                     halfIndexCode++;
                 }
 
@@ -338,7 +342,7 @@ public class Word
                 }
                 if (midOfPalindrom)
                 {
-                    indexes[i].Add(midIndexCode.ToString());
+                    indexes[i].Add(word + midIndexCode.ToString());
                     midIndexCode--;
                 }
             }
@@ -347,8 +351,7 @@ public class Word
         var result = new List<Character>();
         for (int i = 0; i < word.Length; i++)
         {
-            var markers = indexes[i].Select(x => $"{word}:{x}").ToList();
-            result.Add(new Character(word[i], markers));
+            result.Add(new Character(word[i], indexes[i]));
         }
 
         return result;
@@ -385,17 +388,12 @@ public class Character
 public class Node
 {
     public bool CanStartNewWord { get; private set; }
-    public List<string> Markers { get; private set; } = new List<string>();
+    public List<string> Markers { get; set; } = new List<string>();
     public IDictionary<char, Node> Children { get; private set; } = new Dictionary<char, Node>();
 
     public void StartNewWord()
     {
         CanStartNewWord = true;
-    }
-
-    public void AddMarkers(IEnumerable<string> markersToAdd)
-    {
-        Markers.AddRange(markersToAdd);
     }
 }
 
