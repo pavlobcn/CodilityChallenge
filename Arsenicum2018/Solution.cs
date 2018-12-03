@@ -206,13 +206,8 @@ public class SymmetricGroup
 
     public List<SymmetricGroup> Join()
     {
-        var join = Sentences
-            .Join(ReverseSentences, x => x.C, y => y.C, (x, y) => new Tuple<SentenceTreeNode, SentenceTreeNode>(x, y))
-            .ToList();
-        var newSentences = join.Select(x => x.Item1).Distinct().ToList();
-        var newReverseSentences = join.Select(y => y.Item2).Distinct().ToList();
-        return newSentences.Join(newReverseSentences, x => x.C, y => y.C,
-                (x, y) => new SymmetricGroup(new List<SentenceTreeNode> { x }, new List<SentenceTreeNode> { y }))
+        return Sentences
+            .Join(ReverseSentences, x => x.C, y => y.C, (x, y) => new SymmetricGroup(new List<SentenceTreeNode>{x}, new List<SentenceTreeNode>{y}))
             .ToList();
     }
 
@@ -390,7 +385,7 @@ public class Character
 public class Node
 {
     public bool CanStartNewWord { get; private set; }
-    public HashSet<string> Markers { get; private set; } = new HashSet<string>();
+    public List<string> Markers { get; private set; } = new List<string>();
     public IDictionary<char, Node> Children { get; private set; } = new Dictionary<char, Node>();
 
     public void StartNewWord()
@@ -400,13 +395,7 @@ public class Node
 
     public void AddMarkers(IEnumerable<string> markersToAdd)
     {
-        foreach (string markerToAdd in markersToAdd)
-        {
-            if (!Markers.Contains(markerToAdd))
-            {
-                Markers.Add(markerToAdd);
-            }
-        }
+        Markers.AddRange(markersToAdd);
     }
 }
 
