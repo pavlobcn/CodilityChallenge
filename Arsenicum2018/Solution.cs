@@ -184,12 +184,9 @@ class Solution
         {
             child = new Node();
             node.Children[firstCharacter.C] = child;
-            child.Markers = firstCharacter.Markers;
         }
-        else
-        {
-            child.Markers.AddRange(firstCharacter.Markers);
-        }
+
+        child.Markers.AddRange(firstCharacter.Markers);
         ProcessWord(child, word, charIndex + 1);
     }
 }
