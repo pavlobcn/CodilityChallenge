@@ -175,6 +175,7 @@ public partial class SentenceTreeNode
 {
     private readonly Node _node;
     private readonly SentenceTreeNode _parent;
+    private List<KeyValuePair<char, Node>> _nextNodes;
 
     public SentenceTreeNode(Node node, SentenceTreeNode parent)
     {
@@ -212,15 +213,16 @@ public partial class SentenceTreeNode
 
     public List<KeyValuePair<char,Node>> GetNextNodes(Node root)
     {
-        var nextNodes = new List<KeyValuePair<char, Node>>();
-        if (Node.IsWordEnd)
+        if (_nextNodes == null)
         {
-            nextNodes.AddRange(root.Children);
+            _nextNodes = Node.Children.ToList();
+            if (Node.IsWordEnd)
+            {
+                _nextNodes.AddRange(root.Children);
+            }
         }
 
-        nextNodes.AddRange(Node.Children);
-
-        return nextNodes;
+        return _nextNodes;
     }
 }
 
