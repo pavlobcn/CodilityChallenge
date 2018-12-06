@@ -1,30 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenicum2018
 {
     [TestClass]
-    public class SolutionTests : BaseTest
+    public class SolutionTests : SolutionTestsBase
     {
-        private static readonly string OneLetterString1;
-        private static readonly string OneLetterString2;
-        private static readonly string OneLetterString3;
-        private static readonly string OneLetterString4;
-        private static readonly string LongStringNoPalindromPerformance;
-        private static readonly string LongStringPalindromPerformance;
-
-        static SolutionTests()
+        [TestMethod]
+        public void FindLongPalindromTest()
         {
-            OneLetterString1 = "a";
-            OneLetterString2 = "a" + Solution.Space + new string('a', 498);
-            OneLetterString3 = new string('a', 498) + Solution.Space + "a";
-            OneLetterString4 = string.Join(Solution.Space.ToString(), Enumerable.Range(0, 165).Select(i => "aa")) +
-                               Solution.Space + "a" + Solution.Space + "aaa";
-
-            LongStringNoPalindromPerformance = GetLongStringNoPalindromPerformance();
-            LongStringPalindromPerformance = GetLongStringPalindromPerformance();
+            var randomWord = new RandomWord(5);
+            var words = new List<string> {"abc"};
+            do
+            {
+                string word = randomWord.Next(3);
+                string s = word + Solution.Space + string.Join(Solution.Space.ToString(), words);
+                var a = new Solution().solution(s);
+                if (a == "NO")
+                {
+                    words.Add(word);
+                }
+            } while (words.Count < 50);
         }
 
         [TestMethod]
@@ -46,6 +44,7 @@ namespace Arsenicum2018
                 {
                     s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
                 }
+
                 Test(
                     s,
                     true);
@@ -71,6 +70,7 @@ namespace Arsenicum2018
                 {
                     s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
                 }
+
                 Test(
                     s,
                     true);
@@ -229,59 +229,6 @@ namespace Arsenicum2018
                 true);
         }
 
-        [TestMethod]
-        public void OneLetterPerformanceTest1()
-        {
-            TestOneLetterPerformance(OneLetterString1);
-        }
-
-        [TestMethod]
-        public void OneLetterPerformanceTest2()
-        {
-            TestOneLetterPerformance(OneLetterString2);
-        }
-
-        [TestMethod]
-        public void OneLetterPerformanceTest3()
-        {
-            TestOneLetterPerformance(OneLetterString3);
-        }
-
-        [TestMethod]
-        public void OneLetterPerformanceTest4()
-        {
-            TestOneLetterPerformance(OneLetterString4);
-        }
-
-        [TestMethod]
-        public void LongStringNoPalindromPerformanceTest()
-        {
-            const int iterationCount = 1000;
-            for (int i = 0; i < iterationCount; i++)
-            {
-                Test(LongStringNoPalindromPerformance, false);
-            }
-        }
-
-        [TestMethod]
-        public void LongStringPalindromPerformanceTest()
-        {
-            const int iterationCount = 1000;
-            for (int i = 0; i < iterationCount; i++)
-            {
-                Test(LongStringPalindromPerformance, true);
-            }
-        }
-
-        private void TestOneLetterPerformance(string s)
-        {
-            const int iterationCount = 100000;
-            for (int i = 0; i < iterationCount; i++)
-            {
-                Test(s, true);
-            }
-        }
-
         private void Test(string s, string expectedResult)
         {
             var solution = new Solution();
@@ -290,58 +237,6 @@ namespace Arsenicum2018
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        private void Test(string s, bool isPalindromExpected)
-        {
-            var solution = new Solution();
-            string originalResult = solution.solution(s);
-            string stringResult = originalResult;
-            Console.WriteLine(stringResult.Length);
-            if (stringResult == "NO")
-            {
-                Assert.IsFalse(isPalindromExpected);
-                return;
-            }
-
-            stringResult = stringResult.Replace(Solution.Space.ToString(), string.Empty);
-            bool actualResultIsPalindrom = stringResult.ReverseString() == stringResult;
-            if (!actualResultIsPalindrom)
-            {
-                Assert.Fail("Returned value is not a palindrom.");
-            }
-
-            Assert.IsTrue(isPalindromExpected);
-
-            string[] initialWords = s.Split(Solution.Space);
-            string[] resultWords = originalResult.Split(Solution.Space).Distinct().ToArray();
-            CollectionAssert.IsSubsetOf(resultWords, initialWords);
-        }
-
-        private static string GetLongStringNoPalindromPerformance()
-        {
-            var randomWord = new RandomWord(5);
-            string[] words = Enumerable.Range(0, 80).Select(i => randomWord.Next(3))
-                .Union(Enumerable.Range(0, 70).Select(i => randomWord.Next(4))).ToArray();
-            string[] excludePalindromes = words.Where(w => w == new string(w.Reverse().ToArray())).ToArray();
-            words = words.Where(w => !excludePalindromes.Contains(w)).ToArray();
-            string[] exclude = { "bhe", "ahb", "adh", "had", "ehc", "agc", "age", "efc",
-                "fhdf", "facd", "fgga", "dgga", "agbd", "abcb", "abcg", "bdcb", "bcag", "ghgd", "chdg", "fech", "hdga", "hadc", "gbed", "dfgc", "dfgh",
-                "cfhe", "habc"
-            };
-            words = words.Where(w => !exclude.Contains(w)).ToArray();
-            return string.Join(Solution.Space.ToString(), words);
-        }
-
-        private static string GetLongStringPalindromPerformance()
-        {
-            var randomWord = new RandomWord(5);
-            string[] words = Enumerable.Range(0, 80).Select(i => randomWord.Next(3))
-                .Union(Enumerable.Range(0, 70).Select(i => randomWord.Next(4))).ToArray();
-            string[] excludePalindromes = words.Where(w => w == new string(w.Reverse().ToArray())).ToArray();
-            words = words.Where(w => !excludePalindromes.Contains(w)).ToArray();
-            string[] exclude = {"bhe", "ahb", "adh", "had", "ehc", "agc", "age", "efc"};
-            words = words.Where(w => !exclude.Contains(w)).ToArray();
-            return string.Join(Solution.Space.ToString(), words);
-        }
     }
 
     class RandomWord

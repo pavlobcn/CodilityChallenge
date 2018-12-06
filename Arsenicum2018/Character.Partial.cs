@@ -7,3 +7,10 @@ public partial class Character
         return $"{C}.{markersString}";
     }
 }
+public partial class Node
+{
+    public override string ToString()
+    {
+        return $"{C},IsWordStart={IsWordStart},IsWordEnd={IsWordEnd},Children.Count=,{Children.Count}";
+    }
+}
