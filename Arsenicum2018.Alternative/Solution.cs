@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 class Solution
 {
@@ -27,6 +26,8 @@ class Solution
 
         string result = NoAnswer;
 
+        var words1 = words.GroupBy(w => w.OriginWord[0]).ToDictionary(g => g.Key, g => g.ToList());
+        var words2 = words.GroupBy(w => w.OriginWord[w.OriginWord.Length - 1]).ToDictionary(g => g.Key, g => g.ToList());
         List<SymmetricGroup> symmetricGroups = words.Select(w => new SymmetricGroup(new Sentence(w), new Sentence())).ToList();
         int iteration = 0;
         while (iteration < MaxLength)
@@ -37,7 +38,7 @@ class Solution
                 return result;
             }
 
-            symmetricGroups = symmetricGroups.SelectMany(x => x.Join(words)).ToList();
+            symmetricGroups = symmetricGroups.SelectMany(x => x.Join(words1, words2)).ToList();
 
             if (!symmetricGroups.Any())
             {
@@ -124,88 +125,92 @@ public partial class SymmetricGroup
         string palindrom = Solution.NoAnswer;
         if (Sentence.Length == ReverseSentence.Length)
         {
-        //    if (Sentence.Words.Count == ReverseSentence.Words.Count)
-        //    {
-        //        bool sentenceIsResult = true;
-        //        for (int i = 0; i < Sentence.Words.Count; i++)
-        //        {
-        //            if (Sentence.Words[i] != ReverseSentence.Words[i])
-        //            {
-        //                sentenceIsResult = false;
-        //                break;
-        //            }
-        //        }
-        //        if (sentenceIsResult)
-        //        {
-        //            palindrom = Sentence.GetSentence();
-        //        }
-        //    }
             palindrom = Sentence.GetSentence() + Solution.Space + ReverseSentence.GetSentence();
         }
 
         return palindrom;
     }
 
-    internal IEnumerable<SymmetricGroup> Join(List<Word> words)
+    internal IEnumerable<SymmetricGroup> Join(Dictionary<char, List<Word>> words1, Dictionary<char, List<Word>> words2)
     {
         int len1 = Sentence.Length;
         int len2 = ReverseSentence.Length;
         if (len1 < len2)
         {
-            foreach (Word word in words)
+            using (var cache = new CachedEnumerable<char>(ReverseSentence.GetReverseChars(len1)))
             {
-                bool canJoin = true;
-                int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
-                using (var reverseSentenceChars = ReverseSentence.GetReverseChars(len1).GetEnumerator())
+                var reverseSentenceChars = cache.GetEnumerator();
+                reverseSentenceChars.MoveNext();
+                var reverseSentenceChar = reverseSentenceChars.Current;
+                List<Word> words;
+                if (!words1.TryGetValue(reverseSentenceChar, out words))
                 {
-                    for (int i = 0; i < charCountToCheck; i++)
+                    yield break;
+                }
+                foreach (Word word in words)
+                {
+                    reverseSentenceChars = cache.GetEnumerator();
+                    reverseSentenceChars.MoveNext();
+                    bool canJoin = true;
+                    int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
+                    for (int i = 1; i < charCountToCheck; i++)
                     {
                         reverseSentenceChars.MoveNext();
-                        var reverseSentenceChar = reverseSentenceChars.Current;
+                        reverseSentenceChar = reverseSentenceChars.Current;
                         if (word.OriginWord[i] != reverseSentenceChar)
                         {
                             canJoin = false;
                             break;
                         }
                     }
-                }
 
-                if (canJoin)
-                {
-                    yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence);
+                    if (canJoin)
+                    {
+                        yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence);
+                    }
                 }
             }
         }
         if (len1 > len2)
         {
-            foreach (Word word in words)
+            using (var cache = new CachedEnumerable<char>(Sentence.GetChars(len2)))
             {
-                bool canJoin = true;
-                int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
-                using (var sentenceChars = Sentence.GetChars(len2).GetEnumerator())
+                var sentenceChars = Sentence.GetChars(len2).GetEnumerator();
+                sentenceChars.MoveNext();
+                var sentenceChar = sentenceChars.Current;
+                List<Word> words;
+                if (!words2.TryGetValue(sentenceChar, out words))
                 {
-                    for (int i = 0; i < charCountToCheck; i++)
+                    yield break;
+                }
+                foreach (Word word in words)
+                {
+                    sentenceChars = cache.GetEnumerator();
+                    sentenceChars.MoveNext();
+                    bool canJoin = true;
+                    int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
+                    for (int i = 1; i < charCountToCheck; i++)
                     {
                         sentenceChars.MoveNext();
-                        var sentenceChar = sentenceChars.Current;
+                        sentenceChar = sentenceChars.Current;
                         if (word.OriginWord[word.OriginWord.Length - 1 - i] != sentenceChar)
                         {
                             canJoin = false;
                             break;
                         }
                     }
-                }
 
-                if (canJoin)
-                {
-                    yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word));
+                    if (canJoin)
+                    {
+                        yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word));
+                    }
                 }
             }
         }
 
         if (len1 == len2)
         {
-            foreach (Word word in words)
+            foreach (Word word in words1.SelectMany(g => g.Value))
             {
                 yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence);
             }
@@ -326,5 +331,71 @@ public static class Extensions
     {
         var ss = s.Replace(" ", "");
         return ss == ss.ReverseString();
+    }
+}
+
+public class CachedEnumerable<T> : IEnumerable<T>, IDisposable
+{
+    IEnumerator<T> _enumerator;
+    readonly List<T> _cache = new List<T>();
+
+    public CachedEnumerable(IEnumerable<T> enumerable)
+        : this(enumerable.GetEnumerator())
+    {
+    }
+
+    public CachedEnumerable(IEnumerator<T> enumerator)
+    {
+        _enumerator = enumerator;
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        // The index of the current item in the cache.
+        int index = 0;
+
+        // Enumerate the _cache first
+        for (; index < _cache.Count; index++)
+        {
+            yield return _cache[index];
+        }
+
+        // Continue enumeration of the original _enumerator, 
+        // until it is finished. 
+        // This adds items to the cache and increment 
+        for (; _enumerator != null && _enumerator.MoveNext(); index++)
+        {
+            var current = _enumerator.Current;
+            _cache.Add(current);
+            yield return current;
+        }
+
+        if (_enumerator != null)
+        {
+            _enumerator.Dispose();
+            _enumerator = null;
+        }
+
+        // Some other users of the same instance of CachedEnumerable
+        // can add more items to the cache, 
+        // so we need to enumerate them as well
+        for (; index < _cache.Count; index++)
+        {
+            yield return _cache[index];
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_enumerator != null)
+        {
+            _enumerator.Dispose();
+            _enumerator = null;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
