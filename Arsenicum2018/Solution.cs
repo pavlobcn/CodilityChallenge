@@ -23,7 +23,7 @@ class Solution
         string result = NoAnswer;
 
         var symmetricGroup = new SymmetricGroup(new SentenceTreeNode(root1, null), new SentenceTreeNode(root2, null));
-        List<SymmetricGroup> symmetricGroups = new List<SymmetricGroup> {symmetricGroup};
+        List<SymmetricGroup> symmetricGroups = new List<SymmetricGroup> { symmetricGroup };
         int iteration = 0;
         while (iteration < MaxLength)
         {
@@ -82,7 +82,7 @@ class Solution
 
     private static void GetTree(string sentence, out Node root1, out Node root2)
     {
-        var words = sentence.Split(Space).Select(w => new Word(w)).ToArray();
+        var words = sentence.Split(Space).Select(Word.Parse).ToArray();
         root1 = new Node(Node.RootChar);
         root2 = new Node(Node.RootChar);
         foreach (Word word in words)
@@ -117,14 +117,13 @@ public partial class SymmetricGroup
     public SentenceTreeNode Sentence { get; }
     public SentenceTreeNode ReverseSentence { get; }
 
-    public List<SymmetricGroup> Join(Node root1, Node root2)
+    public IEnumerable<SymmetricGroup> Join(Node root1, Node root2)
     {
         return Sentence.GetNextNodes(root1)
             .Join(ReverseSentence.GetNextNodes(root2), x => x.Key, y => y.Key,
                 (x, y) => new SymmetricGroup(
                     new SentenceTreeNode(x.Value, Sentence),
-                    new SentenceTreeNode(y.Value, ReverseSentence)))
-            .ToList();
+                    new SentenceTreeNode(y.Value, ReverseSentence)));
     }
 
     public string GetPalindrom()
@@ -175,7 +174,6 @@ public partial class SentenceTreeNode
 {
     private readonly Node _node;
     private readonly SentenceTreeNode _parent;
-    private List<KeyValuePair<char, Node>> _nextNodes;
 
     public SentenceTreeNode(Node node, SentenceTreeNode parent)
     {
@@ -211,58 +209,57 @@ public partial class SentenceTreeNode
         }
     }
 
-    public List<KeyValuePair<char,Node>> GetNextNodes(Node root)
+    public List<KeyValuePair<char, Node>> GetNextNodes(Node root)
     {
-        if (_nextNodes == null)
+        var nextNodes = new List<KeyValuePair<char, Node>>();
+        if (Node.IsWordEnd)
         {
-            _nextNodes = Node.Children.ToList();
-            if (Node.IsWordEnd)
-            {
-                _nextNodes.AddRange(root.Children);
-            }
+            nextNodes.AddRange(root.Children);
         }
 
-        return _nextNodes;
+        nextNodes.AddRange(Node.Children);
+
+        return nextNodes;
     }
 }
 
 public partial class Word
 {
-    private Word()
-    {
-        Characters = new List<Character>();
-    }
+    public Character[] Characters { get; }
 
-    public Word(string word)
+    private Word(Character[] characters)
     {
-        Characters = Parse(word);
+        Characters = characters;
     }
 
     public Word Reverse()
     {
-        var reversedWord = new Word();
-        reversedWord.Characters.AddRange(Enumerable.Reverse(Characters));
-        return reversedWord;
+        return new Word(Characters.Reverse().ToArray());
     }
 
-    private static List<Character> Parse(string word)
+    public static Word Parse(string word)
     {
+        int len = word.Length;
+        var characters = new Character[len];
+        for (int i = 0; i < len; i++)
+        {
+            characters[i] = new Character(word[i]);
+        }
         // End of half palindrom indexes;
         int halfIndexCode = 1;
-        var indexes = Enumerable.Range(0, word.Length).Select(x => new List<string>()).ToArray();
         // Mid of palindrom indexes;
         int midIndexCode = -3;
 
-        indexes[0].Add(word + "-1");
-        indexes[word.Length - 1].Add(word + "-2");
+        characters[0].Markers.Add(word + "-1");
+        characters[len - 1].Markers.Add(word + "-2");
 
-        if (word.Length > 1)
+        if (len > 1)
         {
-            for (int i = 0; i < word.Length - 1; i++)
+            for (int i = 0; i < len - 1; i++)
             {
                 // Check for EndOfHalfPalindrom
                 bool endOfHalfPalindrom = true;
-                for (int l = i, r = i + 1; l >= 0 && r < word.Length; l--, r++)
+                for (int l = i, r = i + 1; l >= 0 && r < len; l--, r++)
                 {
                     if (word[l] != word[r])
                     {
@@ -272,19 +269,19 @@ public partial class Word
                 }
                 if (endOfHalfPalindrom)
                 {
-                    indexes[i].Add(word + halfIndexCode + "L");
-                    indexes[i + 1].Add(word + halfIndexCode + "R");
+                    characters[i].Markers.Add(word + halfIndexCode + "L");
+                    characters[i + 1].Markers.Add(word + halfIndexCode + "R");
                     halfIndexCode++;
                 }
 
                 // Check for MidOfPalindrom
-                if (i == 0 || word.Length < 3)
+                if (i == 0 || len < 3)
                 {
                     // Word is to short or start index is to small
                     continue;
                 }
                 bool midOfPalindrom = true;
-                for (int l = i - 1, r = i + 1; l >= 0 && r < word.Length; l--, r++)
+                for (int l = i - 1, r = i + 1; l >= 0 && r < len; l--, r++)
                 {
                     if (word[l] != word[r])
                     {
@@ -294,22 +291,14 @@ public partial class Word
                 }
                 if (midOfPalindrom)
                 {
-                    indexes[i].Add(word + midIndexCode.ToString());
+                    characters[i].Markers.Add(word + midIndexCode.ToString());
                     midIndexCode--;
                 }
             }
         }
 
-        var result = new List<Character>();
-        for (int i = 0; i < word.Length; i++)
-        {
-            result.Add(new Character(word[i], indexes[i]));
-        }
-
-        return result;
+        return new Word(characters);
     }
-
-    public List<Character> Characters { get; }
 }
 
 public partial class Character
@@ -318,10 +307,10 @@ public partial class Character
 
     public List<string> Markers { get; }
 
-    public Character(char c, List<string> markers)
+    public Character(char c)
     {
         C = c;
-        Markers = markers;
+        Markers = new List<string>();
     }
 }
 
@@ -342,7 +331,7 @@ public partial class Node
 
     public void ProcessWord(Node root, Word word, int charIndex)
     {
-        if (charIndex == word.Characters.Count)
+        if (charIndex == word.Characters.Length)
         {
             IsWordEnd = true;
             return;
