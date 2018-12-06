@@ -117,8 +117,8 @@ public partial class SymmetricGroup
         ReverseSentence = reverseSentence;
     }
 
-    public Sentence Sentence { get; }
-    public Sentence ReverseSentence { get; }
+    public Sentence Sentence { get; private set; }
+    public Sentence ReverseSentence { get; private set; }
 
     public string GetPalindrom()
     {
@@ -220,44 +220,46 @@ public partial class SymmetricGroup
 
 public partial class Sentence
 {
-    private readonly List<Word> _words = new List<Word>();
+    public int Length { get; private set; }
 
     public Sentence(Word word)
     {
-        _words.Add(word);
+        Words.Add(word);
+        Length = word.OriginWord.Length;
     }
 
     public Sentence()
     {
     }
 
-    public int Length => _words.Sum(w => w.OriginWord.Length);
-    public List<Word> Words => _words;
+    public List<Word> Words { get; } = new List<Word>();
 
     public string GetSentence()
     {
-        return string.Join(Solution.Space.ToString(), _words.Select(w => w.OriginWord));
+        return string.Join(Solution.Space.ToString(), Words.Select(w => w.OriginWord));
     }
 
     public Sentence Append(Word word)
     {
         var sentence = new Sentence();
-        sentence._words.AddRange(_words);
-        sentence._words.Add(word);
+        sentence.Words.AddRange(Words);
+        sentence.Words.Add(word);
+        sentence.Length = Length + word.OriginWord.Length;
         return sentence;
     }
 
     public Sentence Prepend(Word word)
     {
         var sentence = new Sentence();
-        sentence._words.Add(word);
-        sentence._words.AddRange(_words);
+        sentence.Words.Add(word);
+        sentence.Words.AddRange(Words);
+        sentence.Length = Length + word.OriginWord.Length;
         return sentence;
     }
 
     public IEnumerable<char> GetChars(int startIndex)
     {
-        foreach (Word word in _words)
+        foreach (Word word in Words)
         {
             if (word.OriginWord.Length <= startIndex)
             {
@@ -275,7 +277,7 @@ public partial class Sentence
 
     public IEnumerable<char> GetReverseChars(int startIndexFromEnd)
     {
-        foreach (Word word in Enumerable.Reverse(_words))
+        foreach (Word word in Enumerable.Reverse(Words))
         {
             if (word.OriginWord.Length < startIndexFromEnd)
             {

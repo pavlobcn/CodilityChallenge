@@ -81,6 +81,14 @@ namespace Arsenicum2018
             }
         }
 
+        [TestMethod]
+        public void CycleTest()
+        {
+            Test(
+                "ab cdab dcba",
+                false);
+        }
+
         private void TestOneLetterPerformance(string s)
         {
             const int iterationCount = 100000;

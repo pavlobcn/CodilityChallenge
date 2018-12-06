@@ -235,8 +235,6 @@ namespace Arsenicum2018
             string stringResult = solution.solution(s);
             Assert.AreEqual(expectedResult, stringResult);
         }
-
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
     }
 
     class RandomWord
