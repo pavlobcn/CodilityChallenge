@@ -28,7 +28,8 @@ class Solution
 
         var words1 = words.GroupBy(w => w.OriginWord[0]).ToDictionary(g => g.Key, g => g.ToList());
         var words2 = words.GroupBy(w => w.OriginWord[w.OriginWord.Length - 1]).ToDictionary(g => g.Key, g => g.ToList());
-        List<SymmetricGroup> symmetricGroups = words.Select(w => new SymmetricGroup(new Sentence(w), new Sentence())).ToList();
+        List<SymmetricGroup> symmetricGroups = words.Select(w =>
+            new SymmetricGroup(new Sentence(w), new Sentence(), new LinkedList<char>(w.OriginWord))).ToList();
         int iteration = 0;
         while (iteration < MaxLength)
         {
@@ -111,14 +112,16 @@ class Solution
 
 public partial class SymmetricGroup
 {
-    public SymmetricGroup(Sentence sentence, Sentence reverseSentence)
+    public Sentence Sentence { get; private set; }
+    public Sentence ReverseSentence { get; private set; }
+    public LinkedList<char> Difference { get; set; }
+
+    public SymmetricGroup(Sentence sentence, Sentence reverseSentence, LinkedList<char> difference)
     {
         Sentence = sentence;
         ReverseSentence = reverseSentence;
+        Difference = difference;
     }
-
-    public Sentence Sentence { get; private set; }
-    public Sentence ReverseSentence { get; private set; }
 
     public string GetPalindrom()
     {
@@ -212,7 +215,7 @@ public partial class SymmetricGroup
         {
             foreach (Word word in words1.SelectMany(g => g.Value))
             {
-                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence);
+                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new LinkedList<char>(w.OriginWord));
             }
         }
     }
