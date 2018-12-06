@@ -265,6 +265,7 @@ public partial class Word
                     if (word[l] != word[r])
                     {
                         endOfHalfPalindrom = false;
+                        break;
                     }
                 }
                 if (endOfHalfPalindrom)
@@ -286,6 +287,7 @@ public partial class Word
                     if (word[l] != word[r])
                     {
                         midOfPalindrom = false;
+                        break;
                     }
                 }
                 if (midOfPalindrom)
