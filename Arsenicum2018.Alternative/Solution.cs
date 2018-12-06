@@ -124,30 +124,23 @@ public partial class SymmetricGroup
         string palindrom = Solution.NoAnswer;
         if (Sentence.Length == ReverseSentence.Length)
         {
-            if (Sentence.Words.Count == ReverseSentence.Words.Count)
-            {
-                bool sentenceIsResult = true;
-                for (int i = 0; i < Sentence.Words.Count; i++)
-                {
-                    if (Sentence.Words[i] != ReverseSentence.Words[i])
-                    {
-                        sentenceIsResult = false;
-                        break;
-                    }
-                }
-                if (sentenceIsResult)
-                {
-                    palindrom = Sentence.GetSentence();
-                }
-            }
-        }
-
-        if (palindrom != Solution.NoAnswer)
-        {
-            if (!palindrom.IsPalindrom())
-            {
-                throw new Exception("Bug3");
-            }
+        //    if (Sentence.Words.Count == ReverseSentence.Words.Count)
+        //    {
+        //        bool sentenceIsResult = true;
+        //        for (int i = 0; i < Sentence.Words.Count; i++)
+        //        {
+        //            if (Sentence.Words[i] != ReverseSentence.Words[i])
+        //            {
+        //                sentenceIsResult = false;
+        //                break;
+        //            }
+        //        }
+        //        if (sentenceIsResult)
+        //        {
+        //            palindrom = Sentence.GetSentence();
+        //        }
+        //    }
+            palindrom = Sentence.GetSentence() + Solution.Space + ReverseSentence.GetSentence();
         }
 
         return palindrom;
@@ -163,12 +156,17 @@ public partial class SymmetricGroup
             {
                 bool canJoin = true;
                 int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
-                for (int i = 0; i < charCountToCheck; i++)
+                using (var reverseSentenceChars = ReverseSentence.GetReverseChars(len1).GetEnumerator())
                 {
-                    if (word.OriginWord[i] != ReverseSentence[len2 - len1 - i - 1])
+                    for (int i = 0; i < charCountToCheck; i++)
                     {
-                        canJoin = false;
-                        break;
+                        reverseSentenceChars.MoveNext();
+                        var reverseSentenceChar = reverseSentenceChars.Current;
+                        if (word.OriginWord[i] != reverseSentenceChar)
+                        {
+                            canJoin = false;
+                            break;
+                        }
                     }
                 }
 
@@ -184,12 +182,17 @@ public partial class SymmetricGroup
             {
                 bool canJoin = true;
                 int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
-                for (int i = 0; i < charCountToCheck; i++)
+                using (var sentenceChars = Sentence.GetChars(len2).GetEnumerator())
                 {
-                    if (word.OriginWord[word.OriginWord.Length - 1 - i] != Sentence[len2 + i])
+                    for (int i = 0; i < charCountToCheck; i++)
                     {
-                        canJoin = false;
-                        break;
+                        sentenceChars.MoveNext();
+                        var sentenceChar = sentenceChars.Current;
+                        if (word.OriginWord[word.OriginWord.Length - 1 - i] != sentenceChar)
+                        {
+                            canJoin = false;
+                            break;
+                        }
                     }
                 }
 
@@ -247,21 +250,39 @@ public partial class Sentence
         return sentence;
     }
 
-    public char this[int index]
+    public IEnumerable<char> GetChars(int startIndex)
     {
-        get
+        foreach (Word word in _words)
         {
-            foreach (Word word in _words)
+            if (word.OriginWord.Length <= startIndex)
             {
-                if (word.OriginWord.Length > index)
-                {
-                    return word.OriginWord[index];
-                }
-
-                index -= word.OriginWord.Length;
+                startIndex -= word.OriginWord.Length;
+                continue;
             }
 
-            throw new IndexOutOfRangeException();
+            for (int i = startIndex; i < word.OriginWord.Length; i++)
+            {
+                yield return word.OriginWord[i];
+                startIndex--;
+            }
+        }
+    }
+
+    public IEnumerable<char> GetReverseChars(int startIndexFromEnd)
+    {
+        foreach (Word word in Enumerable.Reverse(_words))
+        {
+            if (word.OriginWord.Length < startIndexFromEnd)
+            {
+                startIndexFromEnd -= word.OriginWord.Length;
+                continue;
+            }
+
+            for (int i = word.OriginWord.Length - startIndexFromEnd - 1; i >= 0 ; i--)
+            {
+                yield return word.OriginWord[i];
+                startIndexFromEnd--;
+            }
         }
     }
 }

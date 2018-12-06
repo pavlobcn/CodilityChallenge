@@ -138,7 +138,7 @@ namespace Arsenicum2018
         {
             Test(
                 "ab ccba",
-                "ab ccba");
+                true);
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace Arsenicum2018
         {
             Test(
                 "abcdc ba",
-                "abcdc ba");
+                true);
         }
 
         [TestMethod]
@@ -162,7 +162,7 @@ namespace Arsenicum2018
         {
             Test(
                 "ab cdcba",
-                "ab cdcba");
+                true);
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace Arsenicum2018
         {
             Test(
                 "ab cba",
-                "ab cba");
+                true);
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@ namespace Arsenicum2018
         {
             Test(
                 "abc ba",
-                "abc ba");
+                true);
         }
 
         [TestMethod]
@@ -186,7 +186,7 @@ namespace Arsenicum2018
         {
             Test(
                 "abcddc ba",
-                "abcddc ba");
+                true);
         }
 
         [TestMethod]
@@ -194,7 +194,7 @@ namespace Arsenicum2018
         {
             Test(
                 "ab cddcba",
-                "ab cddcba");
+                true);
         }
 
         [TestMethod]
@@ -202,7 +202,7 @@ namespace Arsenicum2018
         {
             Test(
                 "abcd dc ba",
-                "abcd dc ba");
+                true);
         }
 
         [TestMethod]
@@ -210,7 +210,7 @@ namespace Arsenicum2018
         {
             Test(
                 "ab cd dcba",
-                "ab cd dcba");
+                true);
         }
 
         [TestMethod]
