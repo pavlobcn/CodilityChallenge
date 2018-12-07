@@ -30,7 +30,7 @@ class Solution
         var words1 = words.GroupBy(w => w.OriginWord[0]).ToDictionary(g => g.Key, g => g.ToList());
         var words2 = words.GroupBy(w => w.OriginWord[w.OriginWord.Length - 1]).ToDictionary(g => g.Key, g => g.ToList());
         List<SymmetricGroup> symmetricGroups = words.Select(w =>
-            new SymmetricGroup(new Sentence(w), new Sentence(), new LinkedList<char>(w.OriginWord))).ToList();
+            new SymmetricGroup(new Sentence(w), new Sentence(), new Difference(w.OriginWord))).ToList();
         int iteration = 0;
         while (iteration < MaxLength)
         {
@@ -115,9 +115,9 @@ public partial class SymmetricGroup
 {
     public Sentence Sentence { get; private set; }
     public Sentence ReverseSentence { get; private set; }
-    public LinkedList<char> Difference { get; set; }
+    public Difference Difference { get; set; }
 
-    public SymmetricGroup(Sentence sentence, Sentence reverseSentence, LinkedList<char> difference)
+    public SymmetricGroup(Sentence sentence, Sentence reverseSentence, Difference difference)
     {
         Sentence = sentence;
         ReverseSentence = reverseSentence;
@@ -142,7 +142,7 @@ public partial class SymmetricGroup
         if (len1 < len2)
         {
             List<Word> words;
-            if (!words1.TryGetValue(Difference.Last.Value, out words))
+            if (!words1.TryGetValue(Difference.CharAtFromEnd(0), out words))
             {
                 yield break;
             }
@@ -150,11 +150,9 @@ public partial class SymmetricGroup
             {
                 bool canJoin = true;
                 int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
-                LinkedListNode<char> diffStringNode = Difference.Last;
                 for (int i = 1; i < charCountToCheck; i++)
                 {
-                    diffStringNode = diffStringNode.Previous;
-                    if (word.OriginWord[i] != diffStringNode.Value)
+                    if (word.OriginWord[i] != Difference.CharAtFromEnd(i))
                     {
                         canJoin = false;
                         break;
@@ -163,21 +161,15 @@ public partial class SymmetricGroup
 
                 if (canJoin)
                 {
-                    LinkedList<char> newDifference = new LinkedList<char>();
+                    Difference newDifference;
                     if (len2 - len1 >= word.OriginWord.Length)
                     {
                         string baseWord = ReverseSentence.Words.First().OriginWord;
-                        for (int i = 0; i < len2 - len1 - word.OriginWord.Length; i++)
-                        {
-                            newDifference.AddLast(baseWord[i]);
-                        }
+                        newDifference = new Difference(baseWord, 0, len2 - len1 - word.OriginWord.Length);
                     }
                     else
                     {
-                        for (int i = len2 - len1; i < word.OriginWord.Length; i++)
-                        {
-                            newDifference.AddLast(word.OriginWord[i]);
-                        }
+                        newDifference = new Difference(word.OriginWord, len2 - len1, len2 - len1 - word.OriginWord.Length);
                     }
                     yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, newDifference);
                 }
@@ -186,7 +178,7 @@ public partial class SymmetricGroup
         if (len1 > len2)
         {
             List<Word> words;
-            if (!words2.TryGetValue(Difference.First.Value, out words))
+            if (!words2.TryGetValue(Difference.CharAt(0), out words))
             {
                 yield break;
             }
@@ -194,11 +186,9 @@ public partial class SymmetricGroup
             {
                 bool canJoin = true;
                 int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
-                LinkedListNode<char> diffStringNode = Difference.First;
                 for (int i = 1; i < charCountToCheck; i++)
                 {
-                    diffStringNode = diffStringNode.Next;
-                    if (word.OriginWord[word.OriginWord.Length - 1 - i] != diffStringNode.Value)
+                    if (word.OriginWord[word.OriginWord.Length - 1 - i] != Difference.CharAt(i))
                     {
                         canJoin = false;
                         break;
@@ -207,21 +197,15 @@ public partial class SymmetricGroup
 
                 if (canJoin)
                 {
-                    LinkedList<char> newDifference = new LinkedList<char>();
+                    Difference newDifference;
                     if (len1 - len2 >= word.OriginWord.Length)
                     {
                         string baseWord = Sentence.Words.Last().OriginWord;
-                        for (int i = baseWord.Length - len1 + len2 + word.OriginWord.Length; i < baseWord.Length; i++)
-                        {
-                            newDifference.AddLast(baseWord[i]);
-                        }
+                        newDifference = new Difference(baseWord, baseWord.Length - len1 + len2 + word.OriginWord.Length, len1 - len2 - word.OriginWord.Length);
                     }
                     else
                     {
-                        for (int i = 0; i < word.OriginWord.Length - len1 + len2; i++)
-                        {
-                            newDifference.AddLast(word.OriginWord[i]);
-                        }
+                        newDifference = new Difference(word.OriginWord, 0, word.OriginWord.Length - len1 + len2);
                     }
                     yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word), newDifference);
                 }
@@ -232,7 +216,7 @@ public partial class SymmetricGroup
         {
             foreach (Word word in words1.SelectMany(g => g.Value))
             {
-                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new LinkedList<char>(word.OriginWord));
+                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new Difference(word.OriginWord));
             }
         }
     }
@@ -338,68 +322,35 @@ public static class Extensions
     }
 }
 
-public class CachedEnumerable<T> : IEnumerable<T>, IDisposable
+public class Difference
 {
-    IEnumerator<T> _enumerator;
-    readonly List<T> _cache = new List<T>();
+    private readonly string _baseString;
+    private readonly int _start;
+    private readonly int _length;
 
-    public CachedEnumerable(IEnumerable<T> enumerable)
-        : this(enumerable.GetEnumerator())
+    public Difference(string baseString, int start, int length)
+    {
+        _baseString = baseString;
+        _start = start;
+        _length = length;
+    }
+
+    public Difference(string baseString)
+        : this(baseString, 0, baseString.Length)
     {
     }
 
-    public CachedEnumerable(IEnumerator<T> enumerator)
+    //public char First => _baseString[_start];
+
+    //public char Last => _baseString[_start + _length - 1];
+
+    public char CharAt(int index)
     {
-        _enumerator = enumerator;
+        return _baseString[_start + index];
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public char CharAtFromEnd(int index)
     {
-        // The index of the current item in the cache.
-        int index = 0;
-
-        // Enumerate the _cache first
-        for (; index < _cache.Count; index++)
-        {
-            yield return _cache[index];
-        }
-
-        // Continue enumeration of the original _enumerator, 
-        // until it is finished. 
-        // This adds items to the cache and increment 
-        for (; _enumerator != null && _enumerator.MoveNext(); index++)
-        {
-            var current = _enumerator.Current;
-            _cache.Add(current);
-            yield return current;
-        }
-
-        if (_enumerator != null)
-        {
-            _enumerator.Dispose();
-            _enumerator = null;
-        }
-
-        // Some other users of the same instance of CachedEnumerable
-        // can add more items to the cache, 
-        // so we need to enumerate them as well
-        for (; index < _cache.Count; index++)
-        {
-            yield return _cache[index];
-        }
-    }
-
-    public void Dispose()
-    {
-        if (_enumerator != null)
-        {
-            _enumerator.Dispose();
-            _enumerator = null;
-        }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
+        return _baseString[_start + _length - index - 1];
     }
 }
