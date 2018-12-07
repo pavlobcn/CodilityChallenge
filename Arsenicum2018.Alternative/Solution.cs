@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 
 class Solution
 {
@@ -140,73 +141,89 @@ public partial class SymmetricGroup
         int len2 = ReverseSentence.Length;
         if (len1 < len2)
         {
-            using (var cache = new CachedEnumerable<char>(ReverseSentence.GetReverseChars(len1)))
+            List<Word> words;
+            if (!words1.TryGetValue(Difference.Last.Value, out words))
             {
-                var reverseSentenceChars = cache.GetEnumerator();
-                reverseSentenceChars.MoveNext();
-                var reverseSentenceChar = reverseSentenceChars.Current;
-                List<Word> words;
-                if (!words1.TryGetValue(reverseSentenceChar, out words))
+                yield break;
+            }
+            foreach (Word word in words)
+            {
+                bool canJoin = true;
+                int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
+                LinkedListNode<char> diffStringNode = Difference.Last;
+                for (int i = 1; i < charCountToCheck; i++)
                 {
-                    yield break;
-                }
-                foreach (Word word in words)
-                {
-                    reverseSentenceChars = cache.GetEnumerator();
-                    reverseSentenceChars.MoveNext();
-                    bool canJoin = true;
-                    int charCountToCheck = Math.Min(word.OriginWord.Length, len2 - len1);
-                    for (int i = 1; i < charCountToCheck; i++)
+                    diffStringNode = diffStringNode.Previous;
+                    if (word.OriginWord[i] != diffStringNode.Value)
                     {
-                        reverseSentenceChars.MoveNext();
-                        reverseSentenceChar = reverseSentenceChars.Current;
-                        if (word.OriginWord[i] != reverseSentenceChar)
+                        canJoin = false;
+                        break;
+                    }
+                }
+
+                if (canJoin)
+                {
+                    LinkedList<char> newDifference = new LinkedList<char>();
+                    if (len2 - len1 >= word.OriginWord.Length)
+                    {
+                        string baseWord = ReverseSentence.Words.First().OriginWord;
+                        for (int i = 0; i < len2 - len1 - word.OriginWord.Length; i++)
                         {
-                            canJoin = false;
-                            break;
+                            newDifference.AddLast(baseWord[i]);
                         }
                     }
-
-                    if (canJoin)
+                    else
                     {
-                        yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence);
+                        for (int i = len2 - len1; i < word.OriginWord.Length; i++)
+                        {
+                            newDifference.AddLast(word.OriginWord[i]);
+                        }
                     }
+                    yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, newDifference);
                 }
             }
         }
         if (len1 > len2)
         {
-            using (var cache = new CachedEnumerable<char>(Sentence.GetChars(len2)))
+            List<Word> words;
+            if (!words2.TryGetValue(Difference.First.Value, out words))
             {
-                var sentenceChars = Sentence.GetChars(len2).GetEnumerator();
-                sentenceChars.MoveNext();
-                var sentenceChar = sentenceChars.Current;
-                List<Word> words;
-                if (!words2.TryGetValue(sentenceChar, out words))
+                yield break;
+            }
+            foreach (Word word in words)
+            {
+                bool canJoin = true;
+                int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
+                LinkedListNode<char> diffStringNode = Difference.First;
+                for (int i = 1; i < charCountToCheck; i++)
                 {
-                    yield break;
-                }
-                foreach (Word word in words)
-                {
-                    sentenceChars = cache.GetEnumerator();
-                    sentenceChars.MoveNext();
-                    bool canJoin = true;
-                    int charCountToCheck = Math.Min(word.OriginWord.Length, len1 - len2);
-                    for (int i = 1; i < charCountToCheck; i++)
+                    diffStringNode = diffStringNode.Next;
+                    if (word.OriginWord[word.OriginWord.Length - 1 - i] != diffStringNode.Value)
                     {
-                        sentenceChars.MoveNext();
-                        sentenceChar = sentenceChars.Current;
-                        if (word.OriginWord[word.OriginWord.Length - 1 - i] != sentenceChar)
+                        canJoin = false;
+                        break;
+                    }
+                }
+
+                if (canJoin)
+                {
+                    LinkedList<char> newDifference = new LinkedList<char>();
+                    if (len1 - len2 >= word.OriginWord.Length)
+                    {
+                        string baseWord = Sentence.Words.Last().OriginWord;
+                        for (int i = baseWord.Length - len1 + len2 + word.OriginWord.Length; i < baseWord.Length; i++)
                         {
-                            canJoin = false;
-                            break;
+                            newDifference.AddLast(baseWord[i]);
                         }
                     }
-
-                    if (canJoin)
+                    else
                     {
-                        yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word));
+                        for (int i = 0; i < word.OriginWord.Length - len1 + len2; i++)
+                        {
+                            newDifference.AddLast(word.OriginWord[i]);
+                        }
                     }
+                    yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word), newDifference);
                 }
             }
         }
@@ -215,7 +232,7 @@ public partial class SymmetricGroup
         {
             foreach (Word word in words1.SelectMany(g => g.Value))
             {
-                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new LinkedList<char>(w.OriginWord));
+                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new LinkedList<char>(word.OriginWord));
             }
         }
     }
@@ -274,24 +291,6 @@ public partial class Sentence
             {
                 yield return word.OriginWord[i];
                 startIndex--;
-            }
-        }
-    }
-
-    public IEnumerable<char> GetReverseChars(int startIndexFromEnd)
-    {
-        foreach (Word word in Enumerable.Reverse(Words))
-        {
-            if (word.OriginWord.Length < startIndexFromEnd)
-            {
-                startIndexFromEnd -= word.OriginWord.Length;
-                continue;
-            }
-
-            for (int i = word.OriginWord.Length - startIndexFromEnd - 1; i >= 0 ; i--)
-            {
-                yield return word.OriginWord[i];
-                startIndexFromEnd--;
             }
         }
     }
