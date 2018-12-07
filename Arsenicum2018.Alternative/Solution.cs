@@ -162,7 +162,7 @@ public partial class SymmetricGroup
                     Difference newDifference;
                     if (len2 - len1 >= word.OriginWord.Length)
                     {
-                        string baseWord = ReverseSentence.Words.First().OriginWord;
+                        string baseWord = ReverseSentence.Words.First.OriginWord;
                         newDifference = new Difference(baseWord, 0, len2 - len1 - word.OriginWord.Length);
                     }
                     else
@@ -198,7 +198,7 @@ public partial class SymmetricGroup
                     Difference newDifference;
                     if (len1 - len2 >= word.OriginWord.Length)
                     {
-                        string baseWord = Sentence.Words.Last().OriginWord;
+                        string baseWord = Sentence.Words.Last.OriginWord;
                         newDifference = new Difference(baseWord, baseWord.Length - len1 + len2 + word.OriginWord.Length, len1 - len2 - word.OriginWord.Length);
                     }
                     else
@@ -218,7 +218,7 @@ public partial class Sentence
 
     public Sentence(Word word)
     {
-        Words.Add(word);
+        Words = new Words(word);
         Length = word.OriginWord.Length;
     }
 
@@ -226,18 +226,17 @@ public partial class Sentence
     {
     }
 
-    public List<Word> Words { get; } = new List<Word>();
+    public Words Words { get; private set; }
 
     public string GetSentence()
     {
-        return string.Join(Solution.Space.ToString(), Words.Select(w => w.OriginWord));
+        return string.Join(Solution.Space.ToString(), Words.ToEnumerable());
     }
 
     public Sentence Append(Word word)
     {
         var sentence = new Sentence();
-        sentence.Words.AddRange(Words);
-        sentence.Words.Add(word);
+        sentence.Words = Words == null ? new Words(word) : new Words(Words, word);
         sentence.Length = Length + word.OriginWord.Length;
         return sentence;
     }
@@ -245,8 +244,7 @@ public partial class Sentence
     public Sentence Prepend(Word word)
     {
         var sentence = new Sentence();
-        sentence.Words.Add(word);
-        sentence.Words.AddRange(Words);
+        sentence.Words = Words == null ? new Words(word) : new Words(word, Words);
         sentence.Length = Length + word.OriginWord.Length;
         return sentence;
     }
@@ -277,6 +275,63 @@ public partial class Word
             }
         }
         return new Word(word, isPalindrom);
+    }
+}
+
+public class Words
+{
+    public Word First { get; }
+    public Word Last { get; }
+    private Word Word { get; }
+    private Words PreviousWords { get; }
+    private Words NextWords { get; }
+
+    public Words(Word word)
+    {
+        Word = word;
+        First = word;
+        Last = word;
+        PreviousWords = null;
+        NextWords = null;
+    }
+
+    public Words(Word word, Words words)
+    {
+        Word = word;
+        First = word;
+        Last = words.Last;
+        PreviousWords = null;
+        NextWords = words;
+    }
+
+    public Words(Words words, Word word)
+    {
+        Word = word;
+        First = words.First;
+        Last = word;
+        PreviousWords = words;
+        NextWords = null;
+    }
+
+    public IEnumerable<string> ToEnumerable()
+    {
+        if (PreviousWords != null)
+        {
+            foreach (string word in PreviousWords.ToEnumerable())
+            {
+                yield return word;
+            }
+        }
+
+        yield return Word.OriginWord;
+
+        if (NextWords != null)
+        {
+            foreach (string word in NextWords.ToEnumerable())
+            {
+                yield return word;
+            }
+        }
     }
 }
 
