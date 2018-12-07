@@ -4,7 +4,7 @@ using System.Linq;
 
 class Solution
 {
-    private const int MaxLength = 1000;
+    private const int MaxLength = 10000;
     public const string NoAnswer = "NO";
     public const char Space = ' ';
 
@@ -29,8 +29,7 @@ class Solution
         var words2 = words.GroupBy(w => w.OriginWord[w.OriginWord.Length - 1]).ToDictionary(g => g.Key, g => g.ToList());
         List<SymmetricGroup> symmetricGroups = words.Select(w =>
             new SymmetricGroup(new Sentence(w), new Sentence(), new Difference(w.OriginWord))).ToList();
-        int iteration = 0;
-        while (iteration < MaxLength)
+        while (symmetricGroups.Any(x => x.Sentence.Length < MaxLength))
         {
             result = GetPalindrom(symmetricGroups);
             if (result != NoAnswer)
@@ -44,8 +43,6 @@ class Solution
             {
                 return NoAnswer;
             }
-
-            iteration++;
         }
         return result;
     }
