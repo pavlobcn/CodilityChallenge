@@ -209,14 +209,6 @@ public partial class SymmetricGroup
                 }
             }
         }
-
-        if (len1 == len2)
-        {
-            foreach (Word word in words1.SelectMany(g => g.Value))
-            {
-                yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, new Difference(word.OriginWord));
-            }
-        }
     }
 }
 
@@ -257,24 +249,6 @@ public partial class Sentence
         sentence.Words.AddRange(Words);
         sentence.Length = Length + word.OriginWord.Length;
         return sentence;
-    }
-
-    public IEnumerable<char> GetChars(int startIndex)
-    {
-        foreach (Word word in Words)
-        {
-            if (word.OriginWord.Length <= startIndex)
-            {
-                startIndex -= word.OriginWord.Length;
-                continue;
-            }
-
-            for (int i = startIndex; i < word.OriginWord.Length; i++)
-            {
-                yield return word.OriginWord[i];
-                startIndex--;
-            }
-        }
     }
 }
 
@@ -337,10 +311,6 @@ public class Difference
         : this(baseString, 0, baseString.Length)
     {
     }
-
-    //public char First => _baseString[_start];
-
-    //public char Last => _baseString[_start + _length - 1];
 
     public char CharAt(int index)
     {
