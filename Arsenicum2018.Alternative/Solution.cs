@@ -4,7 +4,7 @@ using System.Linq;
 
 class Solution
 {
-    private const int MaxLength = 10000;
+    private const int MaxLength = 600000;
     public const string NoAnswer = "NO";
     public const char Space = ' ';
 
@@ -279,13 +279,13 @@ public class Words
 {
     public Word First { get; }
     public Word Last { get; }
-    private Word Word { get; }
+    private Word MainWord { get; }
     private Words PreviousWords { get; }
     private Words NextWords { get; }
 
     public Words(Word word)
     {
-        Word = word;
+        MainWord = word;
         First = word;
         Last = word;
         PreviousWords = null;
@@ -294,7 +294,7 @@ public class Words
 
     public Words(Word word, Words words)
     {
-        Word = word;
+        MainWord = word;
         First = word;
         Last = words.Last;
         PreviousWords = null;
@@ -303,7 +303,7 @@ public class Words
 
     public Words(Words words, Word word)
     {
-        Word = word;
+        MainWord = word;
         First = words.First;
         Last = word;
         PreviousWords = words;
@@ -320,7 +320,7 @@ public class Words
             }
         }
 
-        yield return Word.OriginWord;
+        yield return MainWord.OriginWord;
 
         if (NextWords != null)
         {
