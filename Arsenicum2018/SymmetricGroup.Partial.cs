@@ -3,6 +3,6 @@ public partial class SymmetricGroup
 {
     public override string ToString()
     {
-        return Sentence.ToString();
+        return $"{Sentence}:{ReverseSentence}";
     }
 }
