@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenicum2018
@@ -13,6 +14,7 @@ namespace Arsenicum2018
         private static readonly string LongStringNoPalindromPerformance;
         private static readonly string LongStringPalindromPerformance;
         private static readonly string LongStringPalindrom2Performance;
+        private static readonly string DeepTreePalindromPerformance;
 
         static SolutionPerformanceTests()
         {
@@ -25,6 +27,7 @@ namespace Arsenicum2018
             LongStringNoPalindromPerformance = GetLongStringNoPalindromPerformance();
             LongStringPalindromPerformance = GetLongStringPalindromPerformance();
             LongStringPalindrom2Performance = GetLongStringPalindrom2Performance();
+            DeepTreePalindromPerformance = GetDeepTreePalindromPerformance();
         }
 
         [TestMethod]
@@ -89,6 +92,16 @@ namespace Arsenicum2018
                 false);
         }
 
+        [TestMethod]
+        public void DeepTreePalindromPerformanceTest()
+        {
+            const int iterationCount = 1000;
+            for (int i = 0; i < iterationCount; i++)
+            {
+                Test(DeepTreePalindromPerformance, true);
+            }
+        }
+
         private void TestOneLetterPerformance(string s)
         {
             const int iterationCount = 100000;
@@ -129,6 +142,25 @@ namespace Arsenicum2018
         {
             var left = "abc fdh bhe ahc aad bha gcd agg gha agc adh gca hge bae fhh hce bcd ddf fca dab ahf dah bhf fba aae gha efc dah adg gbh gab egb hca fca ehc gdh hce bhg ega bch gaa ffg acb ehf ebc edb bga ghh gbb deb";
             return left + left.Replace(Solution.Space.ToString(), string.Empty).ReverseString();
+        }
+
+        private static string GetDeepTreePalindromPerformance()
+        {
+            string s = "abcdefghi";
+            var words = new List<string>();
+            foreach (char c1 in s)
+            {
+                foreach (char c2 in s)
+                {
+                    if (c1 < c2)
+                    {
+                        words.Add(c1.ToString() + c2);
+                        words.Add("cba" + c2 + c1);
+                        words.Add("dca" + c2 + c1);
+                    }
+                }
+            }
+            return string.Join(Solution.Space.ToString(), words);
         }
     }
 }
