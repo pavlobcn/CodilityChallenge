@@ -26,58 +26,6 @@ namespace Arsenicum2018
         }
 
         [TestMethod]
-        public void FindBugTest()
-        {
-            var randomWord = new RandomWord(5);
-            var r = new Random(10);
-            for (int i = 0; i < 10000; i++)
-            {
-                var s = randomWord.Next(100);
-                s = s + s.ReverseString();
-                for (int j = 0; j < 20; j++)
-                {
-                    s = s.Insert(r.Next(s.Length), Solution.Space.ToString());
-                }
-
-                s = s.Trim(Solution.Space);
-                while (s.Contains(Solution.Space.ToString() + Solution.Space))
-                {
-                    s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
-                }
-
-                Test(
-                    s,
-                    true);
-            }
-        }
-
-        [TestMethod]
-        public void FindBug2Test()
-        {
-            var randomWord = new RandomWord(5);
-            var r = new Random(10);
-            for (int i = 0; i < 10000; i++)
-            {
-                var s = randomWord.Next(100);
-                s = s + randomWord.Next(1) + s.ReverseString();
-                for (int j = 0; j < 20; j++)
-                {
-                    s = s.Insert(r.Next(s.Length), Solution.Space.ToString());
-                }
-
-                s = s.Trim(Solution.Space);
-                while (s.Contains(Solution.Space.ToString() + Solution.Space))
-                {
-                    s = s.Replace(Solution.Space.ToString() + Solution.Space, string.Empty);
-                }
-
-                Test(
-                    s,
-                    true);
-            }
-        }
-
-        [TestMethod]
         public void Test1()
         {
             Test(
