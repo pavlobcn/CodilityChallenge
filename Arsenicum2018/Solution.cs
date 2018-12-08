@@ -29,6 +29,12 @@ class Solution
         var words2 = words.GroupBy(w => w.OriginWord[w.OriginWord.Length - 1]).ToDictionary(g => g.Key, g => g.ToList());
         List<SymmetricGroup> symmetricGroups = words.Select(w =>
             new SymmetricGroup(new Sentence(w), new Sentence(), new Difference(w.OriginWord))).ToList();
+        var differenceRoot1 = new DifferenceNode();
+        var differenceRoot2 = new DifferenceNode();
+        foreach (SymmetricGroup symmetricGroup in symmetricGroups)
+        {
+            differenceRoot1.Add(symmetricGroup.Difference, 0);
+        }
         while (symmetricGroups.Any(x => x.Sentence.Length < MaxLength))
         {
             result = GetPalindrom(symmetricGroups);
@@ -37,7 +43,7 @@ class Solution
                 return result;
             }
 
-            symmetricGroups = symmetricGroups.SelectMany(x => x.Join(words1, words2)).ToList();
+            symmetricGroups = symmetricGroups.SelectMany(x => x.Join(words1, words2, differenceRoot1, differenceRoot2)).ToList();
 
             if (!symmetricGroups.Any())
             {
@@ -130,7 +136,11 @@ public partial class SymmetricGroup
         return palindrom;
     }
 
-    internal IEnumerable<SymmetricGroup> Join(Dictionary<char, List<Word>> words1, Dictionary<char, List<Word>> words2)
+    internal IEnumerable<SymmetricGroup> Join(
+        Dictionary<char, List<Word>> words1,
+        Dictionary<char, List<Word>> words2,
+        DifferenceNode differenceRoot1,
+        DifferenceNode differenceRoot2)
     {
         int len1 = Sentence.Length;
         int len2 = ReverseSentence.Length;
@@ -161,10 +171,18 @@ public partial class SymmetricGroup
                     {
                         string baseWord = ReverseSentence.Words.First.OriginWord;
                         newDifference = new Difference(baseWord, 0, len2 - len1 - word.OriginWord.Length);
+                        if (!differenceRoot2.AddReverse(newDifference, 0))
+                        {
+                            continue;
+                        }
                     }
                     else
                     {
-                        newDifference = new Difference(word.OriginWord, len2 - len1, len2 - len1 - word.OriginWord.Length);
+                        newDifference = new Difference(word.OriginWord, len2 - len1, word.OriginWord.Length - len2 + len1);
+                        if (!differenceRoot1.Add(newDifference, 0))
+                        {
+                            continue;
+                        }
                     }
                     yield return new SymmetricGroup(Sentence.Append(word), ReverseSentence, newDifference);
                 }
@@ -197,10 +215,18 @@ public partial class SymmetricGroup
                     {
                         string baseWord = Sentence.Words.Last.OriginWord;
                         newDifference = new Difference(baseWord, baseWord.Length - len1 + len2 + word.OriginWord.Length, len1 - len2 - word.OriginWord.Length);
+                        if (!differenceRoot1.Add(newDifference, 0))
+                        {
+                            continue;
+                        }
                     }
                     else
                     {
                         newDifference = new Difference(word.OriginWord, 0, word.OriginWord.Length - len1 + len2);
+                        if (!differenceRoot2.AddReverse(newDifference, 0))
+                        {
+                            continue;
+                        }
                     }
                     yield return new SymmetricGroup(Sentence, ReverseSentence.Prepend(word), newDifference);
                 }
@@ -350,6 +376,8 @@ public class Difference
     {
     }
 
+    public int Length => _length;
+
     public char CharAt(int index)
     {
         return _baseString[_start + index];
@@ -358,5 +386,61 @@ public class Difference
     public char CharAtFromEnd(int index)
     {
         return _baseString[_start + _length - index - 1];
+    }
+}
+
+public class DifferenceNode
+{
+    public bool EndOfWord { get; set; }
+    public Dictionary<char, DifferenceNode> Children { get; } = new Dictionary<char, DifferenceNode>();
+
+    public bool Add(Difference difference, int startIndex)
+    {
+        if (startIndex == difference.Length)
+        {
+            if (EndOfWord)
+            {
+                return false;
+            }
+
+            EndOfWord = true;
+            return true;
+        }
+
+        DifferenceNode child;
+        char c = difference.CharAt(startIndex);
+        if (!Children.TryGetValue(c, out child))
+        {
+            child = new DifferenceNode();
+            Children.Add(c, child);
+        }
+
+        var result = child.Add(difference, startIndex + 1);
+        return result;
+    }
+
+    public bool AddReverse(Difference difference, int startIndex)
+    {
+        if (startIndex == difference.Length)
+        {
+            if (EndOfWord)
+            {
+                return false;
+            }
+
+            EndOfWord = true;
+            return true;
+        }
+
+        DifferenceNode child;
+        char c = difference.CharAtFromEnd(startIndex);
+        if (!Children.TryGetValue(c, out child))
+        {
+            child = new DifferenceNode();
+            Children.Add(c, child);
+        }
+
+        var result = child.Add(difference, startIndex + 1);
+        return result;
     }
 }
