@@ -22,6 +22,11 @@ class Solution
         {
             foreach (var pointB in GetPoints(orderedPoints, pointA))
             {
+                if (Math.Abs(pointB.Y - pointA.Y) >= distance)
+                {
+                    break;
+                }
+
                 int newDistance = Math.Max(Math.Abs(pointA.X - pointB.X), Math.Abs(pointA.Y - pointB.Y));
                 if (newDistance < distance)
                 {
