@@ -65,9 +65,9 @@ class Solution
 
     private IEnumerable<Point> GetClosePoints(Point point, ResultState resultState)
     {
-        int currentLeftIndex = point.XGroupIndex - 1;
+        int currentLeftIndex = point.XGroupIndex;
         int currentRightIndex = point.XGroupIndex + 1;
-        int currentBottomIndex = point.YGroupIndex - 1;
+        int currentBottomIndex = point.YGroupIndex;
         int currentTopIndex = point.YGroupIndex + 1;
         while (
             currentLeftIndex >= 0 &&
@@ -250,7 +250,21 @@ public partial class PointGroup
             }
 
             // midPoint.Y == point.Y
-            yield return midPoint;
+            if (midPoint == point)
+            {
+                if (midIndex > 0)
+                {
+                    yield return Points[midIndex - 1];
+                }
+                if (midIndex < Points.Count - 2)
+                {
+                    yield return Points[midIndex + 1];
+                }
+            }
+            else
+            {
+                yield return midPoint;
+            }
             yield break;
         }
     }
@@ -288,7 +302,21 @@ public partial class PointGroup
             }
 
             // midPoint.X == point.X
-            yield return midPoint;
+            if (midPoint == point)
+            {
+                if (midIndex > 0)
+                {
+                    yield return Points[midIndex - 1];
+                }
+                if (midIndex < Points.Count - 2)
+                {
+                    yield return Points[midIndex + 1];
+                }
+            }
+            else
+            {
+                yield return midPoint;
+            }
             yield break;
         }
     }
