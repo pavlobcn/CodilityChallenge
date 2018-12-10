@@ -29,12 +29,12 @@ class Solution
         int minYDistance = _orderedByXPoints.Select(g => g.Points.Skip(1).Select((p, i) => p.Y - g.Points[i].Y).MinOrDefault()).Min();
         if (minYDistance <= 1)
         {
-            return minYDistance;
+            return 0;
         }
         int minXDistance = _orderedByYPoints.Select(g => g.Points.Skip(1).Select((p, i) => p.X - g.Points[i].X).MinOrDefault()).Min();
         if (minXDistance <= 1)
         {
-            return minXDistance;
+            return 0;
         }
 
         return Math.Min(minYDistance, minXDistance);
@@ -54,7 +54,7 @@ class Solution
 
                     if (resultState.Value <= 1)
                     {
-                        return resultState.Value;
+                        return 0;
                     }
                 }
             }
@@ -285,7 +285,7 @@ public partial class PointGroup
                 yield break;
             }
 
-            int midIndex = (minBound + maxBound + 1) / 2;
+            int midIndex = (minBound + maxBound) / 2;
             Point midPoint = Points[midIndex];
             if (midPoint.X < point.X)
             {
