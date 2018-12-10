@@ -96,7 +96,7 @@ class Solution
             if (currentRightIndex < _orderedByXPoints.Count)
             {
                 PointGroup group = _orderedByXPoints[currentRightIndex];
-                if (point.X - group.Key < resultState.Value)
+                if (group.Key - point.X < resultState.Value)
                 {
                     foreach (Point verticalPoint in group.GetVerticalPoints(point))
                     {
@@ -113,7 +113,7 @@ class Solution
             if (currentBottomIndex >= 0)
             {
                 PointGroup group = _orderedByYPoints[currentBottomIndex];
-                if (point.X - group.Key < resultState.Value)
+                if (point.Y - group.Key < resultState.Value)
                 {
                     foreach (Point horizontalPoint in group.GetHorizontalPoints(point))
                     {
@@ -130,7 +130,7 @@ class Solution
             if (currentTopIndex < _orderedByYPoints.Count)
             {
                 PointGroup group = _orderedByYPoints[currentTopIndex];
-                if (point.X - group.Key < resultState.Value)
+                if (group.Key - point.Y < resultState.Value)
                 {
                     foreach (Point horizontalPoint in group.GetHorizontalPoints(point))
                     {
