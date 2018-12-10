@@ -1,8 +1,8 @@
 ﻿# Challenge: Rubidium 2018
-https://app.codility.com/programmers/challenges/xxxx
+https://app.codility.com/programmers/challenges/rubidium2018/
 
-## Certificate: Codility Silver Award for the Rubidium 2018 Challenge
-https://app.codility.com/cert/view/cert72YSTC-5VFWA9DXJVT82VPV/
+## Certificate: Codility Golden Award for the Rubidium 2018 Challenge
+https://app.codility.com/cert/view/cert68AJCK-Y9P234AQMSSXU2NF/
 
 ## Report:
-https://app.codility.com/cert/view/cert72YSTC-5VFWA9DXJVT82VPV/details/
+https://app.codility.com/cert/view/cert68AJCK-Y9P234AQMSSXU2NF/details/

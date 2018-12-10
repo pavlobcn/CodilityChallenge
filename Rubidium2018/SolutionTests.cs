@@ -46,6 +46,15 @@ namespace Rubidium2018
                 18);
         }
 
+        [TestMethod]
+        public void CornerTest()
+        {
+            Test(
+                "[0, 10]",
+                "[10, 0]",
+                5);
+        }
+
         private void Test(string xArray, string yArray, int expectedResult)
         {
             TestInternal(ConvertArray(xArray), ConvertArray(yArray), expectedResult);

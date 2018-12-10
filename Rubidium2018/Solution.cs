@@ -70,9 +70,9 @@ class Solution
         int currentBottomIndex = point.YGroupIndex;
         int currentTopIndex = point.YGroupIndex + 1;
         while (
-            currentLeftIndex >= 0 &&
-            currentRightIndex < _orderedByXPoints.Count &&
-            currentBottomIndex >= 0 &&
+            currentLeftIndex >= 0 ||
+            currentRightIndex < _orderedByXPoints.Count ||
+            currentBottomIndex >= 0 ||
             currentTopIndex < _orderedByYPoints.Count
                )
         {
