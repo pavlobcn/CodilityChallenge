@@ -4,12 +4,12 @@ using System.Linq;
 
 class Solution
 {
-    private List<PointGroup> _orderedByXPoints;
-    private List<PointGroup> _orderedByYPoints
-        ;
-
-    private List<Point> points;
     public const int MaxN = 100000;
+
+    private List<PointGroup> _orderedByXPoints;
+    private List<PointGroup> _orderedByYPoints;
+    private List<Point> _points;
+
     public int solution(int[] X, int[] Y)
     {
         PrepareDataStructure(X, Y);
@@ -42,23 +42,119 @@ class Solution
 
     private int CalculateDistance(int fastResult)
     {
-        int distance = fastResult;
-        foreach (var pointA in points)
+        var resultState = new ResultState {Value = fastResult};
+        foreach (var pointA in _points)
         {
+            foreach (Point point in GetClosePoints(pointA, resultState))
+            {
+                int newDistance = point.Distance(point);
+                if (newDistance < resultState.Value)
+                {
+                    resultState.Value = newDistance;
+
+                    if (resultState.Value <= 1)
+                    {
+                        return resultState.Value;
+                    }
+                }
+            }
         }
 
-        return distance;
+        return resultState.Value;
+    }
+
+    private IEnumerable<Point> GetClosePoints(Point point, ResultState resultState)
+    {
+        int currentLeftIndex = point.XGroupIndex - 1;
+        int currentRightIndex = point.XGroupIndex + 1;
+        int currentBottomIndex = point.YGroupIndex - 1;
+        int currentTopIndex = point.YGroupIndex + 1;
+        while (
+            currentLeftIndex >= 0 &&
+            currentRightIndex < _orderedByXPoints.Count &&
+            currentBottomIndex >= 0 &&
+            currentTopIndex < _orderedByYPoints.Count
+               )
+        {
+            if (currentLeftIndex >= 0)
+            {
+                PointGroup group = _orderedByXPoints[currentLeftIndex];
+                if (point.X - group.Key < resultState.Value)
+                {
+                    foreach (Point verticalPoint in group.GetVerticalPoints(point))
+                    {
+                        yield return verticalPoint;
+                    }
+                    currentLeftIndex--;
+                }
+                else
+                {
+                    currentLeftIndex = -1;
+                }
+            }
+
+            if (currentRightIndex < _orderedByXPoints.Count)
+            {
+                PointGroup group = _orderedByXPoints[currentRightIndex];
+                if (point.X - group.Key < resultState.Value)
+                {
+                    foreach (Point verticalPoint in group.GetVerticalPoints(point))
+                    {
+                        yield return verticalPoint;
+                    }
+                    currentRightIndex++;
+                }
+                else
+                {
+                    currentRightIndex = _orderedByXPoints.Count;
+                }
+            }
+
+            if (currentBottomIndex >= 0)
+            {
+                PointGroup group = _orderedByYPoints[currentBottomIndex];
+                if (point.X - group.Key < resultState.Value)
+                {
+                    foreach (Point horizontalPoint in group.GetHorizontalPoints(point))
+                    {
+                        yield return horizontalPoint;
+                    }
+                    currentBottomIndex--;
+                }
+                else
+                {
+                    currentBottomIndex = -1;
+                }
+            }
+
+            if (currentTopIndex < _orderedByYPoints.Count)
+            {
+                PointGroup group = _orderedByYPoints[currentTopIndex];
+                if (point.X - group.Key < resultState.Value)
+                {
+                    foreach (Point horizontalPoint in group.GetHorizontalPoints(point))
+                    {
+                        yield return horizontalPoint;
+                    }
+                    currentTopIndex++;
+                }
+                else
+                {
+                    currentTopIndex = _orderedByYPoints.Count;
+                }
+            }
+        }
     }
 
     private void PrepareDataStructure(int[] X, int[] Y)
     {
-        points = new List<Point>();
+        _points = new List<Point>();
         for (int i = 0; i < X.Length; i++)
         {
-            points.Add(new Point(X[i], Y[i]));
+            _points.Add(new Point(X[i], Y[i]));
         }
 
-        _orderedByXPoints = points.GroupBy(p => p.X, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
+        _orderedByXPoints = _points.GroupBy(p => p.X, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
         _orderedByXPoints.Sort((g1, g2) => g1.Key - g2.Key);
         for (int i = 0; i < _orderedByXPoints.Count; i++)
         {
@@ -71,7 +167,7 @@ class Solution
             }
         }
 
-        _orderedByYPoints = points.GroupBy(p => p.Y, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
+        _orderedByYPoints = _points.GroupBy(p => p.Y, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
         _orderedByYPoints.Sort((g1, g2) => g1.Key - g2.Key);
         for (int i = 0; i < _orderedByYPoints.Count; i++)
         {
@@ -84,45 +180,14 @@ class Solution
             }
         }
     }
-
-    /*
-    private IEnumerable<Point> GetPoints(List<Point> points, Point pointA)
-    {
-        int leftIndex = pointA.Index - 1;
-        int rightIndex = pointA.Index + 1;
-        while (leftIndex >= 0 || rightIndex < points.Count)
-        {
-            if (leftIndex < 0)
-            {
-                yield return points[rightIndex];
-                rightIndex++;
-                continue;
-            }
-            if (rightIndex == points.Count)
-            {
-                yield return points[leftIndex];
-                leftIndex--;
-                continue;
-            }
-
-            int yOfLeft = points[leftIndex].Y;
-            int yOfRight = points[rightIndex].Y;
-            if (pointA.Y - yOfLeft < yOfRight - pointA.Y)
-            {
-                yield return points[leftIndex];
-                leftIndex--;
-            }
-            else
-            {
-                yield return points[rightIndex];
-                rightIndex++;
-            }
-        }
-    }
-    */
 }
 
-public class Point
+public class ResultState
+{
+    public int Value { get; set; }
+}
+
+public partial class Point
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -140,9 +205,14 @@ public class Point
         X = x;
         Y = y;
     }
+
+    public int Distance(Point point)
+    {
+        return Math.Max(Math.Abs(point.X - X), Math.Abs(point.Y - Y));
+    }
 }
 
-public class PointGroup
+public partial class PointGroup
 {
     public int Key { get; set; }
     public List<Point> Points { get; private set; }
@@ -151,6 +221,110 @@ public class PointGroup
     {
         Key = key;
         Points = points;
+    }
+
+    public IEnumerable<Point> GetVerticalPoints(Point point)
+    {
+        int minBound = 0;
+        int maxBound = Points.Count - 1;
+        while (true)
+        {
+            if (minBound == maxBound)
+            {
+                yield return Points[minBound];
+                yield break;
+            }
+
+            if (point.Y < Points[minBound].Y)
+            {
+                if (minBound > 0)
+                {
+                    yield return Points[minBound - 1];
+                }
+                yield return Points[minBound];
+                yield break;
+            }
+
+            if (point.Y > Points[maxBound].Y)
+            {
+                if (maxBound > Points.Count - 2)
+                {
+                    yield return Points[maxBound + 1];
+                }
+                yield return Points[maxBound];
+                yield break;
+            }
+
+            int midIndex = (minBound + maxBound + 1) / 2;
+            Point midPoint = Points[midIndex];
+            if (midPoint.Y < point.Y)
+            {
+                minBound = midIndex + 1;
+                continue;
+            }
+
+            if (midPoint.Y > point.Y)
+            {
+                maxBound = midIndex - 1;
+                continue;
+            }
+
+            // midPoint.Y == point.Y
+            yield return midPoint;
+            yield break;
+        }
+    }
+
+    public IEnumerable<Point> GetHorizontalPoints(Point point)
+    {
+        int minBound = 0;
+        int maxBound = Points.Count - 1;
+        while (true)
+        {
+            if (minBound == maxBound)
+            {
+                yield return Points[minBound];
+                yield break;
+            }
+
+            if (point.X < Points[minBound].X)
+            {
+                if (minBound > 0)
+                {
+                    yield return Points[minBound - 1];
+                }
+                yield return Points[minBound];
+                yield break;
+            }
+
+            if (point.X > Points[maxBound].X)
+            {
+                if (maxBound > Points.Count - 2)
+                {
+                    yield return Points[maxBound + 1];
+                }
+                yield return Points[maxBound];
+                yield break;
+            }
+
+            int midIndex = (minBound + maxBound + 1) / 2;
+            Point midPoint = Points[midIndex];
+            if (midPoint.X < point.X)
+            {
+                minBound = midIndex + 1;
+                continue;
+            }
+
+            if (midPoint.X > point.X)
+            {
+                maxBound = midIndex - 1;
+                continue;
+            }
+
+            // midPoint.X == point.X
+            yield return midPoint;
+            yield break;
+        }
     }
 }
 
