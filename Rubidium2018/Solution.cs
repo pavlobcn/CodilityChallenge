@@ -4,45 +4,88 @@ using System.Linq;
 
 class Solution
 {
+    private List<PointGroup> _orderedByXPoints;
+    private List<PointGroup> _orderedByYPoints
+        ;
+
+    private List<Point> points;
+    public const int MaxN = 100000;
     public int solution(int[] X, int[] Y)
     {
-        var points = new List<Point>();
+        PrepareDataStructure(X, Y);
+
+        int fastResult = GetFastResult();
+        if (fastResult <= 1)
+        {
+            return 0;
+        }
+
+        int distance = CalculateDistance(fastResult);
+        return distance / 2;
+    }
+
+    private int GetFastResult()
+    {
+        int minYDistance = _orderedByXPoints.Select(g => g.Points.Skip(1).Select((p, i) => p.Y - g.Points[i].Y).MinOrDefault()).Min();
+        if (minYDistance <= 1)
+        {
+            return minYDistance;
+        }
+        int minXDistance = _orderedByYPoints.Select(g => g.Points.Skip(1).Select((p, i) => p.X - g.Points[i].X).MinOrDefault()).Min();
+        if (minXDistance <= 1)
+        {
+            return minXDistance;
+        }
+
+        return Math.Min(minYDistance, minXDistance);
+    }
+
+    private int CalculateDistance(int fastResult)
+    {
+        int distance = fastResult;
+        foreach (var pointA in points)
+        {
+        }
+
+        return distance;
+    }
+
+    private void PrepareDataStructure(int[] X, int[] Y)
+    {
+        points = new List<Point>();
         for (int i = 0; i < X.Length; i++)
         {
             points.Add(new Point(X[i], Y[i]));
         }
 
-        var orderedPoints = points.OrderBy(p => p.Y).ToList();
-        for (int i = 0; i < orderedPoints.Count; i++)
+        _orderedByXPoints = points.GroupBy(p => p.X, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
+        _orderedByXPoints.Sort((g1, g2) => g1.Key - g2.Key);
+        for (int i = 0; i < _orderedByXPoints.Count; i++)
         {
-            orderedPoints[i].Index = i;
-        }
-        int distance = int.MaxValue;
-        foreach (var pointA in points)
-        {
-            foreach (var pointB in GetPoints(orderedPoints, pointA))
+            _orderedByXPoints[i].Points.Sort((p1, p2) => p1.Y - p2.Y);
+            for (int j = 0; j < _orderedByXPoints[i].Points.Count; j++)
             {
-                if (Math.Abs(pointB.Y - pointA.Y) >= distance)
-                {
-                    break;
-                }
-
-                int newDistance = Math.Max(Math.Abs(pointA.X - pointB.X), Math.Abs(pointA.Y - pointB.Y));
-                if (newDistance < distance)
-                {
-                    distance = newDistance;
-                }
-
-                if (distance <= 1)
-                {
-                    return 0;
-                }
+                Point point = _orderedByXPoints[i].Points[j];
+                point.XGroupIndex = i;
+                point.YIndex = j;
             }
         }
 
-        return distance / 2;
+        _orderedByYPoints = points.GroupBy(p => p.Y, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
+        _orderedByYPoints.Sort((g1, g2) => g1.Key - g2.Key);
+        for (int i = 0; i < _orderedByYPoints.Count; i++)
+        {
+            _orderedByYPoints[i].Points.Sort((p1, p2) => p1.X - p2.X);
+            for (int j = 0; j < _orderedByYPoints[i].Points.Count; j++)
+            {
+                Point point = _orderedByYPoints[i].Points[j];
+                point.YGroupIndex = i;
+                point.XIndex = j;
+            }
+        }
     }
 
+    /*
     private IEnumerable<Point> GetPoints(List<Point> points, Point pointA)
     {
         int leftIndex = pointA.Index - 1;
@@ -76,17 +119,50 @@ class Solution
             }
         }
     }
+    */
 }
 
 public class Point
 {
     public int X { get; set; }
     public int Y { get; set; }
-    public int Index { get; set; }
+
+    public int XGroupIndex { get; set; }
+
+    public int YIndex { get; set; }
+
+    public int YGroupIndex { get; set; }
+
+    public int XIndex { get; set; }
 
     public Point(int x, int y)
     {
         X = x;
         Y = y;
+    }
+}
+
+public class PointGroup
+{
+    public int Key { get; set; }
+    public List<Point> Points { get; private set; }
+
+    public PointGroup(int key, List<Point> points)
+    {
+        Key = key;
+        Points = points;
+    }
+}
+
+public static class EnumerableExtensions
+{
+    public static int MinOrDefault(this IEnumerable<int> source)
+    {
+        if (source.Any())
+        {
+            return source.Min();
+        }
+
+        return int.MaxValue;
     }
 }
