@@ -223,12 +223,6 @@ public partial class PointGroup
         int maxBound = Points.Count - 1;
         while (true)
         {
-            if (minBound == maxBound)
-            {
-                yield return Points[minBound];
-                yield break;
-            }
-
             if (point.Y < Points[minBound].Y)
             {
                 yield return Points[minBound];
@@ -241,7 +235,7 @@ public partial class PointGroup
                 yield break;
             }
 
-            int midIndex = (minBound + maxBound + 1) / 2;
+            int midIndex = (minBound + maxBound) / 2;
             Point midPoint = Points[midIndex];
             if (midPoint.Y < point.Y)
             {
@@ -267,12 +261,6 @@ public partial class PointGroup
         int maxBound = Points.Count - 1;
         while (true)
         {
-            if (minBound == maxBound)
-            {
-                yield return Points[minBound];
-                yield break;
-            }
-
             if (point.X < Points[minBound].X)
             {
                 yield return Points[minBound];
