@@ -45,9 +45,9 @@ class Solution
         var resultState = new ResultState {Value = fastResult};
         foreach (var pointA in _points)
         {
-            foreach (Point point in GetClosePoints(pointA, resultState))
+            foreach (Point pointB in GetClosePoints(pointA, resultState))
             {
-                int newDistance = point.Distance(point);
+                int newDistance = pointA.Distance(pointB);
                 if (newDistance < resultState.Value)
                 {
                     resultState.Value = newDistance;
