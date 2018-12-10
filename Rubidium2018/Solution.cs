@@ -146,12 +146,12 @@ class Solution
         }
     }
 
-    private void PrepareDataStructure(int[] X, int[] Y)
+    private void PrepareDataStructure(int[] x, int[] y)
     {
         _points = new List<Point>();
-        for (int i = 0; i < X.Length; i++)
+        for (int i = 0; i < x.Length; i++)
         {
-            _points.Add(new Point(X[i], Y[i]));
+            _points.Add(new Point(x[i], y[i]));
         }
 
         _orderedByXPoints = _points.GroupBy(p => p.X, p => p, (key, pp) => new PointGroup(key, pp.ToList())).ToList();
@@ -163,7 +163,6 @@ class Solution
             {
                 Point point = _orderedByXPoints[i].Points[j];
                 point.XGroupIndex = i;
-                point.YIndex = j;
             }
         }
 
@@ -176,7 +175,6 @@ class Solution
             {
                 Point point = _orderedByYPoints[i].Points[j];
                 point.YGroupIndex = i;
-                point.XIndex = j;
             }
         }
     }
@@ -194,11 +192,7 @@ public partial class Point
 
     public int XGroupIndex { get; set; }
 
-    public int YIndex { get; set; }
-
     public int YGroupIndex { get; set; }
-
-    public int XIndex { get; set; }
 
     public Point(int x, int y)
     {
@@ -237,20 +231,12 @@ public partial class PointGroup
 
             if (point.Y < Points[minBound].Y)
             {
-                if (minBound > 0)
-                {
-                    yield return Points[minBound - 1];
-                }
                 yield return Points[minBound];
                 yield break;
             }
 
             if (point.Y > Points[maxBound].Y)
             {
-                if (maxBound > Points.Count - 2)
-                {
-                    yield return Points[maxBound + 1];
-                }
                 yield return Points[maxBound];
                 yield break;
             }
@@ -289,20 +275,12 @@ public partial class PointGroup
 
             if (point.X < Points[minBound].X)
             {
-                if (minBound > 0)
-                {
-                    yield return Points[minBound - 1];
-                }
                 yield return Points[minBound];
                 yield break;
             }
 
             if (point.X > Points[maxBound].X)
             {
-                if (maxBound > Points.Count - 2)
-                {
-                    yield return Points[maxBound + 1];
-                }
                 yield return Points[maxBound];
                 yield break;
             }

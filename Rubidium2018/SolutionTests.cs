@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Rubidium2018
 {
@@ -30,6 +32,18 @@ namespace Rubidium2018
                 "[1, 1, 8]",
                 "[1, 6, 0]",
                 2);
+        }
+
+        [TestMethod]
+        public void RandomTest()
+        {
+            var r = new Random(5);
+            var xArray = Enumerable.Range(0, 1000).Select(i => r.Next(100000)).ToArray();
+            var yArray = Enumerable.Range(0, 1000).Select(i => r.Next(100000)).ToArray();
+            TestInternal(
+                xArray,
+                yArray,
+                18);
         }
 
         private void Test(string xArray, string yArray, int expectedResult)
