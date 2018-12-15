@@ -20,10 +20,9 @@ class Solution
         const char defaultChar = '$';
         char c1 = defaultChar;
         char c2 = defaultChar;
+        int start = -1;
         int start1 = -1;
         int start2 = -1;
-        int last1 = -1;
-        int last2 = -1;
         var groups = new List<Group>();
         for (int i = 0; i < s.Length; i++)
         {
@@ -32,7 +31,7 @@ class Solution
             {
                 c1 = c;
                 start1 = i;
-                last1 = i;
+                start = start1;
                 continue;
             }
 
@@ -40,49 +39,46 @@ class Solution
             {
                 c2 = c;
                 start2 = i;
-                last2 = i;
                 continue;
             }
 
             if (c == c1)
             {
-                if (last1 < last2)
+                if (start1 < start2)
                 {
-                    last1 = i;
+                    start1 = i;
                 }
             }
             else if (c == c2)
             {
-                if (last2 < last1)
+                if (start2 < start1)
                 {
-                    last2 = i;
+                    start2 = i;
                 }
             }
             else
             {
-                groups.Add(new Group(s, start1, i - start1, c1));
-                if (last1 < last2)
+                groups.Add(new Group(s, start, i - start, c1));
+                if (start1 < start2)
                 {
                     // ababbbbc
                     c1 = c2;
                     start1 = start2;
-                    last1 = last2;
                 }
                 else
                 {
                     // ababaaac
-                    start1 = last1;
                 }
 
                 c2 = c;
                 start2 = i;
-                last2 = i;
+                start = start1;
             }
         }
 
         if (c2 != defaultChar)
         {
-            groups.Add(new Group(s, start1, s.Length - start1, c1));
+            groups.Add(new Group(s, start, s.Length - start, c1));
         }
 
         return groups;
