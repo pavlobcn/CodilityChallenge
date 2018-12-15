@@ -120,7 +120,7 @@ namespace GrandChallenge
 
         private int GetExpectedResult(string s)
         {
-            for (int i = s.Length - 1; i >= 0; i--)
+            for (int i = s.Length; i > 0; i--)
             {
                 for (int j = 0; j < s.Length; j++)
                 {

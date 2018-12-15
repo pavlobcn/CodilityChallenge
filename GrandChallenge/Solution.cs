@@ -89,6 +89,18 @@ class Solution
     }
 }
 
+public class Point
+{
+    public int Value { get; set; }
+    public int Index { get; set; }
+
+    public Point(int value, int index)
+    {
+        Value = value;
+        Index = index;
+    }
+}
+
 public partial class Group
 {
     private readonly string _s;
@@ -106,145 +118,40 @@ public partial class Group
 
     public int GetBalancedLength()
     {
-        var max1 = GetBalancedLength(_s.Skip(_startIndex).Take(_length));
-        if (max1 / 2 < _length / 2)
+        List<Point> points = GetPoints();
+        points.Sort((p1, p2) => p1.Value - p2.Value);
+        Point previousPoint = points[0];
+        int minIndex = previousPoint.Index;
+        int maxIndex = previousPoint.Index;
+        int balanceLength = 0;
+        for (int i = 1; i < points.Count; i++)
         {
-            var max2 = GetBalancedLength(_s.Skip(_startIndex).Take(_length).Reverse());
-            return Math.Max(max1, max2);
-        }
-
-        return max1;
-    }
-
-    private int GetBalancedLength(IEnumerable<char> chars)
-    {
-        var list = new LinkedList<Node>(chars.Select(c => new Node(c == _c1 ? 1 : -1, 0)));
-        LinkedListNode<Node> current = list.First;
-        while (current != null && current.Next != null)
-        {
-            bool joined = Join2Nodes(current);
-            if (!joined)
+            Point currentPoint = points[i];
+            if (currentPoint.Value == previousPoint.Value)
             {
-                joined = Join3Nodes(current);
-            }
-
-            if (joined)
-            {
-                if (current.Previous != null)
-                {
-                    current = current.Previous;
-                }
-
-                continue;
-            }
-
-            current = current.Next;
-        }
-
-        return list.Max(i => i.Length);
-    }
-
-    private bool Join2Nodes(LinkedListNode<Node> current)
-    {
-        if (current.Value.Weight * current.Next.Value.Weight < 0)
-        {
-            int absCurrent = Math.Abs(current.Value.Weight);
-            int absNext = Math.Abs(current.Next.Value.Weight);
-            if (absCurrent < absNext)
-            {
-                var newCurrent = new Node(0, 2 * Math.Min(absCurrent, absNext));
-                var newNext = new Node(current.Value.Weight + current.Next.Value.Weight, 0);
-                current.Value = newCurrent;
-                current.Next.Value = newNext;
-            }
-            else if (absCurrent > absNext)
-            {
-                var newCurrent = new Node(current.Value.Weight + current.Next.Value.Weight, 0);
-                var newNext = new Node(0, 2 * Math.Min(absCurrent, absNext));
-                current.Value = newCurrent;
-                current.Next.Value = newNext;
+                minIndex = Math.Min(minIndex, currentPoint.Index);
+                maxIndex = Math.Max(maxIndex, currentPoint.Index);
             }
             else
             {
-                current.Value = new Node(0, absCurrent + absNext);
-                current.List.Remove(current.Next);
+                balanceLength = Math.Max(balanceLength, maxIndex - minIndex);
+
+                previousPoint = currentPoint;
+                minIndex = currentPoint.Index;
+                maxIndex = currentPoint.Index;
             }
-
-            return true;
         }
-
-        if (current.Value.Weight * current.Next.Value.Weight > 0)
-        {
-            current.Value = new Node(current.Value.Weight + current.Next.Value.Weight, 0);
-            current.List.Remove(current.Next);
-            return true;
-        }
-
-        if (current.Value.Length > 0 && current.Next.Value.Length > 0)
-        {
-            current.Value = new Node(0, current.Value.Length + current.Next.Value.Length);
-            current.List.Remove(current.Next);
-            return true;
-        }
-
-        return false;
+        return balanceLength;
     }
 
-    private bool Join3Nodes(LinkedListNode<Node> current)
+    private List<Point> GetPoints()
     {
-        if (current.Next.Next == null)
+        int value = 0;
+        return (new[] {new Point(value, 0)}).Union(_s.Skip(_startIndex).Take(_length).Select((c, i) =>
         {
-            return false;
-        }
-
-        if (current.Value.Length > 0)
-        {
-            return false;
-        }
-
-        if (current.Value.Weight * current.Next.Next.Value.Weight > 0)
-        {
-            return false;
-        }
-
-        int absCurrent = Math.Abs(current.Value.Weight);
-        int absNext = Math.Abs(current.Next.Next.Value.Weight);
-        if (absCurrent < absNext)
-        {
-            var newCurrent = new Node(0, current.Next.Value.Length + 2 * absCurrent);
-            var newNext = new Node(current.Value.Weight + current.Next.Next.Value.Weight, 0);
-            current.Value = newCurrent;
-            current.Next.Value = newNext;
-            current.List.Remove(current.Next.Next);
-        }
-        else if (absCurrent > absNext)
-        {
-            var newCurrent = new Node(current.Value.Weight + current.Next.Next.Value.Weight, 0);
-            var newNext = new Node(0, current.Next.Value.Length + 2 * absNext);
-            current.Value = newCurrent;
-            current.Next.Value = newNext;
-            current.List.Remove(current.Next.Next);
-        }
-        else
-        {
-            var newCurrent = new Node(0, current.Next.Value.Length + absCurrent + absNext);
-            current.Value = newCurrent;
-            current.List.Remove(current.Next.Next);
-            current.List.Remove(current.Next);
-        }
-
-        return true;
-    }
-}
-
-public partial class Node
-{
-    public int Weight { get; set; }
-    public int Length { get; set; }
-
-    public Node(int weight, int length)
-    {
-        Weight = weight;
-        Length = length;
+            var point = new Point(value + (c == _c1 ? 1 : -1), i + 1);
+            value = point.Value;
+            return point;
+        })).ToList();
     }
 }
