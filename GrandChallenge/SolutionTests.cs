@@ -63,6 +63,22 @@ namespace GrandChallenge
         }
 
         [TestMethod]
+        public void Test8()
+        {
+            Test(
+                "baabaaaaaa",
+                4);
+        }
+
+        [TestMethod]
+        public void Test9()
+        {
+            Test(
+                "aaaaabaaba",
+                4);
+        }
+
+        [TestMethod]
         public void FindBugTest()
         {
             var chars = "ab";

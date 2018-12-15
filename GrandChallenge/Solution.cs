@@ -106,7 +106,19 @@ public partial class Group
 
     public int GetBalancedLength()
     {
-        var list = new LinkedList<Node>(_s.Skip(_startIndex).Take(_length).Select(c => new Node(c == _c1 ? 1 : -1, 0)));
+        var max1 = GetBalancedLength(_s.Skip(_startIndex).Take(_length));
+        if (max1 / 2 < _length / 2)
+        {
+            var max2 = GetBalancedLength(_s.Skip(_startIndex).Take(_length).Reverse());
+            return Math.Max(max1, max2);
+        }
+
+        return max1;
+    }
+
+    private int GetBalancedLength(IEnumerable<char> chars)
+    {
+        var list = new LinkedList<Node>(chars.Select(c => new Node(c == _c1 ? 1 : -1, 0)));
         LinkedListNode<Node> current = list.First;
         while (current != null && current.Next != null)
         {
