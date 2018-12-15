@@ -1,8 +1,5 @@
 ﻿# Challenge: Grand Challenge
-https://app.codility.com/programmers/challenges/xxxx
-
-## Certificate: xxxx
-https://app.codility.com/cert/view/xxx
+https://app.codility.com/programmers/challenges/grand2018/
 
 ## Report:
-https://app.codility.com/cert/view/xxxx
+https://app.codility.com/demo/results/trainingQR7HN6-V5G/
