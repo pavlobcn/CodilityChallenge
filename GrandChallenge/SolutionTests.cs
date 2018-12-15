@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -79,41 +80,33 @@ namespace GrandChallenge
         }
 
         [TestMethod]
+        public void Test10()
+        {
+            Test(
+                "aaaabaabcb",
+                4);
+        }
+
+        [TestMethod]
         public void FindBugTest()
         {
-            var chars = "ab";
-            foreach (char a in chars)
+            FindBugTest(String.Empty, 10);
+        }
+
+        private void FindBugTest(string s, int additionalLength)
+        {
+            if (additionalLength == 0)
             {
-                foreach (char b in chars)
+                int actualResult = new Solution().solution(s);
+                int expectedResult = GetExpectedResult(s);
+                Assert.AreEqual(expectedResult, actualResult);
+            }
+            else
+            {
+                const string chars = "abc";
+                foreach (char c in chars)
                 {
-                    foreach (char c in chars)
-                    {
-                        foreach (char d in chars)
-                        {
-                            foreach (char e in chars)
-                            {
-                                foreach (char f in chars)
-                                {
-                                    foreach (char g in chars)
-                                    {
-                                        foreach (char h in chars)
-                                        {
-                                            foreach (char i in chars)
-                                            {
-                                                foreach (char j in chars)
-                                                {
-                                                    var s = $"{a}{b}{c}{d}{e}{f}{g}{h}{i}{j}";
-                                                    int actualResult = new Solution().solution(s);
-                                                    int expectedResult = GetExpectedResult(s);
-                                                    Assert.AreEqual(expectedResult, actualResult);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    FindBugTest(s + c, additionalLength - 1);
                 }
             }
         }
@@ -129,9 +122,19 @@ namespace GrandChallenge
                         continue;
                     }
 
+                    if (i % 2 != 0)
+                    {
+                        continue;
+                    }
+
                     var checkString = s.Substring(j, i);
-                    int aCount = checkString.Count(c => c == 'a');
-                    int bCount = checkString.Count(c => c == 'b');
+                    if (checkString.Distinct().Count() != 2)
+                    {
+                        continue;
+                    }
+
+                    int aCount = checkString.Count(c => c == checkString[0]);
+                    int bCount = checkString.Count(c => c != checkString[0]);
                     if (aCount == bCount)
                     {
                         return i;
