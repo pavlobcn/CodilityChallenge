@@ -115,17 +115,20 @@ public partial class Group
             {
                 joined = Join3Nodes(current);
             }
+
             if (joined)
             {
                 if (current.Previous != null)
                 {
                     current = current.Previous;
-                    continue;
                 }
+
+                continue;
             }
 
             current = current.Next;
         }
+
         return list.Max(i => i.Length);
     }
 
@@ -137,7 +140,7 @@ public partial class Group
             int absNext = Math.Abs(current.Next.Value.Weight);
             if (absCurrent < absNext)
             {
-                var newCurrent = new Node(0, Math.Min(absCurrent, absNext));
+                var newCurrent = new Node(0, 2 * Math.Min(absCurrent, absNext));
                 var newNext = new Node(current.Value.Weight + current.Next.Value.Weight, 0);
                 current.Value = newCurrent;
                 current.Next.Value = newNext;
@@ -145,7 +148,7 @@ public partial class Group
             else if (absCurrent > absNext)
             {
                 var newCurrent = new Node(current.Value.Weight + current.Next.Value.Weight, 0);
-                var newNext = new Node(0, Math.Min(absCurrent, absNext));
+                var newNext = new Node(0, 2 * Math.Min(absCurrent, absNext));
                 current.Value = newCurrent;
                 current.Next.Value = newNext;
             }
@@ -196,7 +199,7 @@ public partial class Group
         int absNext = Math.Abs(current.Next.Next.Value.Weight);
         if (absCurrent < absNext)
         {
-            var newCurrent = new Node(0, current.Next.Value.Length + absCurrent);
+            var newCurrent = new Node(0, current.Next.Value.Length + 2 * absCurrent);
             var newNext = new Node(current.Value.Weight + current.Next.Next.Value.Weight, 0);
             current.Value = newCurrent;
             current.Next.Value = newNext;
@@ -205,7 +208,7 @@ public partial class Group
         else if (absCurrent > absNext)
         {
             var newCurrent = new Node(current.Value.Weight + current.Next.Next.Value.Weight, 0);
-            var newNext = new Node(0, current.Next.Value.Length + absNext);
+            var newNext = new Node(0, current.Next.Value.Length + 2 * absNext);
             current.Value = newCurrent;
             current.Next.Value = newNext;
             current.List.Remove(current.Next.Next);
@@ -222,7 +225,7 @@ public partial class Group
     }
 }
 
-public class Node
+public partial class Node
 {
     public int Weight { get; set; }
     public int Length { get; set; }
