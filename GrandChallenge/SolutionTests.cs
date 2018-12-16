@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GrandChallenge
 {
     [TestClass]
-    public class SolutionTests : BaseTest
+    public class SolutionTests : SolutionTestsBase
     {
         [TestMethod]
         public void Test1()
@@ -15,6 +15,7 @@ namespace GrandChallenge
                 "cabbacc",
                 4);
         }
+
         [TestMethod]
         public void Test2()
         {
@@ -143,13 +144,6 @@ namespace GrandChallenge
             }
 
             return 0;
-        }
-
-        private void Test(string s, int expectedResult)
-        {
-            var solution = new Solution();
-            int actualResult = solution.solution(s);
-            Assert.AreEqual(expectedResult, actualResult);
         }
     }
 }
