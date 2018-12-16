@@ -12,7 +12,26 @@ class Solution
             return 0;
         }
 
-        return groups.Max(g => g.GetBalancedLength());
+        int maxLength = GetMaxBalancedLength(groups);
+        return maxLength;
+    }
+
+    private int GetMaxBalancedLength(List<Group> groups)
+    {
+        int maxLength = 0;
+        groups.Sort((g1, g2) => g1.Length / 2 - g2.Length / 2);
+        for (int i = groups.Count - 1; i >= 0; i--)
+        {
+            Group group = groups[i];
+            if (maxLength / 2 >= group.Length / 2)
+            {
+                break;
+            }
+
+            int newMaxLength = group.GetBalancedLength();
+            maxLength = Math.Max(maxLength, newMaxLength);
+        }
+        return maxLength;
     }
 
     private List<Group> GetGroups(string s)
@@ -112,15 +131,17 @@ public partial class Group
         _c1 = c1;
     }
 
+    public int Length => _length;
+
     public int GetBalancedLength()
     {
-        List<Point> points = GetPoints();
-        points.Sort((p1, p2) => p1.Value - p2.Value);
+        Point[] points = GetPoints();
+        Array.Sort(points, (p1, p2) => p1.Value - p2.Value);
         Point previousPoint = points[0];
         int minIndex = previousPoint.Index;
         int maxIndex = previousPoint.Index;
         int balanceLength = 0;
-        for (int i = 1; i < points.Count; i++)
+        for (int i = 1; i < points.Length; i++)
         {
             Point currentPoint = points[i];
             if (currentPoint.Value == previousPoint.Value)
@@ -140,14 +161,19 @@ public partial class Group
         return balanceLength;
     }
 
-    private List<Point> GetPoints()
+    private Point[] GetPoints()
     {
+        var points = new Point[_length + 1];
         int value = 0;
-        return (new[] {new Point(value, 0)}).Union(_s.Skip(_startIndex).Take(_length).Select((c, i) =>
+        points[0] = new Point(value, 0);
+        int i = 0;
+        foreach (char c in _s.Skip(_startIndex).Take(_length))
         {
             var point = new Point(value + (c == _c1 ? 1 : -1), i + 1);
             value = point.Value;
-            return point;
-        })).ToList();
+            points[i + 1] = point;
+            i++;
+        }
+        return points;
     }
 }
