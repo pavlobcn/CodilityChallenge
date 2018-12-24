@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenicum2018
@@ -11,7 +9,7 @@ namespace Arsenicum2018
         [TestMethod]
         public void FindLongPalindromTest()
         {
-            var randomWord = new RandomWord(5);
+            var randomWord = GetRandomWord();
             var words = new List<string> {"abc"};
             do
             {
@@ -182,21 +180,6 @@ namespace Arsenicum2018
             var solution = new Solution();
             string stringResult = solution.solution(s);
             Assert.AreEqual(expectedResult, stringResult);
-        }
-    }
-
-    class RandomWord
-    {
-        private readonly Random _random;
-
-        public RandomWord(int seed)
-        {
-            _random = new Random(seed);
-        }
-
-        public string Next(int length)
-        {
-            return new string(Enumerable.Range(0, length).Select(_ => (char) ('a' + _random.Next(8))).ToArray());
         }
     }
 }

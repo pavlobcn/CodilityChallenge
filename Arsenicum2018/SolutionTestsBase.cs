@@ -6,6 +6,8 @@ namespace Arsenicum2018
 {
     public class SolutionTestsBase : BaseTest
     {
+        private const string RandomString = "abcdefgh";
+
         protected void Test(string s, bool isPalindromExpected)
         {
             var solution = new Solution();
@@ -27,6 +29,11 @@ namespace Arsenicum2018
             string[] initialWords = s.Split(Solution.Space);
             string[] resultWords = stringResult.Split(Solution.Space).Distinct().ToArray();
             CollectionAssert.IsSubsetOf(resultWords, initialWords);
+        }
+
+        protected static RandomWord GetRandomWord()
+        {
+            return new RandomWord(5, RandomString);
         }
     }
 }

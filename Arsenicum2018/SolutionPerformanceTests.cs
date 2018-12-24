@@ -113,7 +113,7 @@ namespace Arsenicum2018
 
         private static string GetLongStringNoPalindromPerformance()
         {
-            var randomWord = new RandomWord(5);
+            var randomWord = GetRandomWord();
             string[] words = Enumerable.Range(0, 80).Select(i => randomWord.Next(3))
                 .Union(Enumerable.Range(0, 70).Select(i => randomWord.Next(4))).ToArray();
             string[] excludePalindromes = words.Where(w => w == new string(w.Reverse().ToArray())).ToArray();
@@ -128,7 +128,7 @@ namespace Arsenicum2018
 
         private static string GetLongStringPalindromPerformance()
         {
-            var randomWord = new RandomWord(5);
+            var randomWord = GetRandomWord();
             string[] words = Enumerable.Range(0, 80).Select(i => randomWord.Next(3))
                 .Union(Enumerable.Range(0, 70).Select(i => randomWord.Next(4))).ToArray();
             string[] excludePalindromes = words.Where(w => w == new string(w.Reverse().ToArray())).ToArray();
