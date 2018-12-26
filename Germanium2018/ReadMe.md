@@ -2,4 +2,4 @@
 https://app.codility.com/programmers/challenges/germanium2018/
 
 ## Report:
-https://app.codility.com/cert/view/xxxx
+https://app.codility.com/demo/results/trainingXJN8KJ-KC3/
