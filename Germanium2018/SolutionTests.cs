@@ -44,6 +44,33 @@ namespace Germanium2018
         }
 
         [TestMethod]
+        public void Test5()
+        {
+            Test(
+                "[1, 1, 2, 5]",
+                "[2, 3, 4, 5]",
+                4);
+        }
+
+        [TestMethod]
+        public void Test6()
+        {
+            Test(
+                "[1, 1, 1, 4]",
+                "[2, 3, 4, 5]",
+                5);
+        }
+
+        [TestMethod]
+        public void Test7()
+        {
+            Test(
+                "[1, 1, 3, 5]",
+                "[2, 3, 4, 5]",
+                4);
+        }
+
+        [TestMethod]
         public void FindBugTest()
         {
             foreach (int[] arrays in GetAllArrays(4, 5))

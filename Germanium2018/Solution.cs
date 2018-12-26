@@ -47,9 +47,46 @@ class Solution
                 {
                     return i;
                 }
+
+                RemoveSingleValues(items, min, i);
             }
         }
         return items.Length;
+    }
+
+    private void RemoveSingleValues(List<Item>[] items, int removedIndex, int i)
+    {
+        if (items[removedIndex].Count > 1 || items[removedIndex].Count == 0)
+        {
+            return;
+        }
+
+        Item item = items[removedIndex].Single();
+        int min = Math.Min(item.A, item.B);
+        int max = Math.Max(item.A, item.B);
+        if (min == max)
+        {
+            return;
+        }
+
+        if (min == removedIndex)
+        {
+            items[min].Remove(item);
+            if (max < items.Length)
+            {
+                items[max].Remove(item);
+            }
+            if (max < i)
+            {
+                RemoveSingleValues(items, max, i);
+            }
+        }
+        else if (max == removedIndex)
+        {
+            items[max].Remove(item);
+            items[min].Remove(item);
+            RemoveSingleValues(items, min, i);
+        }
     }
 
     private List<Item>[] GetItems(int[] a, int[] b)
@@ -78,21 +115,17 @@ class Solution
         }
         return items;
     }
+}
 
-    public class Item
+public partial class Item
+{
+    public int A { get; }
+    public int B { get; }
+
+    public Item(int a, int b)
     {
-        public int A { get; }
-        public int B { get; }
-
-        public Item(int a, int b)
-        {
-            A = a;
-            B = b;
-        }
-
-        public override string ToString()
-        {
-            return $"{A},{B}";
-        }
+        A = a;
+        B = b;
     }
+
 }
