@@ -29,7 +29,7 @@ namespace Gallium2018
         public void HypothesisTest()
         {
             var random = new Random(5);
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 Number[] a = Enumerable.Range(0, 10)
                     .Select(_ => new Number(random.Next(10), random.Next(10)))
@@ -44,19 +44,10 @@ namespace Gallium2018
             var combinations = new List<Combination>();
             for (int i = 0; i < a.Length; i++)
             {
-                for (int j = 0; j < a.Length; j++)
+                for (int j = i + 1; j < a.Length; j++)
                 {
-                    if (i == j)
+                    for (int k = j + 1; k < a.Length; k++)
                     {
-                        continue;
-                    }
-                    for (int k = 0; k < a.Length; k++)
-                    {
-                        if (k == i || k == j)
-                        {
-                            continue;
-                        }
-
                         combinations.Add(new Combination(a[i], a[j], a[k]));
                     }
                 }
@@ -79,6 +70,11 @@ namespace Gallium2018
             {
                 A = a;
                 B = b;
+            }
+
+            public override string ToString()
+            {
+                return $"{A},{B}";
             }
         }
 
