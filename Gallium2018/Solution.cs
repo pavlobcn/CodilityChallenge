@@ -4,100 +4,174 @@ using System.Linq;
 
 class Solution
 {
+    private const int MaxValue = 1000000000;
+
     public int solution(int[] A)
     {
-        List<Number> numbers = GetNumbers(A);
-        int fastResult = GetFastResult(numbers);
+        int[,] matrix = GetNumbers(A);
+        int fastResult = GetFastResult(matrix);
         if (fastResult >= 0)
         {
             return fastResult;
         }
 
-        int result = GetResult(numbers);
+        Minimize(matrix);
+
+        int result = GetResult(matrix);
         return result;
     }
 
-    private int GetResult(List<Number> numbers)
+    private void Minimize(int[,] matrix)
     {
-        var groups = new List<Group> {new Group(numbers[0], numbers[1], numbers[2])};
-        for (int i = 3; i < numbers.Count; i++)
+        for (int i = 0; i < matrix.Length; i++)
         {
-            var newGroups = new List<Group>();
-            foreach (Group group in groups)
+            int total = 0;
+            for (int j = matrix.Length - 1; j >= 0; j--)
             {
-                foreach (Group newGroup in group.GetCandidateGroups(numbers[i]))
+                if (total >= 3)
                 {
-                    newGroups.Add(newGroup);
+                    matrix[i, j] = 0;
+                    continue;
                 }
-            }
 
-            groups = Merge(groups, newGroups);
+                matrix[i, j] = Math.Max(matrix[i, j], 3 - total);
+                total += matrix[i, j];
+            }
         }
 
+        for (int i = 0; i < matrix.Length; i++)
+        {
+            int total = 0;
+            for (int j = matrix.Length - 1; j >= 0; j--)
+            {
+                if (total >= 3)
+                {
+                    matrix[j, i] = 0;
+                    continue;
+                }
+
+                matrix[j, i] = Math.Max(matrix[j, i], 3 - total);
+                total += matrix[j, i];
+            }
+        }
+
+    }
+
+    private int GetResult(int[,] matrix)
+    {
+        List<Number> numbers = GetNumbers(matrix);
+        int result = -1;
         for (int i = 0; i < numbers.Count; i++)
         {
-            var number = numbers[i];
-            var newGroups = new List<Group>();
-            foreach (Group group in groups)
+            for (int j = 0; j < numbers.Count; j++)
             {
-                if (group.Number1 != number && group.Number2 != number && group.Number3 != number)
+                if (j == i)
                 {
-                    foreach (Group newGroup in group.GetCandidateGroups(number))
+                    continue;
+                }
+
+                for (int k = 0; k < numbers.Count; k++)
+                {
+                    if (k == i || k == j)
                     {
-                        newGroups.Add(newGroup);
+                        continue;
                     }
+
+
                 }
             }
-
-            groups = Merge(groups, newGroups);
         }
-
-        return groups.First().TrailingZeroCount;
     }
 
-    private List<Group> Merge(List<Group> groups, List<Group> newGroups)
+    private List<Number> GetNumbers(int[,] matrix)
     {
-        newGroups.AddRange(groups);
-        int maxTrailingZeros = newGroups.Max(g => g.TrailingZeroCount);
-        newGroups = newGroups.Where(g => g.TrailingZeroCount == maxTrailingZeros).ToList();
-        int maxA = -1;
-        int maxB = -1;
-        foreach (Group newGroup in newGroups)
+        var numbers = new List<Number>();
+        for (int i = 0; i < matrix.Length; i++)
         {
-            maxA = Math.Max(maxA, newGroup.Sum.A);
-            maxB = Math.Max(maxB, newGroup.Sum.B);
+            for (int j = 0; j < matrix.Length; j++)
+            {
+                for (int k = 0; k < matrix[i, j]; k++)
+                {
+                    numbers.Add(new Number(i, j));
+                }
+            }
         }
-
-        return newGroups.Where(g => g.Sum.A == maxA || g.Sum.B == maxB).ToList();
+        return numbers;
     }
 
-    private int GetFastResult(List<Number> numbers)
+    private int GetFastResult(int[,] matrix)
     {
-        Number first = numbers.First();
-        bool isIdenticalNumbers = numbers.All(x => x.A == first.A && x.B == first.B);
-        if (isIdenticalNumbers)
+        int fastResultForIdenticalNumbers = GetFastResultForIdenticalNumbers(matrix);
+        if (fastResultForIdenticalNumbers >= 0)
         {
-            return 3 * Math.Min(first.A, first.B);
+            return fastResultForIdenticalNumbers;
         }
 
-        bool isAllAZeros = numbers.All(x => x.A == 0);
-        if (isAllAZeros)
+        int fastResultForZero = GetFastResultForZero(matrix);
+        if (fastResultForIdenticalNumbers >= 0)
         {
-            return 0;
-        }
-
-        bool isAllBZeros = numbers.All(x => x.B == 0);
-        if (isAllBZeros)
-        {
-            return 0;
+            return fastResultForZero;
         }
 
         return -1;
     }
 
-    private List<Number> GetNumbers(int[] a)
+    private int GetFastResultForZero(int[,] matrix)
     {
-        return a.Select(x => new Number(GetPow2(x), GetPow5(x))).ToList();
+        for (int i = 1; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 1; j < matrix.GetLength(0); j++)
+            {
+                if (matrix[i, j] > 0)
+                {
+                    return -1;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private static int GetFastResultForIdenticalNumbers(int[,] matrix)
+    {
+        int pow2 = -1;
+        int pow5 = -1;
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(0); j++)
+            {
+                if (matrix[i, j] == 0)
+                {
+                    continue;
+                }
+
+                if (pow2 == -1)
+                {
+                    pow2 = i;
+                    pow5 = j;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
+        return 3 * Math.Min(pow2, pow5);
+    }
+
+    private int[,] GetNumbers(int[] a)
+    {
+        int dimension = (int)Math.Floor(Math.Log(MaxValue, 5));
+        var matrix = new int[dimension + 1, dimension + 1];
+        foreach (var i in a)
+        {
+            int pow2 = Math.Min(GetPow2(i), dimension);
+            int pow5 = GetPow5(i);
+            matrix[pow2, pow5]++;
+        }
+
+        return matrix;
     }
 
     private int GetPow(long x, int @base)
@@ -120,82 +194,16 @@ class Solution
     {
         return GetPow(x, 5);
     }
-}
 
-public class Number
-{
-    public int A { get; set; }
-    public int B { get; set; }
-
-    public Number(int a, int b)
+    public class Number
     {
-        A = a;
-        B = b;
-    }
+        public int Pow2 { get; set; }
+        public int Pow5 { get; set; }
 
-    public override string ToString()
-    {
-        return $"{A},{B}";
-    }
-}
-
-public class Group
-{
-    public Number Number1 { get; set; }
-    public Number Number2 { get; set; }
-    public Number Number3 { get; set; }
-    private Number _sum;
-    private int? _trailingZeroCount;
-
-    public Group(Number number1, Number number2, Number number3)
-    {
-        Number1 = number1;
-        Number2 = number2;
-        Number3 = number3;
-    }
-
-    public Number Sum
-    {
-        get
+        public Number(int pow2, int pow5)
         {
-            if (_sum == null)
-            {
-                _sum = new Number(Number1.A + Number2.A + Number3.A, Number1.B + Number2.B + Number3.B);
-            }
-
-            return _sum;
-        }
-    }
-
-    public int TrailingZeroCount
-    {
-        get
-        {
-            if (!_trailingZeroCount.HasValue)
-            {
-                _trailingZeroCount = Math.Min(Sum.A, Sum.B);
-            }
-
-            return _trailingZeroCount.Value;
-        }
-    }
-
-    public IEnumerable<Group> GetCandidateGroups(Number number)
-    {
-        if (number.A != Number3.A || number.B != Number3.B)
-        {
-            yield return new Group(Number1, Number2, number);
-        }
-
-        if (number.A != Number2.A || number.B != Number2.B)
-        {
-            yield return new Group(Number1, Number3, number);
-            
-        }
-
-        if (number.A != Number1.A || number.B != Number1.B)
-        {
-            yield return new Group(Number2, Number3, number);
+            Pow2 = pow2;
+            Pow5 = pow5;
         }
     }
 }
