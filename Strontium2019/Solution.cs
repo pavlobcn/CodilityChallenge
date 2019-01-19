@@ -112,11 +112,10 @@ class Solution
         {
             return new Dictionary<char, LetterInfo> {{word[0], new LetterInfo {Total = word.Length}}};
         }
-        else
-        {
-            var letterInfo = new LetterInfo{End = word.Length - groupStartIndex};
-            AddLetterInfo(info, letterInfo, word[0]);
-        }
+
+        var endLetterInfo = new LetterInfo{End = word.Length - groupStartIndex};
+        AddLetterInfo(info, endLetterInfo, word[word.Length - 1]);
+
         return info;
     }
 
@@ -139,5 +138,10 @@ class Solution
         public int Mid { get; set; }
         public int End { get; set; }
         public int Total { get; set; }
+
+        public override string ToString()
+        {
+            return $"Start: {Start}, Mid: {Mid}, End: {End}, Total: {Total}";
+        }
     }
 }
