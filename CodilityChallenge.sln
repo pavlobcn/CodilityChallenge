@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrandChallenge", "GrandChal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalGold", "DigitalGold\DigitalGold.csproj", "{F21D6907-1B09-425A-B31C-32C62FEE80A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selenium2018", "Selenium2018\Selenium2018.csproj", "{399605CB-6433-4546-A704-2BC1D26223C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Selenium2018", "Selenium2018\Selenium2018.csproj", "{399605CB-6433-4546-A704-2BC1D26223C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germanium2018", "Germanium2018\Germanium2018.csproj", "{AB4F0652-B3A2-4428-81D6-4F7C09D49A97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germanium2018", "Germanium2018\Germanium2018.csproj", "{AB4F0652-B3A2-4428-81D6-4F7C09D49A97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallium2018", "Gallium2018\Gallium2018.csproj", "{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{AB4F0652-B3A2-4428-81D6-4F7C09D49A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB4F0652-B3A2-4428-81D6-4F7C09D49A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB4F0652-B3A2-4428-81D6-4F7C09D49A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
