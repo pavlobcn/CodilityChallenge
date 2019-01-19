@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 class Solution
 {
-    private const int MaxValue = 1000000000;
+    private const int Dimension = 28;
 
     public int solution(int[] A)
     {
@@ -23,10 +22,10 @@ class Solution
 
     private void Minimize(int[,] matrix)
     {
-        for (int i = 0; i < matrix.Length; i++)
+        for (int i = 0; i < Dimension; i++)
         {
             int total = 0;
-            for (int j = matrix.Length - 1; j >= 0; j--)
+            for (int j = Dimension - 1; j >= 0; j--)
             {
                 if (total >= 3)
                 {
@@ -34,15 +33,15 @@ class Solution
                     continue;
                 }
 
-                matrix[i, j] = Math.Max(matrix[i, j], 3 - total);
+                matrix[i, j] = Math.Min(matrix[i, j], 3 - total);
                 total += matrix[i, j];
             }
         }
 
-        for (int i = 0; i < matrix.Length; i++)
+        for (int i = 0; i < matrix.GetLength(1); i++)
         {
             int total = 0;
-            for (int j = matrix.Length - 1; j >= 0; j--)
+            for (int j = matrix.GetLength(0) - 1; j >= 0; j--)
             {
                 if (total >= 3)
                 {
@@ -50,11 +49,10 @@ class Solution
                     continue;
                 }
 
-                matrix[j, i] = Math.Max(matrix[j, i], 3 - total);
+                matrix[j, i] = Math.Min(matrix[j, i], 3 - total);
                 total += matrix[j, i];
             }
         }
-
     }
 
     private int GetResult(int[,] matrix)
@@ -63,32 +61,29 @@ class Solution
         int result = -1;
         for (int i = 0; i < numbers.Count; i++)
         {
-            for (int j = 0; j < numbers.Count; j++)
+            for (int j = i + 1; j < numbers.Count; j++)
             {
-                if (j == i)
+                for (int k = j + 1; k < numbers.Count; k++)
                 {
-                    continue;
-                }
-
-                for (int k = 0; k < numbers.Count; k++)
-                {
-                    if (k == i || k == j)
+                    int newResult = Math.Min(numbers[i].Pow2 + numbers[j].Pow2 + numbers[k].Pow2,
+                        numbers[i].Pow5 + numbers[j].Pow5 + numbers[k].Pow5);
+                    if (newResult > result)
                     {
-                        continue;
+                        result = newResult;
                     }
-
-
                 }
             }
         }
+
+        return result;
     }
 
     private List<Number> GetNumbers(int[,] matrix)
     {
         var numbers = new List<Number>();
-        for (int i = 0; i < matrix.Length; i++)
+        for (int i = 0; i < Dimension; i++)
         {
-            for (int j = 0; j < matrix.Length; j++)
+            for (int j = 0; j < Dimension; j++)
             {
                 for (int k = 0; k < matrix[i, j]; k++)
                 {
@@ -101,6 +96,12 @@ class Solution
 
     private int GetFastResult(int[,] matrix)
     {
+        int fastResultForMaximum = GetFastResultForMaximum(matrix);
+        if (fastResultForMaximum >= 0)
+        {
+            return fastResultForMaximum;
+        }
+
         int fastResultForIdenticalNumbers = GetFastResultForIdenticalNumbers(matrix);
         if (fastResultForIdenticalNumbers >= 0)
         {
@@ -116,11 +117,21 @@ class Solution
         return -1;
     }
 
+    private int GetFastResultForMaximum(int[,] matrix)
+    {
+        if (matrix[Dimension - 1, Dimension - 1] >= 3)
+        {
+            return 3 * (Dimension - 1);
+        }
+
+        return -1;
+    }
+
     private int GetFastResultForZero(int[,] matrix)
     {
-        for (int i = 1; i < matrix.GetLength(0); i++)
+        for (int i = 1; i < Dimension; i++)
         {
-            for (int j = 1; j < matrix.GetLength(0); j++)
+            for (int j = 1; j < Dimension; j++)
             {
                 if (matrix[i, j] > 0)
                 {
@@ -136,9 +147,9 @@ class Solution
     {
         int pow2 = -1;
         int pow5 = -1;
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (int i = 0; i < Dimension; i++)
         {
-            for (int j = 0; j < matrix.GetLength(0); j++)
+            for (int j = 0; j < Dimension; j++)
             {
                 if (matrix[i, j] == 0)
                 {
@@ -162,12 +173,11 @@ class Solution
 
     private int[,] GetNumbers(int[] a)
     {
-        int dimension = (int)Math.Floor(Math.Log(MaxValue, 5));
-        var matrix = new int[dimension + 1, dimension + 1];
+        var matrix = new int[Dimension, Dimension];
         foreach (var i in a)
         {
-            int pow2 = Math.Min(GetPow2(i), dimension);
-            int pow5 = GetPow5(i);
+            int pow2 = Math.Min(GetPow2(i), Dimension - 1);
+            int pow5 = Math.Min(GetPow5(i), Dimension - 1);
             matrix[pow2, pow5]++;
         }
 
