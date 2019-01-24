@@ -26,8 +26,8 @@ class Solution
 
     private long GetJoinedResult(List<PositionInfo> list)
     {
-        var seed = new { PreviosValue = 0, Total = 0l};
-        return list.Aggregate(seed, (a, i) => new {PreviosValue = i.DistinctCount, Total = a.Total + (i.DistinctCount - a.PreviosValue) * i.DistinctReversedCount}).Total;
+        var seed = new { PreviosValue = 0L, Total = 0L };
+        return list.Aggregate(seed, (a, i) => new { PreviosValue = (long)i.DistinctCount, Total = (a.Total + (i.DistinctCount - a.PreviosValue) * i.DistinctReversedCount) % Mod }).Total;
     }
 
     private List<PositionInfo>[] GetPositionInfo(int[] a, int[] distinctArray, int[] distinctArrayReversed)
@@ -39,7 +39,7 @@ class Solution
             var positionInfo = new PositionInfo(distinctArray[i - 1], distinctArrayReversed[i + 1]);
             if (list == null)
             {
-                positionInfos[a[i] - 1] = new List<PositionInfo> {positionInfo};
+                positionInfos[a[i] - 1] = new List<PositionInfo> { positionInfo };
             }
             else
             {
@@ -88,8 +88,8 @@ class Solution
 
     private class PositionInfo
     {
-        public int DistinctCount { get; set; }
-        public int DistinctReversedCount { get; set; }
+        public int DistinctCount { get; }
+        public int DistinctReversedCount { get; }
 
         public PositionInfo(int distinctCount, int distinctReversedCount)
         {
