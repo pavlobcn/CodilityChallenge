@@ -10,7 +10,7 @@ namespace Zinc2018
         public void Test1()
         {
             Test(
-                "[1, 2, 3, 4]",
+                "[1, 2, 1, 1]",
                 3);
         }
         [TestMethod]
@@ -35,6 +35,14 @@ namespace Zinc2018
             Test(
                 "[2, 2, 1, 2, 2]",
                 4);
+        }
+
+        [TestMethod]
+        public void Test5()
+        {
+            Test(
+                "[1, 2]",
+                0);
         }
 
         private void Test(string a, int expectedResult)
