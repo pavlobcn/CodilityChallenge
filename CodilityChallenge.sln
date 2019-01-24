@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germanium2018", "Germanium2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallium2018", "Gallium2018\Gallium2018.csproj", "{2A7DBBFF-C28B-4207-8CFD-67524C9C5BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strontium2019", "Strontium2019\Strontium2019.csproj", "{EB924772-1E00-4DEE-82B5-53E2CCABC140}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strontium2019", "Strontium2019\Strontium2019.csproj", "{EB924772-1E00-4DEE-82B5-53E2CCABC140}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zinc2018", "Zinc2018\Zinc2018.csproj", "{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{EB924772-1E00-4DEE-82B5-53E2CCABC140}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB924772-1E00-4DEE-82B5-53E2CCABC140}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB924772-1E00-4DEE-82B5-53E2CCABC140}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
