@@ -3,6 +3,6 @@ public partial class Group
 {
     public override string ToString()
     {
-        return _s.Substring(_startIndex, _length);
+        return _s.Substring(_startIndex, Length);
     }
 }
