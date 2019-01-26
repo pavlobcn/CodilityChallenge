@@ -2,32 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-class Solution
+namespace Algorithms
 {
-    public int solution(string S)
-    {
-        return new Algorithm().Solution(S.ToCharArray());
-    }
-
-    public class Algorithm : MaxLengthOfSubArray<char, ulong>
-    {
-        protected override ulong GetStateDif(ulong prevState, char element)
-        {
-            ulong dif;
-            if (element >= 'a' && element <= 'z')
-            {
-                dif = 1UL << (element - 'a');
-            }
-            else
-            {
-                dif = (1UL << 26) << (element - '0');
-            }
-
-            return prevState ^ dif;
-        }
-    }
-
-    public abstract class MaxLengthOfSubArray<TElement, TState>
+    public abstract class MaxLengthOfSubArray<TElement,TState>
     {
         public int Solution(TElement[] array)
         {

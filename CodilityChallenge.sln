@@ -37,7 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strontium2019", "Strontium2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zinc2018", "Zinc2018\Zinc2018.csproj", "{D7D1916B-A8F9-4921-8D8A-54D72EFE1B8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuprum2018", "Cuprum2018\Cuprum2018.csproj", "{BAB3AEFC-3096-466A-AD9F-269089DC4EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cuprum2018", "Cuprum2018\Cuprum2018.csproj", "{BAB3AEFC-3096-466A-AD9F-269089DC4EE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{07C85631-FAFD-4B83-A2F2-314FD5370CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algorithms", "Algorithms\Algorithms.csproj", "{B1269B07-B36A-4A87-A2F8-880E95A3A75C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,9 +105,17 @@ Global
 		{BAB3AEFC-3096-466A-AD9F-269089DC4EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAB3AEFC-3096-466A-AD9F-269089DC4EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAB3AEFC-3096-466A-AD9F-269089DC4EE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8B067A4-ADC4-4D8C-9EE3-6B2147D488A5} = {07C85631-FAFD-4B83-A2F2-314FD5370CE2}
+		{B1269B07-B36A-4A87-A2F8-880E95A3A75C} = {07C85631-FAFD-4B83-A2F2-314FD5370CE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B32634-61C8-4231-8BD0-58277FC094BD}
