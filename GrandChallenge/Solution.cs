@@ -104,76 +104,85 @@ class Solution
     }
 }
 
-public class Point
-{
-    public int Value { get; set; }
-    public int Index { get; set; }
-
-    public Point(int value, int index)
-    {
-        Value = value;
-        Index = index;
-    }
-}
-
 public partial class Group
 {
     private readonly string _s;
     private readonly int _startIndex;
-    private readonly int _length;
     private readonly char _c1;
 
     public Group(string s, int startIndex, int length, char c1)
     {
         _s = s;
         _startIndex = startIndex;
-        _length = length;
+        Length = length;
         _c1 = c1;
     }
 
-    public int Length => _length;
+    public int Length { get; }
 
     public int GetBalancedLength()
     {
-        Point[] points = GetPoints();
-        Array.Sort(points, (p1, p2) => p1.Value - p2.Value);
-        Point previousPoint = points[0];
-        int minIndex = previousPoint.Index;
-        int maxIndex = previousPoint.Index;
-        int balanceLength = 0;
-        for (int i = 1; i < points.Length; i++)
-        {
-            Point currentPoint = points[i];
-            if (currentPoint.Value == previousPoint.Value)
-            {
-                minIndex = Math.Min(minIndex, currentPoint.Index);
-                maxIndex = Math.Max(maxIndex, currentPoint.Index);
-            }
-            else
-            {
-                balanceLength = Math.Max(balanceLength, maxIndex - minIndex);
+        return new BalancedLength(_c1).Solution(_s.Skip(_startIndex).Take(Length).ToArray());
+    }
+}
 
-                previousPoint = currentPoint;
-                minIndex = currentPoint.Index;
-                maxIndex = currentPoint.Index;
-            }
-        }
-        return balanceLength;
+public class BalancedLength : MaxLengthOfSubArray<char, int>
+{
+    private readonly char _c;
+
+    public BalancedLength(char c)
+    {
+        _c = c;
     }
 
-    private Point[] GetPoints()
+    protected override int GetStateDif(int prevState, char element)
     {
-        var points = new Point[_length + 1];
-        int value = 0;
-        points[0] = new Point(value, 0);
-        int i = 0;
-        foreach (char c in _s.Skip(_startIndex).Take(_length))
+        return prevState + (element == _c ? 1 : -1);
+    }
+}
+
+public abstract class MaxLengthOfSubArray<TElement, TState>
+{
+    public int Solution(TElement[] array)
+    {
+        TState[] states = GetStates(array);
+        IList<List<int>> groups = GetGroups(states);
+        int result = groups.Max(GetGroupMaximum);
+        return result;
+    }
+
+    private TState[] GetStates(TElement[] array)
+    {
+        var states = new TState[array.Length + 1];
+        for (int i = 0; i < array.Length; i++)
         {
-            var point = new Point(value + (c == _c1 ? 1 : -1), i + 1);
-            value = point.Value;
-            points[i + 1] = point;
-            i++;
+            states[i + 1] = GetStateDif(states[i], array[i]);
         }
-        return points;
+        return states;
+    }
+
+    protected abstract TState GetStateDif(TState prevState, TElement element);
+
+    private IList<List<int>> GetGroups(TState[] states)
+    {
+        var positions = new Tuple<TState, int>[states.Length];
+        for (int i = 0; i < states.Length; i++)
+        {
+            positions[i] = new Tuple<TState, int>(states[i], i);
+        }
+
+        return positions.GroupBy(x => x.Item1, x => x.Item2).Select(x => x.ToList()).ToList();
+    }
+
+    private int GetGroupMaximum(IList<int> positions)
+    {
+        if (positions.Count == 1)
+        {
+            return 0;
+        }
+
+        int min = positions.Min();
+        int max = positions.Max();
+        return max - min;
     }
 }
