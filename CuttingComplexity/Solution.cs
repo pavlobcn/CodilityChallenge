@@ -71,7 +71,7 @@ class Solution
     {
         if (_k == 0)
         {
-            return 0;
+            return _s.Count(c => c == M);
         }
 
         if (_s.All(c => c == M))
