@@ -88,7 +88,7 @@ class Solution
 
         if (_s.All(c => c == M))
         {
-            return GetSplitCount(_s.Length);
+            return (int)Math.Ceiling((double)_s.Length / (_k + 1));
         }
 
         if (_s.All(c => c == L))
