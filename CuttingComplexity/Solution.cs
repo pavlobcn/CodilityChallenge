@@ -120,11 +120,13 @@ class Solution
 
         Line line2 = null;
         int rightBound = GetNormalIndex(i + _k);
+        bool isCycle = false; ;
         if (_s[rightBound] == M)
         {
             result++;
             line2 = _lines.GetLine(rightBound);
-            if (line2 == line1)
+            isCycle = IsCycle(line1, line2, i);
+            if (isCycle)
             {
 
             }
@@ -135,12 +137,29 @@ class Solution
             }
         }
 
-        if ((line1 == null && line2 == null) || (line1 != line2))
+        if (!isCycle)
         {
             result += GetSplitCountByBounds(leftBound, rightBound);
         }
 
         return result;
+    }
+
+    private bool IsCycle(Line line1, Line line2, int position)
+    {
+        if (line1 != line2)
+        {
+            return false;
+        }
+
+        if (position >= line1.Start &&
+            position <= line1.Start + line1.Length - 1 &&
+            position + _k - 1 >= line1.Start && position + _k - 1 <= line1.Start + line1.Length - 1)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private int GetSplitCountByBounds(int leftBound, int rightBound)
