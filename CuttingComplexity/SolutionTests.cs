@@ -107,7 +107,25 @@ namespace CuttingComplexity
                 3);
         }
 
-        private const int MaxLength = 10;
+        [TestMethod]
+        public void Test12()
+        {
+            Test(
+                "M",
+                1,
+                0);
+        }
+
+        [TestMethod]
+        public void Test13()
+        {
+            Test(
+                "LM",
+                2,
+                1);
+        }
+
+        private const int MaxLength = 12;
 
         [TestMethod]
         public void FindBugTest()
@@ -116,7 +134,7 @@ namespace CuttingComplexity
             {
                 foreach (string s in GenerateStrings(length))
                 {
-                    for (int k = 0; k < length; k++)
+                    for (int k = 0; k <= length; k++)
                     {
                         int expectedResult = GetExpectedResult(s, k);
                         Test(

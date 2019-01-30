@@ -86,6 +86,11 @@ class Solution
             return _s.Count(c => c == M);
         }
 
+        if (_s.Length == _k)
+        {
+            return _s.Count(c => c == L);
+        }
+
         if (_s.All(c => c == M))
         {
             return (int)Math.Ceiling((double)_s.Length / (_k + 1));
