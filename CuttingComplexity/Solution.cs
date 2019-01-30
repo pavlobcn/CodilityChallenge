@@ -10,7 +10,6 @@ class Solution
     private Lines _lines;
     private int[] _splitCounts;
     private int _totalSplitCount;
-    private int _edgeSplitCount;
 
     public int solution(string S, int K)
     {
@@ -26,12 +25,12 @@ class Solution
         _lines = Lines.GetLines(S);
         GetSplitCounts();
 
-        var seed = new {L = S.Take(_k).Count(c => c == L), M = S.Take(_k).Count(c => c == M), Result = _s.Length};
-        var aggregate = Enumerable.Range(0, _s.Length)
+        var seed = new {L = S.Take(_k).Count(c => c == L), Result = _s.Length};
+        var aggregate = Enumerable.Range(0, _s.Length - _k + 1)
                 .Aggregate(seed, (acc, i) =>
                     {
                         int newResult = GetSingleResult(i, acc.L);
-                        return new {L = GetNewWeight(acc.L, i, L), M = GetNewWeight(acc.M, i, M), Result = Math.Min(acc.Result, newResult)};
+                        return new {L = GetNewWeight(acc.L, i, L), Result = Math.Min(acc.Result, newResult)};
                     }
                 );
 
@@ -49,34 +48,21 @@ class Solution
                 continue;
             }
 
-            if (_s[GetNormalIndex(i - 1)] == M)
+            if (_s[i - 1] == M)
             {
-                Line line = _lines.GetLine(GetNormalIndex(i - 1));
-                if (line.Start == 0 || line.Start > i)
-                {
-                    continue;
-                }
+                Line line = _lines.GetLine(i - 1);
                 int splitCount = GetSplitCount(line.Length);
                 _totalSplitCount = _totalSplitCount + splitCount;
             }
+
             _splitCounts[i] = _totalSplitCount;
         }
 
-        if (_s[0] == M)
+        if (_s[_s.Length - 1] == M)
         {
-            _edgeSplitCount = GetSplitCount(_lines.GetLine(0).Length);
+            int splitCount = GetSplitCount(_lines.GetLine(_s.Length - 1).Length);
+            _totalSplitCount = _totalSplitCount + splitCount;
         }
-        else if (_s[_s.Length - 1] == M)
-        {
-            _edgeSplitCount = GetSplitCount(_lines.GetLine(_s.Length - 1).Length);
-        }
-
-        _totalSplitCount += _edgeSplitCount;
-    }
-
-    private int GetNormalIndex(int index)
-    {
-        return (_s.Length + index) % _s.Length;
     }
 
     private int GetFastResult()
@@ -93,7 +79,7 @@ class Solution
 
         if (_s.All(c => c == M))
         {
-            return (int)Math.Ceiling((double)_s.Length / (_k + 1));
+            return (int)Math.Floor((double)_s.Length / (_k + 1));
         }
 
         if (_s.All(c => c == L))
@@ -113,73 +99,44 @@ class Solution
     {
         int result = 0;
         result += l;
-        int leftBound = GetNormalIndex(i - 1);
-        Line line1 = null;
-        if (_s[leftBound] == M)
+        int leftBound = i - 1;
+        if (i > 0 && _s[leftBound] == M)
         {
             result++;
-            line1 = _lines.GetLine(leftBound);
-            leftBound = GetNormalIndex(line1.Start - 1);
-            result += GetSplitCount(GetNormalIndex(i - line1.Start - 1));
+            var line1 = _lines.GetLine(leftBound);
+            leftBound = line1.Start - 1;
+            result += GetSplitCount(i - line1.Start - 1);
         }
 
-        Line line2 = null;
-        int rightBound = GetNormalIndex(i + _k);
-        bool isCycle = false; ;
-        if (_s[rightBound] == M)
+        int rightBound = i + _k;
+        if (i + _k < _s.Length && _s[rightBound] == M)
         {
             result++;
-            line2 = _lines.GetLine(rightBound);
-            isCycle = IsCycle(line1, line2, i);
-            if (isCycle)
-            {
-
-            }
-            else
-            {
-                rightBound = GetNormalIndex(line2.Start + line2.Length);
-                result += GetSplitCount(GetNormalIndex(line2.Length + line2.Start - (i + _k) - 1));
-            }
+            var line2 = _lines.GetLine(rightBound);
+            rightBound = line2.Start + line2.Length;
+            result += GetSplitCount(line2.Length + line2.Start - (i + _k) - 1);
         }
 
-        if (!isCycle)
-        {
-            result += GetSplitCountByBounds(leftBound, rightBound);
-        }
+        result += GetSplitCountByBounds(leftBound, rightBound);
 
         return result;
     }
 
-    private bool IsCycle(Line line1, Line line2, int position)
-    {
-        if (line1 != line2)
-        {
-            return false;
-        }
-
-        if (position < line1.Start)
-        {
-            position = position + _s.Length;
-        }
-
-        if (position >= line1.Start &&
-            position <= line1.Start + line1.Length - 1 &&
-            position + _k - 1 >= line1.Start && position + _k - 1 <= line1.Start + line1.Length - 1)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     private int GetSplitCountByBounds(int leftBound, int rightBound)
     {
-        if (leftBound < rightBound)
+        int leftWeight = 0;
+        if (leftBound >= 0)
         {
-            return _totalSplitCount - (_splitCounts[rightBound] - _splitCounts[leftBound]);
+            leftWeight = _splitCounts[leftBound];
         }
 
-        return _totalSplitCount - (_splitCounts[rightBound] + _edgeSplitCount - _splitCounts[leftBound]);
+        int rightWeight = _totalSplitCount;
+        if (rightBound < _s.Length)
+        {
+            rightWeight = _splitCounts[rightBound];
+        }
+
+        return _totalSplitCount - (rightWeight - leftWeight);
     }
 
     private int GetNewWeight(int oldWeight, int oldPosition, char c)
@@ -190,7 +147,7 @@ class Solution
             shift--;
         }
 
-        if (_s[GetNormalIndex(oldPosition + _k)] == c)
+        if (oldPosition + _k < _s.Length && _s[oldPosition + _k] == c)
         {
             shift++;
         }
@@ -241,20 +198,6 @@ class Solution
                 lines[i] = line;
             }
 
-            Line firstLine = lines[0];
-            Line lineToSubstitute = lines[lines.Length - 1];
-            if (firstLine != null && lineToSubstitute != null)
-            {
-                firstLine.Start = lineToSubstitute.Start;
-                firstLine.Length += lineToSubstitute.Length;
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    if (lines[i] == lineToSubstitute)
-                    {
-                        lines[i] = firstLine;
-                    }
-                }
-            }
             return new Lines(lines);
         }
 

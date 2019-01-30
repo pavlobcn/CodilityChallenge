@@ -59,7 +59,7 @@ namespace CuttingComplexity
             Test(
                 "MLLLLM",
                 1,
-                1);
+                0);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace CuttingComplexity
             Test(
                 "MMMMMM",
                 3,
-                2);
+                1);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace CuttingComplexity
             Test(
                 "MMMMMM",
                 4,
-                2);
+                1);
         }
 
         [TestMethod]
@@ -125,7 +125,26 @@ namespace CuttingComplexity
                 1);
         }
 
-        private const int MaxLength = 12;
+        [TestMethod]
+        public void Test14()
+        {
+            Test(
+                "LM",
+                1,
+                0);
+        }
+
+        [TestMethod]
+        public void Test15()
+        {
+            Test(
+                "MMM",
+                1,
+                1);
+        }
+
+        private const int MaxLength = 10;
+        private const int ExactlyOneLMaxLength = 10;
 
         [TestMethod]
         public void FindBugTest()
@@ -133,6 +152,25 @@ namespace CuttingComplexity
             for (int length = 1; length < MaxLength; length++)
             {
                 foreach (string s in GenerateStrings(length))
+                {
+                    for (int k = 0; k <= length; k++)
+                    {
+                        int expectedResult = GetExpectedResult(s, k);
+                        Test(
+                            s,
+                            k,
+                            expectedResult);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void FindBugExactlyOneLTest()
+        {
+            for (int length = 1; length < ExactlyOneLMaxLength; length++)
+            {
+                foreach (string s in GenerateStringsExactlyOneL(length))
                 {
                     for (int k = 0; k <= length; k++)
                     {
@@ -185,9 +223,6 @@ namespace CuttingComplexity
 
         private int GetMaxSubstringLength(string replacedString)
         {
-            var trimmedString = replacedString.TrimEnd(Solution.M);
-            int endingMCount = replacedString.Length - trimmedString.Length;
-            replacedString = new string(Solution.M, endingMCount) + trimmedString;
             var split = replacedString.Split(Solution.L);
             if (split.Length == 0)
             {
@@ -226,6 +261,14 @@ namespace CuttingComplexity
             {
                 yield return substring + Solution.L;
                 yield return substring + Solution.M;
+            }
+        }
+
+        private IEnumerable<string> GenerateStringsExactlyOneL(int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                yield return new string(Solution.M, length - 1).Insert(i, Solution.L.ToString());
             }
         }
 
