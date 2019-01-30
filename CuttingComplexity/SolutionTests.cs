@@ -98,21 +98,33 @@ namespace CuttingComplexity
                 3);
         }
 
+        [TestMethod]
+        public void Test11()
+        {
+            Test(
+                "MMLLLMMLMM",
+                1,
+                3);
+        }
+
         private const int MaxLength = 10;
 
         [TestMethod]
         public void FindBugTest()
         {
-            foreach (string s in GenerateStrings(MaxLength))
+            for (int length = 1; length < MaxLength; length++)
             {
-                for (int k = 0; k < MaxLength; k++)
+                foreach (string s in GenerateStrings(length))
                 {
-                    int expectedResult = GetExpectedResult(s, k);
-                    Test(
-                        s,
-                        k,
-                        expectedResult);
+                    for (int k = 0; k < length; k++)
+                    {
+                        int expectedResult = GetExpectedResult(s, k);
+                        Test(
+                            s,
+                            k,
+                            expectedResult);
 
+                    }
                 }
             }
         }
@@ -120,7 +132,7 @@ namespace CuttingComplexity
         private int GetExpectedResult(string s, int k)
         {
             int result = int.MaxValue;
-            foreach (bool[] replacement in GenerateReplacements(MaxLength))
+            foreach (bool[] replacement in GenerateReplacements(s.Length))
             {
                 if (replacement.Count(x => x) >= result)
                 {
@@ -203,7 +215,7 @@ namespace CuttingComplexity
         {
             var solution = new Solution();
             int actualResult = solution.solution(s, k);
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.AreEqual(expectedResult, actualResult, $"{s} - K: {k}");
         }
     }
 }

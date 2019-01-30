@@ -152,6 +152,11 @@ class Solution
             return false;
         }
 
+        if (position < line1.Start)
+        {
+            position = position + _s.Length;
+        }
+
         if (position >= line1.Start &&
             position <= line1.Start + line1.Length - 1 &&
             position + _k - 1 >= line1.Start && position + _k - 1 <= line1.Start + line1.Length - 1)
