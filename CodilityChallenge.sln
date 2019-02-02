@@ -41,7 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cuprum2018", "Cuprum2018\Cu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{07C85631-FAFD-4B83-A2F2-314FD5370CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algorithms", "Algorithms\Algorithms.csproj", "{B1269B07-B36A-4A87-A2F8-880E95A3A75C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithms", "Algorithms\Algorithms.csproj", "{B1269B07-B36A-4A87-A2F8-880E95A3A75C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CuttingComplexity", "CuttingComplexity\CuttingComplexity.csproj", "{040308DD-28FF-4861-BB74-2B9C9E17EB4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nickel2018", "Nickel2018\Nickel2018.csproj", "{DE9DAF71-840D-4F0D-836F-959C17DC40CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +113,14 @@ Global
 		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1269B07-B36A-4A87-A2F8-880E95A3A75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040308DD-28FF-4861-BB74-2B9C9E17EB4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040308DD-28FF-4861-BB74-2B9C9E17EB4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040308DD-28FF-4861-BB74-2B9C9E17EB4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040308DD-28FF-4861-BB74-2B9C9E17EB4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
