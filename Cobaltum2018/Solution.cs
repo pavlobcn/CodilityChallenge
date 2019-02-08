@@ -23,6 +23,7 @@ class Solution
         var list = new List<int>();
         int groupLength = 0;
         int changes = 0;
+        bool prevContinueOnlyWithChange = false;
         for (int i = 0; i <= a.Length; i++)
         {
             if (groupLength == 0)
@@ -33,6 +34,7 @@ class Solution
 
             bool continueWithoutChange = i == a.Length || a[i - 1] < a[i] && b[i - 1] < b[i];
             bool continueWithChange = i == a.Length || a[i - 1] < b[i] && b[i - 1] < a[i];
+
             if (!continueWithoutChange && !continueWithChange)
             {
                 return null;
@@ -45,6 +47,13 @@ class Solution
                 changes = 0;
                 continue;
             }
+
+            if (prevContinueOnlyWithChange)
+            {
+                continueWithChange = !continueWithChange;
+            }
+
+            prevContinueOnlyWithChange = continueWithChange;
 
             if (continueWithChange)
             {
