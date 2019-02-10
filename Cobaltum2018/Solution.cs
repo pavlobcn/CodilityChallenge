@@ -45,6 +45,7 @@ class Solution
                 list.Add(Math.Min(changes, groupLength - changes));
                 groupLength = 1;
                 changes = 0;
+                prevContinueOnlyWithChange = false;
                 continue;
             }
 

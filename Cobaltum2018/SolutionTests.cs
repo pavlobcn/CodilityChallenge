@@ -42,6 +42,42 @@ namespace Cobaltum2018
                 1);
         }
 
+        [TestMethod]
+        public void Test5()
+        {
+            Test(
+                new[] { 1, 3, 3, 5, 5 },
+                new[] { 2, 2, 4, 4, 6 },
+                2);
+        }
+
+        [TestMethod]
+        public void Test6()
+        {
+            Test(
+                new[] { 1, 3, 3, 5, 5, 7 },
+                new[] { 2, 2, 4, 4, 6, 6 },
+                3);
+        }
+
+        [TestMethod]
+        public void Test7()
+        {
+            Test(
+                new[] { 1, 3, 3, 5 },
+                new[] { 2, 2, 4, 4 },
+                2);
+        }
+
+        [TestMethod]
+        public void Test8()
+        {
+            Test(
+                new[] { 1, 3, 4 },
+                new[] { 2, 2, 3 },
+                1);
+        }
+
         private void Test(int[] a, int[] b, int expectedResult)
         {
             int actualResult = new Solution().solution(a, b);
