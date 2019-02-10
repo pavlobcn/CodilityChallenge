@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algorithms", "Algorithms\Al
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CuttingComplexity", "CuttingComplexity\CuttingComplexity.csproj", "{040308DD-28FF-4861-BB74-2B9C9E17EB4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nickel2018", "Nickel2018\Nickel2018.csproj", "{DE9DAF71-840D-4F0D-836F-959C17DC40CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nickel2018", "Nickel2018\Nickel2018.csproj", "{DE9DAF71-840D-4F0D-836F-959C17DC40CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobaltum2018", "Cobaltum2018\Cobaltum2018.csproj", "{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE9DAF71-840D-4F0D-836F-959C17DC40CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
