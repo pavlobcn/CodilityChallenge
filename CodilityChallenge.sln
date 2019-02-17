@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nickel2018", "Nickel2018\Ni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cobaltum2018", "Cobaltum2018\Cobaltum2018.csproj", "{3FB9FA19-B9C7-470B-BF2D-39EC6FD5AD66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferrum2018", "Ferrum2018\Ferrum2018.csproj", "{551B2CD5-4120-4B38-8F44-EB15A62E4250}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferrum2018", "Ferrum2018\Ferrum2018.csproj", "{551B2CD5-4120-4B38-8F44-EB15A62E4250}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium2019", "Yttrium2019\Yttrium2019.csproj", "{CF930F84-E69F-4827-929D-CEFBEA8585D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +135,10 @@ Global
 		{551B2CD5-4120-4B38-8F44-EB15A62E4250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{551B2CD5-4120-4B38-8F44-EB15A62E4250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{551B2CD5-4120-4B38-8F44-EB15A62E4250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF930F84-E69F-4827-929D-CEFBEA8585D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF930F84-E69F-4827-929D-CEFBEA8585D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF930F84-E69F-4827-929D-CEFBEA8585D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF930F84-E69F-4827-929D-CEFBEA8585D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
