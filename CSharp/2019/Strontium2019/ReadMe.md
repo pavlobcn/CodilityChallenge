@@ -1,7 +1,7 @@
 ﻿# Challenge: 
 https://app.codility.com/programmers/challenges/strontium2019/
 
-## Certificate: xxxx
+## Certificate: Golden
 https://app.codility.com/cert/view/certUUVTTC-PZ349NV3JETSD2E4/
 
 ## Report:
