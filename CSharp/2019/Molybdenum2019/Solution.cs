@@ -11,12 +11,6 @@ class Solution
 
     private bool CheckCandidate(int candidate, int k, int[] a)
     {
-        bool isCandidateALeaderWithoutChanges = a.Count(x => x == candidate) > a.Length / 2;
-        if (isCandidateALeaderWithoutChanges)
-        {
-            return true;
-        }
-
         int entryCount = 0;
         int[] array = a.ToArray();
         for (int i = 0; i < a.Length - k + 1; i++)
