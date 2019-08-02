@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80B52AC8-8B94-468D-940B-1BE73076884C}"
 	ProjectSection(SolutionItems) = preProject
@@ -67,7 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zinc2018", "CSharp\2018\Zin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zirconium2019", "CSharp\2019\Zirconium2019\Zirconium2019.csproj", "{FBDA2113-B8CB-4F92-AAC6-E671DD369AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Niobium2019", "CSharp\2019\Niobium2019\Niobium2019.csproj", "{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Niobium2019", "CSharp\2019\Niobium2019\Niobium2019.csproj", "{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molybdenum2019", "CSharp\2019\Molybdenum2019\Molybdenum2019.csproj", "{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +167,10 @@ Global
 		{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +203,7 @@ Global
 		{91313F30-9E09-490E-8F83-CA8057796266} = {FA0FB4F2-BA05-41E0-86E8-A76ECEECBEBE}
 		{FBDA2113-B8CB-4F92-AAC6-E671DD369AB1} = {3B34FC5B-1915-4125-BDCF-1B90DCF52150}
 		{EC8EDAFF-F873-47B8-827C-AA237BAC9EB3} = {3B34FC5B-1915-4125-BDCF-1B90DCF52150}
+		{04E49CBD-2DEE-43E7-9F29-E9D62958B8EB} = {3B34FC5B-1915-4125-BDCF-1B90DCF52150}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B32634-61C8-4231-8BD0-58277FC094BD}

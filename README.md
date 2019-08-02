@@ -3,6 +3,7 @@
 https://app.codility.com/programmers/challenges/
 
 ## Awards
+- Golden: https://app.codility.com/cert/view/certCYM6G6-NWYZZB3UFVADQ8JA/
 - Golden: https://app.codility.com/cert/view/certD2ERMJ-F7P869EA93VM38QT/
 - Golden: https://app.codility.com/cert/view/cert2XXP3U-FECB7D4DHXD6RQFP/
 - Golden: https://app.codility.com/cert/view/certQHKKSG-4Y8U3C7XJGDGT8BY/
