@@ -42,7 +42,7 @@ public class Solution {
                 substrings.add(new Node((a[i][j]), goBreadth(i, j + 1, a, pathNodes)));
             }
 
-            if (substrings.size() == 2 && substrings.get(1).value > substrings.get(0).value)
+            if (substrings.size() == 2 && substrings.get(1).next.value > substrings.get(0).next.value)
             {
                 resultNode = substrings.get(1);
             }
