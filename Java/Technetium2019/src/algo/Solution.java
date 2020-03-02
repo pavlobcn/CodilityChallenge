@@ -1,85 +1,75 @@
 package algo;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class Solution {
     public String solution(int[][] A)
     {
-        Node[][] pathNodes = new Node[A.length][A[0].length];
-        Node rootNode = goBreadth(0, 0, A, pathNodes);
-        String result = getString(rootNode);
-        return result;
-    }
-
-    private String getString(Node rootNode) {
         StringBuffer stringBuffer = new StringBuffer();
-        while (rootNode != null)
+        stringBuffer.append(A[0][0]);
+        ArrayList<Node> visitedDiagonalNodes = new ArrayList();
+        visitedDiagonalNodes.add(new Node(0,0));
+        for (int i = 1; i < A.length + A[0].length - 1; i++)
         {
-            stringBuffer.append(rootNode.value);
-            rootNode = rootNode.next;
+            ArrayList<Node> nextNodes = getNextNodes(visitedDiagonalNodes, A);
+            Node nextNode = nextNodes.get(0);
+            stringBuffer.append(A[nextNode.x][nextNode.y]);
+            visitedDiagonalNodes = nextNodes;
         }
-
         return stringBuffer.toString();
     }
 
-    private Node goBreadth(int i, int j, int[][] a, Node[][] pathNodes) {
-        if (pathNodes[i][j] != null) {
-            return pathNodes[i][j];
+    private ArrayList<Node> getNextNodes(ArrayList<Node> visitedDiagonalNodes, int[][] a) {
+        ArrayList<Node>[] nextNodes = new ArrayList[10];
+        for (int i = 0; i < nextNodes.length; i++)
+        {
+            nextNodes[i] = new ArrayList();
         }
-        Node resultNode;
-        if (i == a.length - 1 && j == a[0].length - 1) {
-            resultNode = new Node(a[i][j], null);
-        }
-        else {
-
-            List<Node> substrings = new ArrayList();
-            if (i < a.length - 1) {
-                substrings.add(new Node(a[i][j], goBreadth(i + 1, j, a, pathNodes)));
-            }
-
-            if (j < a[0].length - 1) {
-                substrings.add(new Node((a[i][j]), goBreadth(i, j + 1, a, pathNodes)));
-            }
-
-            if (substrings.size() == 2)
+        int maxNextNumber = 0;
+        for (int i = 0; i < visitedDiagonalNodes.size(); i++)
+        {
+            if (i > 0 && visitedDiagonalNodes.get(i).equals(visitedDiagonalNodes.get(i - 1)))
             {
-                Node substring0 = substrings.get(0).next;
-                Node substring1 = substrings.get(1).next;
-                resultNode = substrings.get(0);
-                while (substring0 != substring1)
-                {
-                    if (substring0.value < substring1.value)
-                    {
-                        resultNode = substrings.get(1);
-                        break;
-                    }
-                    if (substring0.value > substring1.value)
-                    {
-                        break;
-                    }
-                    substring0 = substring0.next;
-                    substring1 = substring1.next;
-                }
+                continue;
             }
-            else
+            Node node = visitedDiagonalNodes.get(i);
+            if (node.x + 1 < a.length)
             {
-                resultNode = substrings.get(0);
+                maxNextNumber = Math.max(maxNextNumber, a[node.x + 1][node.y]);
+                nextNodes[a[node.x + 1][node.y]].add(new Node(node.x + 1, node.y));
+            }
+            if (node.y + 1 < a[0].length)
+            {
+                maxNextNumber = Math.max(maxNextNumber, a[node.x][node.y + 1]);
+                nextNodes[a[node.x][node.y + 1]].add(new Node(node.x, node.y + 1));
             }
         }
-
-        pathNodes[i][j] = resultNode;
-        return resultNode;
+        return nextNodes[maxNextNumber];
     }
 
-    public static class Node
+    public class Node
     {
-        public int value;
-        public Node next;
+        public int x;
+        public int y;
 
-        public Node(int value, Node next) {
-            this.value = value;
-            this.next = next;
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return x == node.x &&
+                    y == node.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 }
