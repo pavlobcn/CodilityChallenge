@@ -2,6 +2,7 @@ package algo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Solution {
     int[] a;
@@ -9,6 +10,7 @@ public class Solution {
     int result = 0;
     int startIndex = 0;
     int endIndex = 0;
+    Map<Integer,Integer> numberCountMap = new HashMap<>();
 
     public int solution(int[] A, int K) {
         a  = A;
@@ -30,12 +32,15 @@ public class Solution {
     }
 
     private void addNextElement() {
+        int entryAmount = numberCountMap.containsKey(a[endIndex]) ? numberCountMap.get(a[endIndex]) + 1 : 1;
+        numberCountMap.put(a[endIndex], entryAmount);
+
         endIndex++;
     }
 
     private boolean validate() {
         int numberWithTheHighestEntryAmount = getNumberWithTheHighestEntryAmount();
-        int differentNumberCount = getDifferentNumberCount(a, numberWithTheHighestEntryAmount);
+        int differentNumberCount = getDifferentNumberCount(numberWithTheHighestEntryAmount);
         if (differentNumberCount > k)
         {
             return false;
@@ -45,35 +50,32 @@ public class Solution {
     }
 
     private int getNumberWithTheHighestEntryAmount() {
-        Map<Integer,Integer> numberCountMap = new HashMap<>();
-        int numberWithTheHighestEntryAmount = -1;
-        int highestEntryAmount = 0;
-        for (int i = startIndex; i < endIndex; i++) {
-            int entryAmount = numberCountMap.containsKey(a[i]) ? numberCountMap.get(a[i]) + 1 : 1;
-            numberCountMap.put(a[i], entryAmount);
-            if (entryAmount > highestEntryAmount)
-            {
-                highestEntryAmount = entryAmount;
-                numberWithTheHighestEntryAmount = a[i];
+        AtomicInteger numberWithTheHighestEntryAmount = new AtomicInteger(-1);
+        AtomicInteger highestEntryAmount = new AtomicInteger();
+        numberCountMap.forEach((key,value) -> {
+            if (value > highestEntryAmount.get()) {
+                highestEntryAmount.set(value);
+                numberWithTheHighestEntryAmount.set(key);
             }
-        }
-        return numberWithTheHighestEntryAmount;
+        });
+        return numberWithTheHighestEntryAmount.get();
     }
 
-    private int getDifferentNumberCount(int[] a, int numberWithTheHighestEntryAmount) {
-        int differentNumberCount = 0;
-        for (int i = startIndex; i < endIndex; i++)
-        {
-            if (a[i] != numberWithTheHighestEntryAmount)
-            {
-                differentNumberCount++;
-            }
-        }
-        return differentNumberCount;
+    private int getDifferentNumberCount(int numberWithTheHighestEntryAmount) {
+        return endIndex - startIndex - numberCountMap.get(numberWithTheHighestEntryAmount);
     }
 
     private void adjust() {
+        if (numberCountMap.get(a[startIndex]) == 1)
+        {
+            numberCountMap.remove(a[startIndex]);
+        }
+        else {
+            numberCountMap.put(a[startIndex], numberCountMap.get(a[startIndex]) - 1);
+        }
+
         startIndex++;
+
         if (!validate())
         {
             adjust();
