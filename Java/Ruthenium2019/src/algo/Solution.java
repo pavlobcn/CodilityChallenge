@@ -2,7 +2,6 @@ package algo;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Solution {
     int[] a;
@@ -11,6 +10,8 @@ public class Solution {
     int startIndex = 0;
     int endIndex = 0;
     Map<Integer,Integer> numberCountMap = new HashMap<>();
+    int numberWithTheHighestEntryAmount = -1;
+    int highestEntryAmount;
 
     public int solution(int[] A, int K) {
         a  = A;
@@ -24,8 +25,12 @@ public class Solution {
 
     private void ExtendSequence() {
         addNextElement();
-        if (!validate()) {
+        if (!validate(true)) {
             adjust();
+
+            while (!validate(false)) {
+                adjust();
+            }
         }
 
         result = Math.max(result, endIndex - startIndex);
@@ -38,8 +43,8 @@ public class Solution {
         endIndex++;
     }
 
-    private boolean validate() {
-        int numberWithTheHighestEntryAmount = getNumberWithTheHighestEntryAmount();
+    private boolean validate(boolean moveForward) {
+        int numberWithTheHighestEntryAmount = getNumberWithTheHighestEntryAmount(moveForward);
         int differentNumberCount = getDifferentNumberCount(numberWithTheHighestEntryAmount);
         if (differentNumberCount > k)
         {
@@ -49,16 +54,26 @@ public class Solution {
         return true;
     }
 
-    private int getNumberWithTheHighestEntryAmount() {
-        AtomicInteger numberWithTheHighestEntryAmount = new AtomicInteger(-1);
-        AtomicInteger highestEntryAmount = new AtomicInteger();
+    private int getNumberWithTheHighestEntryAmount(boolean moveForward) {
+        if (moveForward && a[endIndex - 1] == numberWithTheHighestEntryAmount)
+        {
+            return numberWithTheHighestEntryAmount;
+        }
+
+        if (!moveForward && a[startIndex - 1] != numberWithTheHighestEntryAmount)
+        {
+            return numberWithTheHighestEntryAmount;
+        }
+
+        highestEntryAmount = 0;
         numberCountMap.forEach((key,value) -> {
-            if (value > highestEntryAmount.get()) {
-                highestEntryAmount.set(value);
-                numberWithTheHighestEntryAmount.set(key);
+            if (value > highestEntryAmount) {
+                highestEntryAmount = value;
+                numberWithTheHighestEntryAmount = key;
             }
         });
-        return numberWithTheHighestEntryAmount.get();
+
+        return numberWithTheHighestEntryAmount;
     }
 
     private int getDifferentNumberCount(int numberWithTheHighestEntryAmount) {
@@ -75,10 +90,5 @@ public class Solution {
         }
 
         startIndex++;
-
-        if (!validate())
-        {
-            adjust();
-        }
     }
 }
