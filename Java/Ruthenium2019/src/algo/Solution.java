@@ -9,14 +9,15 @@ public class Solution {
     int startIndex = 0;
     int endIndex = 0;
 
-    // key - number, value - entries of this number in current sequence
-    Map<Integer,Integer> numberCountMap = new HashMap<>();
-    // key - entries of the number in the sequence, value - numbers with 'key' entries in current sequence
-    Map<Integer, HashSet<Integer>> entriesMap = new HashMap();
+    int[] numberCounts;
+    ArrayList<Integer> counts;
 
     public int solution(int[] A, int K) {
         a  = A;
         k = K;
+        numberCounts = new int[1000001];
+        counts = new ArrayList();
+        counts.add(A.length);
 
         for (int i = 0; i < A.length; i++) {
             ExtendSequence();
@@ -35,26 +36,28 @@ public class Solution {
 
     private void addNextElement() {
         int newElement = a[endIndex];
-        int currentEntryAmount = numberCountMap.getOrDefault(newElement, 0);
-        int newEntryAmount = currentEntryAmount + 1;
-        numberCountMap.put(newElement, newEntryAmount);
-
-        if (currentEntryAmount > 0)
+        numberCounts[newElement]++;
+        counts.set(numberCounts[newElement] - 1, counts.get(numberCounts[newElement] - 1) - 1);
+        if (counts.size() - 1 < numberCounts[newElement])
         {
-            var numbersWithEntryCount = entriesMap.get(currentEntryAmount);
-            if (numbersWithEntryCount.size() == 1) {
-                entriesMap.remove(currentEntryAmount);
-            }
-            else {
-                numbersWithEntryCount.remove(newElement);
-            }
+            counts.add(0);
         }
-
-        var numbersWithEntryCount = entriesMap.containsKey(newEntryAmount) ? entriesMap.get(newEntryAmount) : new HashSet();
-        numbersWithEntryCount.add(newElement);
-        entriesMap.put(newEntryAmount, numbersWithEntryCount);
+        counts.set(counts.size() - 1, counts.get(counts.size() - 1) + 1);
 
         endIndex++;
+    }
+
+    private void adjust() {
+        int elementToRemove = a[startIndex];
+        numberCounts[elementToRemove]--;
+        counts.set(numberCounts[elementToRemove] + 1, counts.get(numberCounts[elementToRemove] + 1) - 1);
+        if (counts.get(counts.size() - 1) == 0)
+        {
+            counts.remove(counts.size() - 1);
+        }
+        counts.set(numberCounts[elementToRemove], counts.get(numberCounts[elementToRemove]) + 1);
+
+        startIndex++;
     }
 
     private boolean validate() {
@@ -69,37 +72,10 @@ public class Solution {
     }
 
     private int getNumberAmountWithTheHighestEntryAmount() {
-        return Collections.max(entriesMap.keySet());
+        return counts.size() - 1;
     }
 
     private int getDifferentNumberCount(int numberAmountWithTheHighestEntryAmount) {
         return endIndex - startIndex - numberAmountWithTheHighestEntryAmount;
-    }
-
-    private void adjust() {
-        int elementToRemove = a[startIndex];
-        int numberCount = numberCountMap.get(elementToRemove);
-
-        var numbersWithEntryCount = entriesMap.get(numberCount);
-        if (numbersWithEntryCount.size() == 1)
-        {
-            entriesMap.remove(numberCount);
-        }
-        else
-        {
-            numbersWithEntryCount.remove(numberCount);
-        }
-        numbersWithEntryCount = entriesMap.containsKey(numberCount - 1) ? entriesMap.get(numberCount - 1) : new HashSet();
-        numbersWithEntryCount.add(elementToRemove);
-        entriesMap.put(numberCount - 1, numbersWithEntryCount);
-
-        if (numberCountMap.get(elementToRemove) == 1) {
-            numberCountMap.remove(elementToRemove);
-        }
-        else {
-            numberCountMap.put(elementToRemove, numberCountMap.get(elementToRemove) - 1);
-        }
-
-        startIndex++;
     }
 }

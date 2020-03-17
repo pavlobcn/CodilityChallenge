@@ -21,6 +21,11 @@ public class SolutionTest {
         testInternal(4, new int[]{1, 3, 3, 2}, 2);
     }
 
+    @Test
+    public void testAllValuesAreDifferent() {
+        testInternal(3, new int[]{2, 3, 4, 5}, 2);
+    }
+
     private void testInternal(int expectedResult, int[] a, int k) {
         var actualResult = new Solution().solution(a, k);
         Assert.assertEquals(expectedResult, actualResult);
