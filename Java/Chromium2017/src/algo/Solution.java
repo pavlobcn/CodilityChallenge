@@ -1,67 +1,47 @@
 package algo;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Solution {
     private final int MODULE_BASE = 1000000007;
 
     public int solution(int[] H) {
-        long startTime1 = System.currentTimeMillis();
         ArrayList<Point> points = getPoints(H);
-        long startTime2 = System.currentTimeMillis();
         sort(points);
-        long startTime3 = System.currentTimeMillis();
-        long result = 0;
+        int result = 0;
         for (int startPointIndex = 0; startPointIndex < points.size(); startPointIndex++) {
-            long pathCount = getPathCount(points, startPointIndex);
-            result += pathCount;
+            int pathCount = getPathCount(points, startPointIndex);
+            result = (result + pathCount ) % MODULE_BASE;
         }
-        long startTime4 = System.currentTimeMillis();
-        System.out.println("1: " + String.valueOf(startTime2 - startTime1));
-        System.out.println("2: " + String.valueOf(startTime3 - startTime2));
-        System.out.println("3: " + String.valueOf(startTime4 - startTime3));
-        return (int) (result % MODULE_BASE);
+        return result % MODULE_BASE;
     }
 
-    private long getPathCount(ArrayList<Point> points, int startPointIndex) {
-        List<Integer> groupSizes = getGroupSizes(points, startPointIndex);
-        long pathCount = 0;
-        long otherSidePathCount = 0;
-        long sidePathCount = 0;
-        for (int i = 0; i < groupSizes.size(); i++) {
-            // process group and increment pathCount
-            int groupSize = groupSizes.get(i);
-            long pathCountToGroup = groupSize * (1 + otherSidePathCount);
-            sidePathCount += pathCountToGroup;
-            pathCount += pathCountToGroup;
-
-            // swap sides
-            long tmp = otherSidePathCount;
-            otherSidePathCount = sidePathCount;
-            sidePathCount = tmp;
-        }
-        return pathCount + 1; // 1 - path with single start point
-    }
-
-    private List<Integer> getGroupSizes(ArrayList<Point> points, int startPointIndex) {
-        var sizes = new ArrayList<Integer>();
+    private int getPathCount(ArrayList<Point> points, int startPointIndex) {
+        int pathCount = 0;
+        int otherSidePathCount = 0;
+        int sidePathCount = 0;
+        boolean isPreviousOnTheRightSide = false;
         Point startPoint = points.get(startPointIndex);
         for (int i = startPointIndex + 1; i < points.size(); i++) {
-            if (sizes.size() == 0) {
-                sizes.add(1);
-            } else {
-                boolean sameSide =
-                        (points.get(i).position - startPoint.position) *
-                                (points.get(i - 1).position - startPoint.position) > 0;
-                if (sameSide) {
-                    sizes.set(sizes.size() - 1, sizes.get(sizes.size() - 1) + 1);
-                } else {
-                    sizes.add(1);
-                }
+            boolean isCurrentOnTheRightSide = points.get(i).position > startPoint.position;
+            if (i == startPointIndex + 1)
+            {
+                isPreviousOnTheRightSide = !isCurrentOnTheRightSide;
             }
+            boolean sameSide = isCurrentOnTheRightSide == isPreviousOnTheRightSide;
+            if (!sameSide) {
+                // swap sides
+                int tmp = otherSidePathCount;
+                otherSidePathCount = sidePathCount;
+                sidePathCount = tmp;
+            }
+
+            int pathCountToCurrentPoint = 1 + otherSidePathCount;
+            sidePathCount = (sidePathCount + pathCountToCurrentPoint) % MODULE_BASE;
+            pathCount = (pathCount + pathCountToCurrentPoint) % MODULE_BASE;
+            isPreviousOnTheRightSide = isCurrentOnTheRightSide;
         }
-        return sizes;
+        return pathCount + 1; // 1 - path with single start point
     }
 
     private void sort(ArrayList<Point> points) {
@@ -77,8 +57,8 @@ public class Solution {
     }
 
     private class Point {
-        public int height;
-        public int position;
+        public Integer height;
+        public Integer position;
 
         public Point(int height, int position) {
             this.height = height;
