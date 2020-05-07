@@ -8,37 +8,37 @@ public class Solution {
     public int solution(int[] H) {
         ArrayList<Point> points = getPoints(H);
         sort(points);
-        int result = 0;
+        long result = 0;
         for (int startPointIndex = 0; startPointIndex < points.size(); startPointIndex++) {
-            int pathCount = getPathCount(points, startPointIndex);
+            long pathCount = getPathCount(points, startPointIndex);
             result = (result + pathCount ) % MODULE_BASE;
         }
-        return result % MODULE_BASE;
+        return (int)(result % MODULE_BASE);
     }
 
-    private int getPathCount(ArrayList<Point> points, int startPointIndex) {
+    private long getPathCount(ArrayList<Point> points, int startPointIndex) {
         if (startPointIndex == points.size() - 1)
         {
             return 1;
         }
 
-        int pathCount = 1;
-        int otherSidePathCount = 0;
-        int sidePathCount = 1;
+        long pathCount = 1;
+        long otherSidePathCount = 0;
+        long sidePathCount = 1;
         Point startPoint = points.get(startPointIndex);
         boolean isPreviousOnTheRightSide = points.get(startPointIndex + 1).position > startPoint.position;
         for (int i = startPointIndex + 2; i < points.size(); i++) {
             boolean isCurrentOnTheRightSide = points.get(i).position > startPoint.position;
             if (isCurrentOnTheRightSide != isPreviousOnTheRightSide) {
                 // swap sides
-                int tmp = otherSidePathCount;
+                long tmp = otherSidePathCount;
                 otherSidePathCount = sidePathCount;
                 sidePathCount = tmp;
             }
 
-            int pathCountToCurrentPoint = 1 + otherSidePathCount;
-            sidePathCount = (sidePathCount + pathCountToCurrentPoint) % MODULE_BASE;
-            pathCount = (pathCount + pathCountToCurrentPoint) % MODULE_BASE;
+            long pathCountToCurrentPoint = 1 + otherSidePathCount;
+            sidePathCount = (sidePathCount + pathCountToCurrentPoint);
+            pathCount = (pathCount + pathCountToCurrentPoint);
             isPreviousOnTheRightSide = isCurrentOnTheRightSide;
         }
         return pathCount + 1; // 1 - path with single start point
@@ -57,8 +57,8 @@ public class Solution {
     }
 
     private static class Point {
-        public Integer height;
-        public Integer position;
+        public int height;
+        public int position;
 
         public Point(int height, int position) {
             this.height = height;
