@@ -17,19 +17,19 @@ public class Solution {
     }
 
     private int getPathCount(ArrayList<Point> points, int startPointIndex) {
-        int pathCount = 0;
+        if (startPointIndex == points.size() - 1)
+        {
+            return 1;
+        }
+
+        int pathCount = 1;
         int otherSidePathCount = 0;
-        int sidePathCount = 0;
-        boolean isPreviousOnTheRightSide = false;
+        int sidePathCount = 1;
         Point startPoint = points.get(startPointIndex);
-        for (int i = startPointIndex + 1; i < points.size(); i++) {
+        boolean isPreviousOnTheRightSide = points.get(startPointIndex + 1).position > startPoint.position;
+        for (int i = startPointIndex + 2; i < points.size(); i++) {
             boolean isCurrentOnTheRightSide = points.get(i).position > startPoint.position;
-            if (i == startPointIndex + 1)
-            {
-                isPreviousOnTheRightSide = !isCurrentOnTheRightSide;
-            }
-            boolean sameSide = isCurrentOnTheRightSide == isPreviousOnTheRightSide;
-            if (!sameSide) {
+            if (isCurrentOnTheRightSide != isPreviousOnTheRightSide) {
                 // swap sides
                 int tmp = otherSidePathCount;
                 otherSidePathCount = sidePathCount;
@@ -45,18 +45,18 @@ public class Solution {
     }
 
     private void sort(ArrayList<Point> points) {
-        Collections.sort(points, (Point p1, Point p2) -> p1.height - p2.height);
+        points.sort(Comparator.comparingInt((Point p) -> p.height));
     }
 
     private ArrayList<Point> getPoints(int[] h) {
-        ArrayList<Point> points = new ArrayList<Point>();
+        ArrayList<Point> points = new ArrayList<>();
         for (int i = 0; i < h.length; i++) {
             points.add(new Point(h[i], i));
         }
         return points;
     }
 
-    private class Point {
+    private static class Point {
         public Integer height;
         public Integer position;
 
