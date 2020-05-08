@@ -12,7 +12,7 @@ public class Solution {
             long pathCount = getPathCount(points, startPointIndex);
             result = (result + pathCount ) % MODULE_BASE;
         }
-        return (int)(result % MODULE_BASE);
+        return (int)result;
     }
 
     private long getPathCount(int[] points, int startPointIndex) {
@@ -28,11 +28,11 @@ public class Solution {
         for (int i = startPointIndex + 2; i < points.length; i++) {
             boolean isCurrentOnTheRightSide = points[i] > startPoint;
             if (isCurrentOnTheRightSide != isPreviousOnTheRightSide) {
-                otherSidePathCount = (otherSidePathCount + sidePathCount + 1);
+                otherSidePathCount = (otherSidePathCount + sidePathCount + 1) % MODULE_BASE;
                 isPreviousOnTheRightSide = !isCurrentOnTheRightSide;
             }
             else {
-                sidePathCount = (sidePathCount + otherSidePathCount + 1);
+                sidePathCount = (sidePathCount + otherSidePathCount + 1) % MODULE_BASE;
                 isPreviousOnTheRightSide = isCurrentOnTheRightSide;
             }
         }
