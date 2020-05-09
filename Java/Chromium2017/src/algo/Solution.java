@@ -3,40 +3,40 @@ package algo;
 import java.util.*;
 
 public class Solution {
-    private final int MODULE_BASE = 1000000007;
+    private final int MODULO_BASE = 1_000_000_007;
 
     public int solution(int[] H) {
         int[] points = getPoints(H);
-        long result = 0;
+        int result = 0;
         for (int startPointIndex = 0; startPointIndex < points.length; startPointIndex++) {
-            long pathCount = getPathCount(points, startPointIndex);
-            result = (result + pathCount ) % MODULE_BASE;
+            int pathCount = getPathCount(points, startPointIndex);
+            result = (result + pathCount ) % MODULO_BASE;
         }
-        return (int)result;
+        return result;
     }
 
-    private long getPathCount(int[] points, int startPointIndex) {
+    private int getPathCount(int[] points, int startPointIndex) {
         if (startPointIndex == points.length - 1)
         {
             return 1;
         }
 
-        long otherSidePathCount = 0;
-        long sidePathCount = 1;
+        int otherSidePathCount = 0;
+        int sidePathCount = 1;
         int startPoint = points[startPointIndex];
         boolean isPreviousOnTheRightSide = points[startPointIndex + 1] > startPoint;
         for (int i = startPointIndex + 2; i < points.length; i++) {
             boolean isCurrentOnTheRightSide = points[i] > startPoint;
             if (isCurrentOnTheRightSide != isPreviousOnTheRightSide) {
-                otherSidePathCount = (otherSidePathCount + sidePathCount + 1) % MODULE_BASE;
+                otherSidePathCount = (otherSidePathCount + sidePathCount + 1) % MODULO_BASE;
                 isPreviousOnTheRightSide = !isCurrentOnTheRightSide;
             }
             else {
-                sidePathCount = (sidePathCount + otherSidePathCount + 1) % MODULE_BASE;
+                sidePathCount = (sidePathCount + otherSidePathCount + 1) % MODULO_BASE;
                 isPreviousOnTheRightSide = isCurrentOnTheRightSide;
             }
         }
-        return sidePathCount + otherSidePathCount + 1; // 1 - path with single start point
+        return (sidePathCount + otherSidePathCount + 1) % MODULO_BASE; // 1 - path with single start point
     }
 
     private int[] getPoints(int[] h) {
