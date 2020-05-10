@@ -76,7 +76,7 @@ public class Solution {
 
             int groupSize = nextPoint.sortedPosition - sortedPosition - handledHeight - 1;
             long pathCountToGroup = (1 + otherSidePathCount) * groupSize;
-            sidePathCount += pathCountToGroup;
+            sidePathCount = (sidePathCount + pathCountToGroup) % Solution.MODULO_BASE;
             handledHeight += groupSize;
 
             // swap sides
