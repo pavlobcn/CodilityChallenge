@@ -7,12 +7,31 @@ public class Solution {
 
     public int solution(int[] H) {
         int[] points = getPoints(H);
+        int[] fastAnswers = getFastAnswers(points);
         int result = 0;
         for (int startPointIndex = 0; startPointIndex < points.length; startPointIndex++) {
-            int pathCount = getPathCount(points, startPointIndex);
+            int pathCount = fastAnswers[startPointIndex];
+            if (pathCount == 0) {
+                pathCount = getPathCount(points, startPointIndex);
+            }
             result = (result + pathCount ) % MODULO_BASE;
         }
         return result;
+    }
+
+    private int[] getFastAnswers(int[] points) {
+        int[] fastAnswers = new int[points.length];
+        int max = points[points.length - 1];
+        int min = points[points.length - 1];
+        for (int i = points.length - 2; i >= 0 ; i--) {
+            if (points[i] < min || points[i] > max)
+            {
+                fastAnswers[i] = points.length - i ;
+            }
+            min = Math.min(min, points[i]);
+            max = Math.max(max, points[i]);
+        }
+        return fastAnswers;
     }
 
     private int getPathCount(int[] points, int startPointIndex) {
