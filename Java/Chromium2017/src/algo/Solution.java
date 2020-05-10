@@ -6,7 +6,7 @@ public class Solution {
     private final int MODULO_BASE = 1_000_000_007;
 
     public int solution(int[] H) {
-        int[] points = getPoints(H);
+        Point[] points = getPoints(H);
         int[] fastAnswers = getFastAnswers(points);
         int result = 0;
         for (int startPointIndex = 0; startPointIndex < points.length; startPointIndex++) {
@@ -19,22 +19,22 @@ public class Solution {
         return result;
     }
 
-    private int[] getFastAnswers(int[] points) {
+    private int[] getFastAnswers(Point[] points) {
         int[] fastAnswers = new int[points.length];
-        int max = points[points.length - 1];
-        int min = points[points.length - 1];
+        int max = points[points.length - 1].position;
+        int min = points[points.length - 1].position;
         for (int i = points.length - 2; i >= 0 ; i--) {
-            if (points[i] < min || points[i] > max)
+            if (points[i].position < min || points[i].position > max)
             {
                 fastAnswers[i] = points.length - i ;
             }
-            min = Math.min(min, points[i]);
-            max = Math.max(max, points[i]);
+            min = Math.min(min, points[i].position);
+            max = Math.max(max, points[i].position);
         }
         return fastAnswers;
     }
 
-    private int getPathCount(int[] points, int startPointIndex) {
+    private int getPathCount(Point[] points, int startPointIndex) {
         if (startPointIndex == points.length - 1)
         {
             return 1;
@@ -42,10 +42,10 @@ public class Solution {
 
         int otherSidePathCount = 0;
         int sidePathCount = 1;
-        int startPoint = points[startPointIndex];
-        boolean isPreviousOnTheRightSide = points[startPointIndex + 1] > startPoint;
+        Point startPoint = points[startPointIndex];
+        boolean isPreviousOnTheRightSide = points[startPointIndex + 1].position > startPoint.position;
         for (int i = startPointIndex + 2; i < points.length; i++) {
-            boolean isCurrentOnTheRightSide = points[i] > startPoint;
+            boolean isCurrentOnTheRightSide = points[i].position > startPoint.position;
             if (isCurrentOnTheRightSide != isPreviousOnTheRightSide) {
                 otherSidePathCount = (otherSidePathCount + sidePathCount + 1) % MODULO_BASE;
                 isPreviousOnTheRightSide = !isCurrentOnTheRightSide;
@@ -58,17 +58,13 @@ public class Solution {
         return (sidePathCount + otherSidePathCount + 1) % MODULO_BASE; // 1 - path with single start point
     }
 
-    private int[] getPoints(int[] h) {
-        ArrayList<Point> points = new ArrayList<>();
+    private Point[] getPoints(int[] h) {
+        Point[] points = new Point[h.length];
         for (int i = 0; i < h.length; i++) {
-            points.add(new Point(h[i], i));
+            points[i] = new Point(h[i], i);
         }
-        points.sort(Comparator.comparingInt((Point p) -> p.height));
-        int[] pointsOrderedByPosition = new int[h.length];
-        for (int i = 0; i < h.length; i++) {
-            pointsOrderedByPosition[i] = points.get(i).position;
-        }
-        return pointsOrderedByPosition;
+        Arrays.sort(points, Comparator.comparingInt((Point p) -> p.height));
+        return points;
     }
 
     private static class Point {
