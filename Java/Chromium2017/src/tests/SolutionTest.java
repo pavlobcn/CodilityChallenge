@@ -3,8 +3,7 @@ package tests;
 import algo.*;
 import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class SolutionTest {
     private static final int BASE_PERFORMANCE_ELEMENT_COUNT = 10000;
@@ -16,6 +15,11 @@ public class SolutionTest {
     @Test
     public void test2() {
         testInternal(23, new int[]{4, 6, 2, 1, 5});
+    }
+
+    @Test
+    public void testRandomPerformance0() {
+        testRandomPerformance(50);
     }
 
     @Test
@@ -73,7 +77,14 @@ public class SolutionTest {
         for (int i = 0; i < h.length; i++) {
             h[i] = i;
         }
-        Collections.shuffle(Arrays.asList(h));
+        List<Integer> list = new ArrayList<>();
+        for (int i : h) {
+            list.add(i);
+        }
+        Collections.shuffle(list);
+        for (int i = 0; i < list.size(); i++) {
+            h[i] = list.get(i);
+        }
         return h;
     }
 
