@@ -1,47 +1,51 @@
 package algo;
 
-import java.util.*;
-
 public class Solution {
     private static final int MODULO_BASE = 2 * 1_000_000_007;
     private int[] charCheckers;
 
     public int solution(String S) {
         initCharCheckers();
-        Map<Integer, Integer> states = getStates(S);
+        long[] states = getStates(S);
         long evenResults = getEvenResults(states);
         long oddResults = getOddResults(states);
         return (int) ((evenResults + oddResults) % MODULO_BASE / 2);
     }
 
-    private long getOddResults(Map<Integer, Integer> states) {
+    private long getOddResults(long[] states) {
         long results = 0;
-        for (Map.Entry<Integer, Integer> entry : states.entrySet()) {
+        for (int i = 0; i < states.length; i++) {
+            long currentCount = states[i];
+            if (currentCount == 0) {
+                continue;
+            }
             for (int charChecker : charCheckers) {
-                int count = states.getOrDefault(entry.getKey() ^ charChecker, 0);
-                results = (results + entry.getValue() * count) % MODULO_BASE;
+                long count = states[i ^ charChecker];
+                results = (results + currentCount * count) % MODULO_BASE;
             }
         }
         return results;
     }
 
-    private long getEvenResults(Map<Integer, Integer> states) {
+    private long getEvenResults(long[] states) {
         long results = 0;
-        for (Integer count : states.values()) {
+        for (long count : states) {
+            if (count == 0) {
+                continue;
+            }
             results = (results + count * (count - 1)) % MODULO_BASE;
         }
         return results;
     }
 
-    private Map<Integer, Integer> getStates(String s) {
-        var states = new Hashtable<Integer, Integer>();
+    private long[] getStates(String s) {
+        var states = new long[1025];
         var previousState = 0;
-        states.put(previousState, 1);
+        states[previousState] = 1;
         for (int i = 0; i < s.length(); i++) {
             int character = Integer.parseInt(s.substring(i, i + 1));
             int state = previousState ^ charCheckers[character];
-            int count = states.getOrDefault(state, 0);
-            states.put(state, count + 1);
+            states[state]++;
             previousState = state;
         }
         return states;
