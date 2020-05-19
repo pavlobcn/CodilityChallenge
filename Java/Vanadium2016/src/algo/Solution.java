@@ -34,7 +34,7 @@ public class Solution {
     }
 
     private Map<Integer, Integer> getStates(String s) {
-        var states = new HashMap<Integer, Integer>();
+        var states = new Hashtable<Integer, Integer>();
         var previousState = 0;
         states.put(previousState, 1);
         for (int i = 0; i < s.length(); i++) {
