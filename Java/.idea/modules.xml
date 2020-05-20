@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/2017/Chromium2017/Chromium2017.iml" filepath="$PROJECT_DIR$/2017/Chromium2017/Chromium2017.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Java.iml" filepath="$PROJECT_DIR$/.idea/Java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2020/Palladium2020/Palladium2020.iml" filepath="$PROJECT_DIR$/2020/Palladium2020/Palladium2020.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2019/Rhodium2019/Rhodium2019.iml" filepath="$PROJECT_DIR$/2019/Rhodium2019/Rhodium2019.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2019/Ruthenium2019/Ruthenium2019.iml" filepath="$PROJECT_DIR$/2019/Ruthenium2019/Ruthenium2019.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2019/Technetium2019/Technetium2019.iml" filepath="$PROJECT_DIR$/2019/Technetium2019/Technetium2019.iml" />
+      <module fileurl="file://$PROJECT_DIR$/2016/Vanadium2016/Vanadium2016.iml" filepath="$PROJECT_DIR$/2016/Vanadium2016/Vanadium2016.iml" />
+    </modules>
+  </component>
+</project>
