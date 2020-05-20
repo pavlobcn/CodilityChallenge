@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a5a60370-2a91-40fd-a075-57d9697dbadd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Chromium2017/Chromium2017.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2017/Chromium2017/Chromium2017.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chromium2017/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2017/Chromium2017/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chromium2017/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2017/Chromium2017/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chromium2017/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2017/Chromium2017/src/tests/SolutionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Palladium2020/Palladium2020.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2020/Palladium2020/Palladium2020.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Palladium2020/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2020/Palladium2020/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Palladium2020/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2020/Palladium2020/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Palladium2020/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2020/Palladium2020/src/tests/SolutionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rhodium2019/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Rhodium2019/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rhodium2019/Rhodium2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Rhodium2019/Rhodium2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rhodium2019/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Rhodium2019/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rhodium2019/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Rhodium2019/src/tests/SolutionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ruthenium2019/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Ruthenium2019/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ruthenium2019/Ruthenium2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Ruthenium2019/Ruthenium2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ruthenium2019/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Ruthenium2019/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ruthenium2019/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Ruthenium2019/src/tests/SolutionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technetium2019/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Technetium2019/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technetium2019/Technetium2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Technetium2019/Technetium2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technetium2019/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Technetium2019/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technetium2019/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2019/Technetium2019/src/tests/SolutionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vanadium2016/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Vanadium2016/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vanadium2016/Vanadium2016.iml" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Vanadium2016/Vanadium2016.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vanadium2016/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Vanadium2016/src/algo/Solution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vanadium2016/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Vanadium2016/src/tests/SolutionTest.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1cB2yUQgcoouAiVA4DDQTzg4TGU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.Whole project">
+    <configuration name="All in Palladium2020" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Palladium2020" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in Rhodium2019" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Rhodium2019" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in Ruthenium2019" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Ruthenium2019" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in Technetium2019" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Technetium2019" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Whole project" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Java" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="directory" />
+      <option name="PARAMETERS" value="" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <dir value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.All in Palladium2020" />
+      <item itemvalue="JUnit.All in Rhodium2019" />
+      <item itemvalue="JUnit.All in Ruthenium2019" />
+      <item itemvalue="JUnit.All in Technetium2019" />
+      <item itemvalue="JUnit.Whole project" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.Whole project" />
+        <item itemvalue="JUnit.All in Palladium2020" />
+        <item itemvalue="JUnit.All in Technetium2019" />
+        <item itemvalue="JUnit.All in Ruthenium2019" />
+        <item itemvalue="JUnit.All in Rhodium2019" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a5a60370-2a91-40fd-a075-57d9697dbadd" name="Default Changelist" comment="" />
+      <created>1589987921000</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589987921000</updated>
+      <workItem from="1589987924063" duration="1089000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
