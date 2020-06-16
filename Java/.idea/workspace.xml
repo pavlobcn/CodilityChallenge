@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5a60370-2a91-40fd-a075-57d9697dbadd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/arski.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2016/Titanium2016/ReadMe.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2016/Titanium2016/Titanium2016.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/2016/Titanium2016/src/tests/SolutionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2016/Titanium2016/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Titanium2016/ReadMe.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,22 +80,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SolutionTest.test2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Titanium2016" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.SolutionTest" />
-      <option name="METHOD_NAME" value="test2" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SolutionTest.test4" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Titanium2016" />
       <extension name="coverage">
@@ -133,20 +112,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SolutionTest.test6" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Titanium2016" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.SolutionTest" />
+      <option name="METHOD_NAME" value="test6" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="JUnit.SolutionTest.test1" />
       <item itemvalue="JUnit.SolutionTest" />
-      <item itemvalue="JUnit.SolutionTest.test2" />
       <item itemvalue="JUnit.SolutionTest.test4" />
       <item itemvalue="JUnit.SolutionTest.test5" />
+      <item itemvalue="JUnit.SolutionTest.test6" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.SolutionTest" />
+        <item itemvalue="JUnit.SolutionTest.test6" />
         <item itemvalue="JUnit.SolutionTest.test1" />
         <item itemvalue="JUnit.SolutionTest.test5" />
         <item itemvalue="JUnit.SolutionTest.test4" />
-        <item itemvalue="JUnit.SolutionTest.test2" />
       </list>
     </recent_temporary>
   </component>
@@ -174,6 +169,14 @@
       <updated>1589987921000</updated>
       <workItem from="1589987924063" duration="1089000" />
     </task>
+    <task id="LOCAL-00001" summary="Titanium2016">
+      <created>1592144142318</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1592144142318</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,46 +200,46 @@
     <option name="LAST_COMMIT_MESSAGE" value="Titanium2016" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="614" y="115" key="CommitChangelistDialog2" timestamp="1592144103847">
+    <state x="614" y="115" key="CommitChangelistDialog2" timestamp="1592144140533">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="614" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1592144103847" />
+    <state x="614" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1592144140533" />
     <state x="740" y="230" key="FileChooserDialogImpl" timestamp="1591453669899">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="230" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591453669899" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1592144080827">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1592329210307">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592144080827" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1592144080827">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592329210307" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1592329210307">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592144080827" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1592144080827">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592329210307" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1592329210307">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592144080827" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1592144080827">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592329210307" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1592329210307">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592144080827" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1592143811345">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592329210307" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1592328641738">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592143811345" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1592143811345">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592328641738" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1592328641738">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592143811345" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1592143811345">
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592328641738" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1592328641738">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592143811345" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1592143811345">
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592328641738" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1592328641738">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592143811345" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592328641738" />
     <state x="625" y="219" key="NewModule_or_Project.wizard" timestamp="1591453688498">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -245,6 +248,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="440" y="95" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1591453690567" />
+    <state x="552" y="242" key="Vcs.Push.Dialog.v2" timestamp="1592144145234">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="242" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1592144145234" />
     <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1591453384190">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -260,7 +267,17 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java</url>
           <line>77</line>
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/2016/Titanium2016/src/algo/Solution.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

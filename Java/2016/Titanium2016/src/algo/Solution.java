@@ -60,13 +60,26 @@ public class Solution {
                 position--;
             }
         }
-        return getLongestSequenceByReversedCounts(bracketsToTheLeft, bracketsToTheRight, k);
+        int splitterPosition = getSplitterPosition(sequence, bracketsToTheLeft);
+        return getLongestSequenceByReversedCounts(bracketsToTheLeft, bracketsToTheRight, k, splitterPosition);
     }
 
-    private int getLongestSequenceByReversedCounts(int[] bracketsToTheLeft, int[] bracketsToTheRight, int k) {
+    private int getSplitterPosition(char[] sequence, int[] bracketsToTheLeft) {
+        for (int i = 0; i < bracketsToTheLeft.length - 2; i++) {
+            if (sequence[bracketsToTheLeft[i]] == CLOSING && sequence[bracketsToTheLeft[i + 1]] == OPENING) {
+                return bracketsToTheLeft[i + 1];
+            }
+        }
+        return -1;
+    }
+
+    private int getLongestSequenceByReversedCounts(int[] bracketsToTheLeft, int[] bracketsToTheRight, int k, int splitterPosition) {
         int max = 0;
         for (int i = 0; i < bracketsToTheLeft.length; i++) {
             int j = i + 2 * k;
+            if (i < splitterPosition && splitterPosition < j && ((splitterPosition - i) % 2 == 1)) {
+                j -= 2;
+            }
             if (j >= bracketsToTheRight.length) {
                 break;
             }
@@ -75,7 +88,7 @@ public class Solution {
                 max = length;
             }
         }
-        if (max == 0 && k > 0) {
+        if (max == 0 && (k > 0 && splitterPosition < 0 || k > 1)) {
             max = bracketsToTheLeft[bracketsToTheLeft.length - 1] - bracketsToTheLeft[0];
             if (max % 2 == 1) {
                 max = max -1;
