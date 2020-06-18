@@ -19,11 +19,11 @@ public class Solution {
         int[] sumToRightMinusMaxToRight = new int[A.length + 1];
         int[] minSumToRight = new int[A.length + 1];
         int[] minSumToRightMinusMaxToRight = new int[A.length + 1];
-        for (int i = A.length - 1; i >=0; i--) {
+        for (int i = A.length - 1; i > 0; i--) {
             sumToRight[i] = sumToRight[i + 1] + A[i];
             maxToRight[i] = Math.max(maxToRight[i + 1], A[i]);
             minSumToRight[i] = Math.min(minSumToRight[i + 1], sumToRight[i]);
-            sumToRightMinusMaxToRight[i] = sumToRight[i] - maxToRight[i];
+            sumToRightMinusMaxToRight[i] = sumToRight[i + 1] - maxToRight[i + 1];
             minSumToRightMinusMaxToRight[i] = Math.min(sumToRightMinusMaxToRight[i + 1], sumToRightMinusMaxToRight[i]);
         }
         int total = sumToLeft[sumToLeft.length - 1];
@@ -34,7 +34,7 @@ public class Solution {
                     ? total - minSumToLeftMinusMaxToLeft[i] - minSumToRight[i + 1] - A[i]
                     : result;
             int changeToRight = i < A.length - 2
-                    ? total - minSumToLeft[i] - minSumToRightMinusMaxToRight[i + 1] - A[i]
+                    ? total - minSumToLeft[i] - minSumToRightMinusMaxToRight[i] - A[i]
                     : result;
             result = Math.max(Math.max(result, noChange), Math.max(changeToLeft, changeToRight));
         }

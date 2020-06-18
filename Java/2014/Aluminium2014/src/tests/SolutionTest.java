@@ -24,6 +24,26 @@ public class SolutionTest {
         testInternal(4, new int[]{2, -2, -2, 2});
     }
 
+    @Test
+    public void test5() {
+        testInternal(-2, new int[]{-2, -2, -2});
+    }
+
+    @Test
+    public void test6() {
+        testInternal(-2, new int[]{-2, -2, -2, -2});
+    }
+
+    @Test
+    public void test7() {
+        testInternal(8, new int[]{2, 2, 2, 2});
+    }
+
+    @Test
+    public void test8() {
+        testInternal(10, new int[]{2, 2, 2, 2, 2});
+    }
+
     private void testInternal(int expectedResult, int[] a) {
         var actualResult = new Solution().solution(a);
         Assert.assertEquals(expectedResult, actualResult);
