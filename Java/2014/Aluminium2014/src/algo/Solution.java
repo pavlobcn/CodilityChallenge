@@ -31,7 +31,7 @@ public class Solution {
         for (int i = 0; i < A.length; i++) {
             int noChange = total - minSumToLeft[i] - minSumToRight[i + 1];
             int changeToLeft = i > 0
-                    ? total - minSumToLeftMinusMaxToLeft[i] - minSumToRight[i + 1] - A[i]
+                    ? total - minSumToLeftMinusMaxToLeft[i + 1] - minSumToRight[i + 1] - A[i]
                     : result;
             int changeToRight = i < A.length - 2
                     ? total - minSumToLeft[i] - minSumToRightMinusMaxToRight[i] - A[i]
