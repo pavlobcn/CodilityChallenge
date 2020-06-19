@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5a60370-2a91-40fd-a075-57d9697dbadd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2014/Aluminium2014/ReadMe.md" beforeDir="false" afterPath="$PROJECT_DIR$/2014/Aluminium2014/ReadMe.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/2014/Aluminium2014/src/algo/Solution.java" beforeDir="false" afterPath="$PROJECT_DIR$/2014/Aluminium2014/src/algo/Solution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2014/Aluminium2014/src/tests/SolutionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/2014/Aluminium2014/src/tests/SolutionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +49,7 @@
       <recent name="E:\github\CodilityChallenge\Java\2016" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.SolutionTest (1)">
+  <component name="RunManager" selected="JUnit.SolutionTest.test5">
     <configuration name="SolutionTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Aluminium2014" />
       <extension name="coverage">
@@ -77,22 +76,6 @@
       <option name="PACKAGE_NAME" value="tests" />
       <option name="MAIN_CLASS_NAME" value="tests.SolutionTest" />
       <option name="METHOD_NAME" value="test1" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SolutionTest.test3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Aluminium2014" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.SolutionTest" />
-      <option name="METHOD_NAME" value="test3" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -130,20 +113,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SolutionTest.test6" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Aluminium2014" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.SolutionTest" />
+      <option name="METHOD_NAME" value="test6" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="JUnit.SolutionTest (1)" />
-      <item itemvalue="JUnit.SolutionTest.test3" />
       <item itemvalue="JUnit.SolutionTest.test4" />
       <item itemvalue="JUnit.SolutionTest.test5" />
       <item itemvalue="JUnit.SolutionTest.test1" />
+      <item itemvalue="JUnit.SolutionTest.test6" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.SolutionTest (1)" />
         <item itemvalue="JUnit.SolutionTest.test5" />
+        <item itemvalue="JUnit.SolutionTest.test6" />
         <item itemvalue="JUnit.SolutionTest.test4" />
         <item itemvalue="JUnit.SolutionTest.test1" />
-        <item itemvalue="JUnit.SolutionTest.test3" />
       </list>
     </recent_temporary>
   </component>
@@ -199,7 +198,14 @@
       <option name="project" value="LOCAL" />
       <updated>1592515403072</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Aluminium2014">
+      <created>1592517792612</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1592517792612</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,50 +230,50 @@
     <option name="LAST_COMMIT_MESSAGE" value="Aluminium2014" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="614" y="115" key="CommitChangelistDialog2" timestamp="1592515401493">
+    <state x="614" y="115" key="CommitChangelistDialog2" timestamp="1592517791400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="614" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1592515401493" />
-    <state width="556" height="466" key="DebuggerActiveHint" timestamp="1592516260868">
+    <state x="614" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1592517791400" />
+    <state width="556" height="466" key="DebuggerActiveHint" timestamp="1592569316729">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="556" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1592516260868" />
+    <state width="556" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1592569316729" />
     <state x="740" y="230" key="FileChooserDialogImpl" timestamp="1591453669899">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="230" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591453669899" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1592517784010">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1592569846196">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592517784010" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1592517784010">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592569846196" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1592569846196">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592517784010" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1592517784010">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592569846196" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1592569846196">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592517784010" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1592517784010">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592569846196" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1592569846196">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592517784010" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1592517402655">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592569846196" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1592569698524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592517402655" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1592517402655">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592569698524" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1592569698523">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592517402655" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1592517402655">
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592569698523" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1592569698523">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592517402655" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1592517402655">
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592569698523" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1592569698523">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592517402655" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592569698523" />
     <state x="625" y="219" key="NewModule_or_Project.wizard" timestamp="1591453688498">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -304,7 +310,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/2014/Aluminium2014/src/algo/Solution.java</url>
           <line>38</line>
-          <option name="timeStamp" value="26" />
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
