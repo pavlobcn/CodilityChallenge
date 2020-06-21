@@ -1,6 +1,3 @@
-package tests;
-
-import algo.Solution;
 import org.junit.Test;
 import org.junit.Assert;
 

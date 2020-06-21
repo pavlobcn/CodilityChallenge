@@ -1,5 +1,3 @@
-package algo;
-
 public class Solution {
     public int solution(int[] A) {
         int[] sumToLeft = new int[A.length + 1];

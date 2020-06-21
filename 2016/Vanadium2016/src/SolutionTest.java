@@ -1,6 +1,3 @@
-package tests;
-
-import algo.*;
 import org.junit.*;
 
 public class SolutionTest {

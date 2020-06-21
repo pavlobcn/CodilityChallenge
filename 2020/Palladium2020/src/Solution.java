@@ -1,5 +1,3 @@
-package algo;
-
 public class Solution {
     public int solution(int[] H) {
         int[] leftBannerSquares = getBannerSquares(H);

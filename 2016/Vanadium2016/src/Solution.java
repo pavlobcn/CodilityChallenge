@@ -1,5 +1,3 @@
-package algo;
-
 public class Solution {
     private static final int MODULO_BASE = 2 * 1_000_000_007;
     private int[] charCheckers;

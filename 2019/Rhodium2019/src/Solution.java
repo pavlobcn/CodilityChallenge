@@ -1,5 +1,3 @@
-package algo;
-
 public class Solution {
     int result = 0;
     int[][] edges;
