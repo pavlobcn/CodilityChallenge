@@ -36,6 +36,11 @@ public class SolutionTest {
         testInternal(4, "()(()", 1);
     }
 
+    @Test
+    public void test8() {
+        testInternal(10, "()(()))()(((", 2);
+    }
+
    private void testInternal(int expectedResult, String s, int k) {
         var actualResult = new Solution().solution(s, k);
         Assert.assertEquals(expectedResult, actualResult);

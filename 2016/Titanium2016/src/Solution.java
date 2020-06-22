@@ -63,9 +63,9 @@ public class Solution {
     }
 
     private int getSplitterPosition(char[] sequence, int[] bracketsToTheLeft) {
-        for (int i = 0; i < bracketsToTheLeft.length - 2; i++) {
-            if (sequence[bracketsToTheLeft[i]] == CLOSING && sequence[bracketsToTheLeft[i + 1]] == OPENING) {
-                return bracketsToTheLeft[i + 1];
+        for (int i = 1; i < bracketsToTheLeft.length - 1; i++) {
+            if (sequence[bracketsToTheLeft[i] - 1] == CLOSING && sequence[bracketsToTheLeft[i + 1] - 1] == OPENING) {
+                return i;
             }
         }
         return -1;
@@ -75,22 +75,21 @@ public class Solution {
         int max = 0;
         for (int i = 0; i < bracketsToTheLeft.length; i++) {
             int j = i + 2 * k;
-            if (i < splitterPosition && splitterPosition < j && ((splitterPosition - i) % 2 == 1)) {
-                j -= 2;
+            if (i < splitterPosition && splitterPosition < j) {
+                if ((splitterPosition - i) % 2 == 1) {
+                    j -= 2;
+                }
             }
             if (j >= bracketsToTheRight.length) {
+                int length = bracketsToTheRight[bracketsToTheRight.length - 1] - bracketsToTheLeft[i];
+                max = Math.max(max, length);
                 break;
             }
             int length = bracketsToTheRight[j] - bracketsToTheLeft[i];
-            if (length > max) {
-                max = length;
-            }
+            max = Math.max(max, length);
         }
-        if (max == 0 && (k > 0 && splitterPosition < 0 || k > 1)) {
-            max = bracketsToTheLeft[bracketsToTheLeft.length - 1] - bracketsToTheLeft[0];
-            if (max % 2 == 1) {
-                max = max -1;
-            }
+        if (max % 2 == 1) {
+            max = max -1;
         }
         return max;
     }
