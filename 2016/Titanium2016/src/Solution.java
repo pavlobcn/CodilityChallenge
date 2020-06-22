@@ -63,9 +63,9 @@ public class Solution {
     }
 
     private int getSplitterPosition(char[] sequence, int[] bracketsToTheLeft) {
-        for (int i = 0; i < bracketsToTheLeft.length - 2; i++) {
-            if (sequence[bracketsToTheLeft[i]] == CLOSING && sequence[bracketsToTheLeft[i + 1]] == OPENING) {
-                return bracketsToTheLeft[i + 1];
+        for (int i = 1; i < bracketsToTheLeft.length - 1; i++) {
+            if (sequence[bracketsToTheLeft[i] - 1] == CLOSING && sequence[bracketsToTheLeft[i + 1] - 1] == OPENING) {
+                return i;
             }
         }
         return -1;
