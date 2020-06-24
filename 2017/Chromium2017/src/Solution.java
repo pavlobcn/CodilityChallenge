@@ -5,33 +5,50 @@ public class Solution {
 
     public int solution(int[] H) {
         Point[] points = getOrderedPoints(H);
-        Point[] originalPoints = getOriginalPoints(points);
-        visitAllPoints(points, originalPoints);
+        visitAllPoints(points);
         return getResult(points);
     }
 
-    private void visitAllPoints(Point[] points, Point[] originalPoints) {
+    private void visitAllPoints(Point[] points) {
         Point prevPoint = points[0];
         for (int i = 1; i < points.length; i++) {
             Point nextPoint = points[i];
             int prevPosition = prevPoint.position;
             int nextPosition = nextPoint.position;
-            int counterStep = prevPosition < nextPosition ? 1 : -1;
-            if (Math.abs(nextPosition - prevPosition) < i) {
-                // skip prevPosition
-                prevPosition = prevPosition + counterStep;
-                while (prevPosition != nextPosition) {
-                    originalPoints[prevPosition].move(nextPoint);
-                    prevPosition = prevPosition + counterStep;
+            if (prevPosition < nextPosition) {
+                while (true) {
+                    if (prevPoint.right == null) {
+                        prevPoint.right = nextPoint;
+                        nextPoint.left = prevPoint;
+                        break;
+                    }
+                    if (prevPoint.right.position > nextPoint.position) {
+                        prevPoint.right.left = nextPoint;
+                        nextPoint.right = prevPoint.right;
+                        nextPoint.left = prevPoint;
+                        prevPoint.right = nextPoint;
+                        break;
+                    }
+                    prevPoint.right.move(nextPoint);
+                    prevPoint = prevPoint.right;
                 }
             }
-            else {
-                for (int j = 0; j < i; j++) {
-                    Point lowerPoint = points[j];
-                    if (lowerPoint.position > prevPosition && lowerPoint.position < nextPosition ||
-                            lowerPoint.position > nextPosition && lowerPoint.position < prevPosition) {
-                        lowerPoint.move(nextPoint);
+            else if (prevPosition > nextPosition) {
+                while (true) {
+                    if (prevPoint.left == null) {
+                        prevPoint.left = nextPoint;
+                        nextPoint.right = prevPoint;
+                        break;
                     }
+                    if (prevPoint.left.position < nextPoint.position) {
+                        prevPoint.left.right = nextPoint;
+                        nextPoint.left = prevPoint.left;
+                        nextPoint.right = prevPoint;
+                        prevPoint.left = nextPoint;
+                        break;
+                    }
+                    prevPoint.left.move(nextPoint);
+                    prevPoint = prevPoint.left;
                 }
             }
             prevPoint = nextPoint;
@@ -59,14 +76,6 @@ public class Solution {
         return points;
     }
 
-    private Point[] getOriginalPoints(Point[] orderedPoints) {
-        Point[] points = new Point[orderedPoints.length];
-        for (Point point : orderedPoints) {
-            points[point.position] = point;
-        }
-        return points;
-    }
-
     private static class Point {
         private int height;
         private int position;
@@ -74,6 +83,8 @@ public class Solution {
         private int handledHeight;
         private long sidePathCount;
         private long otherSidePathCount;
+        public Point left;
+        public Point right;
 
         private Point(int height, int position) {
             this.height = height;
@@ -85,10 +96,6 @@ public class Solution {
         }
 
         private void move(Point nextPoint) {
-            if (height > nextPoint.height) {
-                return;
-            }
-
             int groupSize = nextPoint.sortedPosition - sortedPosition - handledHeight - 1;
             handledHeight += groupSize;
             long pathCountToGroup = (1 + otherSidePathCount) * groupSize;
