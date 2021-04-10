@@ -4,42 +4,65 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class Solution {
+    private final static int NoColor = -1;
     public int solution(int N, int K, int[] A, int[] B, int[] C) {
         int[] positions = getPositions(A, B);
         Node root = getTree(positions);
         applyLayers(root, A, B, C);
+        root.setParentColor(NoColor);
         return root.getCount(K);
     }
 
     private void applyLayers(Node root, int[] a, int[] b, int[] c) {
         for (int i = 0; i < a.length; i++)
         {
-            applyLayer(root, a[i], b[i], c[i]);
+            applyLayer(root, a[i], b[i], c[i], NoColor);
         }
     }
 
-    private void applyLayer(Node node, int start, int end, int color) {
+    private void applyLayer(Node node, int start, int end, int color, int parentColor) {
+        if (parentColor != NoColor) {
+            node.color = parentColor;
+        }
         if (end < node.start || start > node.end)
         {
             return;
         }
-        if (node.children.size() > 0) {
-            for (int i = node.children.size() - 1; i >= 0; i--) {
-                Node child = node.children.get(i);
-                applyLayer(child, start, end, color);
-                if (child.spoiled) {
-                    node.children.remove(i);
+        if (start <= node.start && end >= node.end) {
+            if (node.color != NoColor) {
+                if (node.color+ 1 == color) {
+                    node.color = color;
+                } else {
+                    node.spoiled = true;
                 }
-            }
-            if (node.children.size() == 0) {
-                node.spoiled = true;
+                return;
             }
         }
-        else {
-            node.color++;
-            if (node.color != color) {
-                node.spoiled = true;
+        for (int i = node.children.size() - 1; i >= 0; i--) {
+            Node child = node.children.get(i);
+            applyLayer(child, start, end, color, node.color);
+            if (child.spoiled) {
+                node.children.remove(i);
             }
+        }
+        switch (node.children.size())
+        {
+            case 0:
+                node.spoiled = true;
+                break;
+            case 1:
+                Node child = node.children.get(0);
+                node.start = child.start;
+                node.end = child.end;
+                node.color = child.color;
+                node.children.clear();
+                break;
+            case 2:
+                node.color =
+                        node.children.get(0).color == node.children.get(1).color
+                                ? node.children.get(0).color
+                                : NoColor;
+                break;
         }
     }
 
@@ -64,8 +87,8 @@ public class Solution {
     }
 
     private static class Node {
-        private final int start;
-        private final int end;
+        private int start;
+        private int end;
         private int color;
         private boolean spoiled;
         private final List<Node> children = new ArrayList<>();
@@ -76,10 +99,14 @@ public class Solution {
         }
 
         public int getCount(int color) {
-            return children
-                    .stream()
-                    .map(child -> child.getCount(color))
-                    .reduce(!this.spoiled && this.color == color ? end - start + 1 : 0, Integer::sum);
+            if (this.spoiled) {
+                return 0;
+            }
+            int result = this.color == color && children.size() == 0 ? end - start + 1 : 0;
+            for (Node child : children) {
+                result += child.getCount(color);
+            }
+            return result;
         }
 
         public void addChild(Node child) {
@@ -88,7 +115,20 @@ public class Solution {
 
         @Override
         public String toString() {
-            return String.format("start: %d, end: %d, child count: %d", start, end, children.size());
+            return String.format("start: %d, end: %d, child count: %d, color: %d", start, end, children.size(), color);
+        }
+
+        public void setParentColor(int parentColor) {
+            if (parentColor != NoColor) {
+                color = parentColor;
+                for (Node child : children) {
+                    child.setParentColor(parentColor);
+                }
+            } else {
+                for (Node child : children) {
+                    child.setParentColor(color);
+                }
+            }
         }
     }
 }

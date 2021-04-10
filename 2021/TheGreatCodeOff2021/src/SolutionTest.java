@@ -28,6 +28,13 @@ public class SolutionTest {
         testInternal(0, 1, 2, new int[]{1, 1}, new int[]{1, 1}, new int[]{2, 1});
     }
 
+    /*
+    @Test
+    public void test6() {
+        testInternal(4, 5, 2, new int[]{1, 2, 3, 4, 5, 1, 2, 4, 5, 3, 2}, new int[]{1, 2, 3, 4, 5, 1, 2, 4, 5, 3, 5}, new int[]{1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2});
+    }
+     */
+
     private void testInternal(int expectedResult, int n, int k, int[] a, int[] b, int[] c) {
         var actualResult = new Solution().solution(n, k, a, b, c);
         Assert.assertEquals(expectedResult, actualResult);
