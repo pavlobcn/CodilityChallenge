@@ -32,6 +32,9 @@ public class Solution {
             if (node.color != NoColor) {
                 if (node.color+ 1 == color) {
                     node.color = color;
+                    for (Node child : node.children) {
+                        child.color = color;
+                    }
                 } else {
                     node.spoiled = true;
                 }
@@ -56,6 +59,9 @@ public class Solution {
                 node.end = child.end;
                 node.color = child.color;
                 node.children.clear();
+                for (Node subChild : child.children) {
+                    node.addChild(subChild);
+                }
                 break;
             case 2:
                 node.color =
