@@ -30,8 +30,8 @@ public class Solution {
             // Even length
             for (int j = 1; i - j >= 0 &&  i + j - 1 < chars.length;) {
                 if (chars[i - j] == chars[i + j - 1]) {
-                    if (i - j - 2 >= 0 && i + j + 2 < chars.length && chars[i - j - 1] == chars[i + j]) {
-                        var minSequenceCount = Math.min(doubleCharCountToLeft[i - j - 1], doubleCharCountToRight[i + j]);
+                    if (i - j - 1 >= 0 && i + j < chars.length && chars[i - j - 1] == chars[i + j]) {
+                        var minSequenceCount = Math.min(doubleCharCountToLeft[i - j], doubleCharCountToRight[i + j - 1]);
                         minSequenceCount = Math.max(minSequenceCount, 1);
                         result += minSequenceCount * 2;
                         j += minSequenceCount * 2;
