@@ -9,6 +9,9 @@ public class Solution {
     private static final int NEGATIVE = -1;
 
     public int solution(int[] A) {
+        if (isAllEntriesEven(A)) {
+            return 0;
+        }
         List<Point> points = getPoints(A);
         Summary summary = setInitialSign(points);
         while (true) {
@@ -28,6 +31,14 @@ public class Solution {
             throw new RuntimeException(Arrays.toString(A));
         }
         return summary.getResult();
+    }
+
+    private boolean isAllEntriesEven(int[] a) {
+        int[] entries = new int[101];
+        for (int i : a) {
+            entries[Math.abs(i)]++;
+        }
+        return Arrays.stream(entries).allMatch(x -> x % 2 == 0);
     }
 
     private void changeSign(List<Point> points, Summary summary, int changeSignIndex) {
@@ -99,7 +110,7 @@ public class Solution {
     }
 
     private static List<Point> getPoints(int[] a) {
-        List<Point> points = Arrays.stream(a).map(x -> Math.abs(x)).sorted().mapToObj(x -> new Point(Math.abs(x))).collect(Collectors.toList());
+        List<Point> points = Arrays.stream(a).map(Math::abs).sorted().mapToObj(x -> new Point(Math.abs(x))).collect(Collectors.toList());
         for (int i = 0; i < points.size(); i++) {
             points.get(i).position = i;
         }
